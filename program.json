@@ -9,6 +9,10 @@
                 "name 3"
             ],
             "location": "Main Hall",
+            "languages": [
+                "English",
+                "German"
+            ],
             "likers": [
                 "user 1",
                 "user 2",
@@ -29,6 +33,10 @@
                 "name 3"
             ],
             "location": "Workshop Room A",
+            "languages": [
+                "German",
+                "French"
+            ],
             "likers": [
                 "user 2",
                 "user 4",
@@ -51,6 +59,10 @@
                 "name 2",
                 "name 3"
             ],
+            "languages": [
+                "English",
+                "Spanish"
+            ],
             "likers": [
                 "user 1",
                 "user 3",
@@ -65,6 +77,10 @@
                 "name 1",
                 "name 2",
                 "name 3"
+            ],
+            "languages": [
+                "German",
+                "Italian"
             ],
             "likers": [
                 "user 2",
