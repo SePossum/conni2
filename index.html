@@ -287,98 +287,234 @@
   <body>
     <div class="container">
       <h1>Seminarwochenende 2027</h1>
-      <p class="subtitle">Welcome to the seminar weekend!</p>
+      <p class="subtitle" data-i18n="welcome">Welcome to the seminar weekend!</p>
       <div class="filter-bar">
-        <label for="current-user-name">Your name:</label>
-        <input id="current-user-name" type="text" autocomplete="name" placeholder="Enter your name" />
+        <label for="page-language-filter" data-i18n="pageLanguage">Page language:</label>
+        <select id="page-language-filter">
+          <option value="en">English</option>
+          <option value="de">Deutsch</option>
+          <option value="fr">Français</option>
+          <option value="es">Español</option>
+          <option value="it">Italiano</option>
+        </select>
+      </div>
+      <div class="filter-bar">
+        <label for="current-user-name" data-i18n="yourName">Your name:</label>
+        <input id="current-user-name" type="text" autocomplete="name" placeholder="Enter your name" data-i18n-placeholder="enterName" />
         <span id="user-name-status" class="save-status" role="status" aria-live="polite"></span>
       </div>
 
       <div class="tab-bar">
-        <button class="tab active" data-tab="program">Program</button>
-        <button class="tab" data-tab="topics">Topics</button>
-        <button class="tab" data-tab="locations">Locations</button>
+        <button class="tab active" data-tab="program" data-i18n="program">Program</button>
+        <button class="tab" data-tab="topics" data-i18n="topics">Topics</button>
+        <button class="tab" data-tab="locations" data-i18n="locations">Locations</button>
       </div>
 
       <section id="program-section" class="section active">
-        <h2>Program</h2>
+        <h2 data-i18n="program">Program</h2>
         <div class="filter-bar">
-          <label for="program-language-filter">Language:</label>
+          <label for="program-language-filter" data-i18n="language">Language:</label>
           <select id="program-language-filter">
-            <option value="all">All</option>
+            <option value="all" data-i18n="all">All</option>
           </select>
-          <label for="program-liked-filter">Liked by:</label>
+          <label for="program-liked-filter" data-i18n="likedBy">Liked by:</label>
           <select id="program-liked-filter">
-            <option value="all">All users</option>
+            <option value="all" data-i18n="allUsers">All users</option>
           </select>
-          <label for="program-search-filter">Search:</label>
-          <input id="program-search-filter" type="search" placeholder="Name, description, contributor" />
-          <label for="program-detail-filter">Details:</label>
+          <label for="program-search-filter" data-i18n="search">Search:</label>
+          <input id="program-search-filter" type="search" placeholder="Name, description, contributor" data-i18n-placeholder="searchPlaceholder" />
+          <label for="program-detail-filter" data-i18n="details">Details:</label>
           <select id="program-detail-filter">
-            <option value="full">Full</option>
-            <option value="compact">Compact</option>
+            <option value="full" data-i18n="full">Full</option>
+            <option value="compact" data-i18n="compact">Compact</option>
           </select>
-          <label for="program-view-filter">View:</label>
+          <label for="program-view-filter" data-i18n="view">View:</label>
           <select id="program-view-filter">
-            <option value="list">List</option>
-            <option value="calendar">Calendar</option>
+            <option value="list" data-i18n="list">List</option>
+            <option value="calendar" data-i18n="calendar">Calendar</option>
           </select>
         </div>
         <div id="program-cards" class="cards">
-          <div class="loading">Loading program...</div>
+          <div class="loading" data-i18n="loadingProgram">Loading program...</div>
         </div>
       </section>
 
       <section id="topics-section" class="section">
-        <h2>Topics</h2>
+        <h2 data-i18n="topics">Topics</h2>
         <div class="filter-bar">
-          <label for="topics-language-filter">Language:</label>
+          <label for="topics-language-filter" data-i18n="language">Language:</label>
           <select id="topics-language-filter">
-            <option value="all">All</option>
+            <option value="all" data-i18n="all">All</option>
           </select>
-          <label for="topics-liked-filter">Liked by:</label>
+          <label for="topics-liked-filter" data-i18n="likedBy">Liked by:</label>
           <select id="topics-liked-filter">
-            <option value="all">All users</option>
+            <option value="all" data-i18n="allUsers">All users</option>
           </select>
-          <label for="topics-search-filter">Search:</label>
-          <input id="topics-search-filter" type="search" placeholder="Name, description, contributor" />
-          <label for="topics-detail-filter">Details:</label>
+          <label for="topics-search-filter" data-i18n="search">Search:</label>
+          <input id="topics-search-filter" type="search" placeholder="Name, description, contributor" data-i18n-placeholder="searchPlaceholder" />
+          <label for="topics-detail-filter" data-i18n="details">Details:</label>
           <select id="topics-detail-filter">
-            <option value="full">Full</option>
-            <option value="compact">Compact</option>
+            <option value="full" data-i18n="full">Full</option>
+            <option value="compact" data-i18n="compact">Compact</option>
           </select>
-          <label for="topics-type-filter">Show:</label>
+          <label for="topics-type-filter" data-i18n="show">Show:</label>
           <select id="topics-type-filter">
-            <option value="all">All items</option>
-            <option value="topics-only">Topics only</option>
+            <option value="all" data-i18n="allItems">All items</option>
+            <option value="topics-only" data-i18n="topicsOnly">Topics only</option>
           </select>
         </div>
         <div class="sort-bar">
-          <label for="topics-sort-select">Sort by:</label>
+          <label for="topics-sort-select" data-i18n="sortBy">Sort by:</label>
           <select id="topics-sort-select">
-            <option value="date">Date</option>
-            <option value="likes">Likes</option>
-            <option value="name">Name</option>
+            <option value="date" data-i18n="date">Date</option>
+            <option value="likes" data-i18n="likes">Likes</option>
+            <option value="name" data-i18n="name">Name</option>
           </select>
         </div>
         <div id="topics-cards" class="cards">
-          <div class="loading">Loading topics...</div>
+          <div class="loading" data-i18n="loadingTopics">Loading topics...</div>
         </div>
       </section>
 
       <section id="locations-section" class="section">
-        <h2>Locations</h2>
+        <h2 data-i18n="locations">Locations</h2>
         <div id="locations-cards" class="cards">
-          <div class="loading">Loading locations...</div>
+          <div class="loading" data-i18n="loadingLocations">Loading locations...</div>
         </div>
       </section>
     </div>
 
     <script>
+      const pageLanguageStorageKey = 'conni2-page-language';
+      const pageTranslations = {
+        en: {
+          welcome: 'Welcome to the seminar weekend!', pageLanguage: 'Page language:', yourName: 'Your name:', enterName: 'Enter your name', saved: 'Saved',
+          nameStorageUnavailable: 'Name storage is unavailable', likesSaveFailed: 'Could not save likes', program: 'Program', topics: 'Topics', locations: 'Locations',
+          language: 'Language:', all: 'All', likedBy: 'Liked by:', allUsers: 'All users', myLikes: 'My likes', search: 'Search:',
+          searchPlaceholder: 'Name, description, contributor', details: 'Details:', full: 'Full', compact: 'Compact', view: 'View:', list: 'List', calendar: 'Calendar',
+          loadingProgram: 'Loading program...', loadingTopics: 'Loading topics...', loadingLocations: 'Loading locations...', show: 'Show:', allItems: 'All items',
+          topicsOnly: 'Topics only', sortBy: 'Sort by:', date: 'Date', likes: 'Likes', name: 'Name', programBadge: 'Program', topicBadge: 'Topic',
+          contributors: 'Contributors:', programNoMatches: 'No program items match these filters.', itemsNoMatches: 'No program items or topics match these filters.',
+          dateNotSet: 'Date not set', likeAction: '♡ Like', unlikeAction: '♥ Liked', likeTitle: 'Like this item', unlikeTitle: 'Unlike this item',
+          setNameFirst: 'Set your name first', likesCount: '{count} likes', likedByTooltip: 'Liked by: {names}', noLikerNames: 'No liker names available',
+          capacity: 'Capacity:', facilities: 'Facilities:', programItems: 'Program items:', noProgramItems: 'No program items', locationBadge: 'Location', minutes: '{count} min', loadError: 'Could not load program data.'
+        },
+        de: {
+          welcome: 'Willkommen zum Seminarwochenende!', pageLanguage: 'Seitensprache:', yourName: 'Dein Name:', enterName: 'Namen eingeben', saved: 'Gespeichert',
+          nameStorageUnavailable: 'Name kann nicht gespeichert werden', likesSaveFailed: 'Likes konnten nicht gespeichert werden', program: 'Programm', topics: 'Themen', locations: 'Orte',
+          language: 'Sprache:', all: 'Alle', likedBy: 'Gefällt:', allUsers: 'Alle', myLikes: 'Meine Likes', search: 'Suche:',
+          searchPlaceholder: 'Name, Beschreibung, Mitwirkende', details: 'Details:', full: 'Vollständig', compact: 'Kompakt', view: 'Ansicht:', list: 'Liste', calendar: 'Kalender',
+          loadingProgram: 'Programm wird geladen...', loadingTopics: 'Themen werden geladen...', loadingLocations: 'Orte werden geladen...', show: 'Anzeigen:', allItems: 'Alle Einträge',
+          topicsOnly: 'Nur Themen', sortBy: 'Sortieren nach:', date: 'Datum', likes: 'Likes', name: 'Name', programBadge: 'Programm', topicBadge: 'Thema',
+          contributors: 'Mitwirkende:', programNoMatches: 'Keine Programmpunkte entsprechen diesen Filtern.', itemsNoMatches: 'Keine Programmpunkte oder Themen entsprechen diesen Filtern.',
+          dateNotSet: 'Kein Datum festgelegt', likeAction: '♡ Gefällt mir', unlikeAction: '♥ Gefällt mir', likeTitle: 'Eintrag liken', unlikeTitle: 'Like entfernen',
+          setNameFirst: 'Gib zuerst deinen Namen ein', likesCount: '{count} Likes', likedByTooltip: 'Gefällt: {names}', noLikerNames: 'Keine Namen verfügbar',
+          capacity: 'Kapazität:', facilities: 'Ausstattung:', programItems: 'Programmpunkte:', noProgramItems: 'Keine Programmpunkte', locationBadge: 'Ort', minutes: '{count} Min.', loadError: 'Programmdaten konnten nicht geladen werden.'
+        },
+        fr: {
+          welcome: 'Bienvenue au week-end de séminaire !', pageLanguage: 'Langue de la page :', yourName: 'Votre nom :', enterName: 'Saisissez votre nom', saved: 'Enregistré',
+          nameStorageUnavailable: 'Le nom ne peut pas être enregistré', likesSaveFailed: 'Impossible d’enregistrer les mentions J’aime', program: 'Programme', topics: 'Thèmes', locations: 'Lieux',
+          language: 'Langue :', all: 'Tout', likedBy: 'Apprécié par :', allUsers: 'Tout le monde', myLikes: 'Mes mentions J’aime', search: 'Rechercher :',
+          searchPlaceholder: 'Nom, description, contributeur', details: 'Détails :', full: 'Complet', compact: 'Compact', view: 'Vue :', list: 'Liste', calendar: 'Calendrier',
+          loadingProgram: 'Chargement du programme...', loadingTopics: 'Chargement des thèmes...', loadingLocations: 'Chargement des lieux...', show: 'Afficher :', allItems: 'Tout',
+          topicsOnly: 'Thèmes uniquement', sortBy: 'Trier par :', date: 'Date', likes: 'Mentions J’aime', name: 'Nom', programBadge: 'Programme', topicBadge: 'Thème',
+          contributors: 'Contributeurs :', programNoMatches: 'Aucun élément du programme ne correspond à ces filtres.', itemsNoMatches: 'Aucun élément du programme ou thème ne correspond à ces filtres.',
+          dateNotSet: 'Date non définie', likeAction: '♡ J’aime', unlikeAction: '♥ Aimé', likeTitle: 'Aimer cet élément', unlikeTitle: 'Retirer la mention J’aime',
+          setNameFirst: 'Saisissez d’abord votre nom', likesCount: '{count} mentions J’aime', likedByTooltip: 'Aimé par : {names}', noLikerNames: 'Aucun nom disponible',
+          capacity: 'Capacité :', facilities: 'Équipements :', programItems: 'Éléments du programme :', noProgramItems: 'Aucun élément du programme', locationBadge: 'Lieu', minutes: '{count} min', loadError: 'Impossible de charger les données du programme.'
+        },
+        es: {
+          welcome: '¡Te damos la bienvenida al fin de semana de seminarios!', pageLanguage: 'Idioma de la página:', yourName: 'Tu nombre:', enterName: 'Escribe tu nombre', saved: 'Guardado',
+          nameStorageUnavailable: 'No se puede guardar el nombre', likesSaveFailed: 'No se pudieron guardar los Me gusta', program: 'Programa', topics: 'Temas', locations: 'Lugares',
+          language: 'Idioma:', all: 'Todos', likedBy: 'Le gusta a:', allUsers: 'Todos', myLikes: 'Mis Me gusta', search: 'Buscar:',
+          searchPlaceholder: 'Nombre, descripción, colaborador', details: 'Detalles:', full: 'Completo', compact: 'Compacto', view: 'Vista:', list: 'Lista', calendar: 'Calendario',
+          loadingProgram: 'Cargando programa...', loadingTopics: 'Cargando temas...', loadingLocations: 'Cargando lugares...', show: 'Mostrar:', allItems: 'Todos los elementos',
+          topicsOnly: 'Solo temas', sortBy: 'Ordenar por:', date: 'Fecha', likes: 'Me gusta', name: 'Nombre', programBadge: 'Programa', topicBadge: 'Tema',
+          contributors: 'Colaboradores:', programNoMatches: 'Ningún elemento del programa coincide con estos filtros.', itemsNoMatches: 'Ningún elemento del programa o tema coincide con estos filtros.',
+          dateNotSet: 'Fecha no establecida', likeAction: '♡ Me gusta', unlikeAction: '♥ Me gusta', likeTitle: 'Me gusta este elemento', unlikeTitle: 'Quitar Me gusta',
+          setNameFirst: 'Primero escribe tu nombre', likesCount: '{count} Me gusta', likedByTooltip: 'Les gusta a: {names}', noLikerNames: 'No hay nombres disponibles',
+          capacity: 'Capacidad:', facilities: 'Instalaciones:', programItems: 'Elementos del programa:', noProgramItems: 'No hay elementos del programa', locationBadge: 'Lugar', minutes: '{count} min', loadError: 'No se pudieron cargar los datos del programa.'
+        },
+        it: {
+          welcome: 'Benvenuti al weekend di seminari!', pageLanguage: 'Lingua della pagina:', yourName: 'Il tuo nome:', enterName: 'Inserisci il tuo nome', saved: 'Salvato',
+          nameStorageUnavailable: 'Impossibile salvare il nome', likesSaveFailed: 'Impossibile salvare i Mi piace', program: 'Programma', topics: 'Temi', locations: 'Luoghi',
+          language: 'Lingua:', all: 'Tutti', likedBy: 'Piace a:', allUsers: 'Tutti', myLikes: 'I miei Mi piace', search: 'Cerca:',
+          searchPlaceholder: 'Nome, descrizione, collaboratore', details: 'Dettagli:', full: 'Completo', compact: 'Compatto', view: 'Vista:', list: 'Elenco', calendar: 'Calendario',
+          loadingProgram: 'Caricamento programma...', loadingTopics: 'Caricamento temi...', loadingLocations: 'Caricamento luoghi...', show: 'Mostra:', allItems: 'Tutti gli elementi',
+          topicsOnly: 'Solo temi', sortBy: 'Ordina per:', date: 'Data', likes: 'Mi piace', name: 'Nome', programBadge: 'Programma', topicBadge: 'Tema',
+          contributors: 'Collaboratori:', programNoMatches: 'Nessun elemento del programma corrisponde a questi filtri.', itemsNoMatches: 'Nessun elemento del programma o tema corrisponde a questi filtri.',
+          dateNotSet: 'Data non impostata', likeAction: '♡ Mi piace', unlikeAction: '♥ Ti piace', likeTitle: 'Metti Mi piace', unlikeTitle: 'Rimuovi Mi piace',
+          setNameFirst: 'Inserisci prima il tuo nome', likesCount: '{count} Mi piace', likedByTooltip: 'Piace a: {names}', noLikerNames: 'Nessun nome disponibile',
+          capacity: 'Capienza:', facilities: 'Servizi:', programItems: 'Elementi del programma:', noProgramItems: 'Nessun elemento del programma', locationBadge: 'Luogo', minutes: '{count} min', loadError: 'Impossibile caricare i dati del programma.'
+        }
+      };
+
+      let currentPageLanguage = 'en';
       const userNameStorageKey = 'conni2-user-name';
       const userLikesStorageKey = 'conni2-user-likes';
       let currentUserName = '';
       let currentUserLikes = { program: {}, topics: {} };
+
+      function translate(key, values = {}) {
+        let text = (pageTranslations[currentPageLanguage] || pageTranslations.en)[key] || pageTranslations.en[key] || key;
+        Object.entries(values).forEach(([name, value]) => {
+          text = text.replaceAll(`{${name}}`, value);
+        });
+        return text;
+      }
+
+      function applyPageTranslations() {
+        document.documentElement.lang = currentPageLanguage;
+        document.querySelectorAll('[data-i18n]').forEach(element => {
+          element.textContent = translate(element.dataset.i18n);
+        });
+        document.querySelectorAll('[data-i18n-placeholder]').forEach(element => {
+          element.placeholder = translate(element.dataset.i18nPlaceholder);
+        });
+
+        ['program-language-filter', 'topics-language-filter'].forEach(id => {
+          const allOption = document.getElementById(id).querySelector('option[value="all"]');
+          if (allOption) allOption.textContent = translate('all');
+        });
+
+        const programLikedFilter = document.getElementById('program-liked-filter');
+        const topicsLikedFilter = document.getElementById('topics-liked-filter');
+        const selectedProgramLikes = programLikedFilter.value;
+        const selectedTopicLikes = topicsLikedFilter.value;
+        populateLikerFilters();
+        if (Array.from(programLikedFilter.options).some(option => option.value === selectedProgramLikes)) {
+          programLikedFilter.value = selectedProgramLikes;
+        }
+        if (Array.from(topicsLikedFilter.options).some(option => option.value === selectedTopicLikes)) {
+          topicsLikedFilter.value = selectedTopicLikes;
+        }
+
+        document.getElementById('user-name-status').textContent = currentUserName ? translate('saved') : '';
+
+        if (window.allProgramItems) {
+          renderCurrentViews();
+          renderLocations(window.allLocations || []);
+        }
+      }
+
+      function initializePageLanguage() {
+        const selector = document.getElementById('page-language-filter');
+        try {
+          const savedLanguage = localStorage.getItem(pageLanguageStorageKey);
+          if (pageTranslations[savedLanguage]) currentPageLanguage = savedLanguage;
+        } catch {
+          currentPageLanguage = 'en';
+        }
+        selector.value = currentPageLanguage;
+        selector.addEventListener('change', () => {
+          currentPageLanguage = selector.value;
+          try {
+            localStorage.setItem(pageLanguageStorageKey, currentPageLanguage);
+          } catch {}
+          applyPageTranslations();
+        });
+        applyPageTranslations();
+      }
 
       function currentUserKey() {
         return currentUserName.trim().toLocaleLowerCase();
@@ -450,10 +586,11 @@
 
       function renderLikeControl(item, itemType) {
         const state = getItemLikeState(item, itemType);
-        const tooltip = escapeAttributeValue(state.likers.join(', '));
+        const likerNames = state.likers.join(', ') || translate('noLikerNames');
+        const tooltip = escapeAttributeValue(translate('likedByTooltip', { names: likerNames }));
         const buttonTitle = currentUserName
-          ? (state.liked ? 'Unlike this item' : 'Like this item')
-          : 'Set your name first';
+          ? translate(state.liked ? 'unlikeTitle' : 'likeTitle')
+          : translate('setNameFirst');
 
         return `
           <div class="like-actions">
@@ -463,10 +600,10 @@
               data-like-type="${itemType}"
               data-like-name="${escapeAttributeValue(item.name)}"
               aria-pressed="${state.liked}"
-              title="${buttonTitle}"
+              title="${escapeAttributeValue(buttonTitle)}"
               ${currentUserName ? '' : 'disabled'}
-            >${state.liked ? '♥ Liked' : '♡ Like'}</button>
-            <p class="likes" title="Liked by: ${tooltip}">♥ ${state.likeCount} likes</p>
+            >${translate(state.liked ? 'unlikeAction' : 'likeAction')}</button>
+            <p class="likes" title="${tooltip}">♥ ${translate('likesCount', { count: state.likeCount })}</p>
           </div>
         `;
       }
@@ -484,7 +621,7 @@
         if (!saveCurrentUserLikes()) {
           if (wasOverridden) currentUserLikes[itemType][item.name] = previousValue;
           else delete currentUserLikes[itemType][item.name];
-          document.getElementById('user-name-status').textContent = 'Could not save likes';
+          document.getElementById('user-name-status').textContent = translate('likesSaveFailed');
           return;
         }
 
@@ -504,9 +641,9 @@
         const status = document.getElementById('user-name-status');
         try {
           currentUserName = localStorage.getItem(userNameStorageKey) || '';
-          status.textContent = currentUserName ? 'Saved' : '';
+          status.textContent = currentUserName ? translate('saved') : '';
         } catch {
-          status.textContent = 'Name storage is unavailable';
+          status.textContent = translate('nameStorageUnavailable');
         }
         nameInput.value = currentUserName;
         loadCurrentUserLikes();
@@ -516,13 +653,13 @@
           try {
             if (currentUserName) {
               localStorage.setItem(userNameStorageKey, currentUserName);
-              status.textContent = 'Saved';
+              status.textContent = translate('saved');
             } else {
               localStorage.removeItem(userNameStorageKey);
               status.textContent = '';
             }
           } catch {
-            status.textContent = 'Name storage is unavailable';
+            status.textContent = translate('nameStorageUnavailable');
           }
 
           if (!window.allProgramItems) return;
@@ -543,20 +680,21 @@
           const data = await response.json();
           window.allProgramItems = data.program || [];
           window.allTopics = data.topics || [];
+          window.allLocations = data.locations || [];
           populateLanguageFilters(window.allProgramItems, window.allTopics);
           renderProgram(window.allProgramItems);
           renderTopics(window.allTopics);
-          renderLocations(data.locations || []);
+          renderLocations(window.allLocations);
         } catch (error) {
-          document.getElementById('program-cards').innerHTML = `<p class="loading">${error.message}</p>`;
-          document.getElementById('topics-cards').innerHTML = `<p class="loading">${error.message}</p>`;
-          document.getElementById('locations-cards').innerHTML = `<p class="loading">${error.message}</p>`;
+          document.getElementById('program-cards').innerHTML = `<p class="loading">${translate('loadError')}</p>`;
+          document.getElementById('topics-cards').innerHTML = `<p class="loading">${translate('loadError')}</p>`;
+          document.getElementById('locations-cards').innerHTML = `<p class="loading">${translate('loadError')}</p>`;
         }
       }
 
       function populateLikerFilters() {
-        const likerOptions = ['<option value="all">All users</option>']
-          .concat(`<option value="my-likes" ${currentUserName ? '' : 'disabled'}>My likes</option>`)
+        const likerOptions = [`<option value="all">${translate('allUsers')}</option>`]
+          .concat(`<option value="my-likes" ${currentUserName ? '' : 'disabled'}>${translate('myLikes')}</option>`)
           .join('');
 
         const programLikedFilter = document.getElementById('program-liked-filter');
@@ -586,7 +724,7 @@
         const topicsSortSelect = document.getElementById('topics-sort-select');
 
         const languages = Array.from(allLanguages).sort();
-        const options = ['<option value="all">All</option>']
+        const options = [`<option value="all">${translate('all')}</option>`]
           .concat(languages.map(language => `<option value="${language}">${language}</option>`))
           .join('');
 
@@ -651,7 +789,7 @@
         const [year, month, day] = (dateValue || '').split('-').map(Number);
         if (!year || !month || !day) return dateValue || 'Date not set';
 
-        return new Intl.DateTimeFormat(undefined, {
+        return new Intl.DateTimeFormat(currentPageLanguage, {
           weekday: 'long',
           month: 'long',
           day: 'numeric',
@@ -662,7 +800,7 @@
       function renderProgramCalendar(items) {
         const days = new Map();
         items.forEach(item => {
-          const date = item.date || 'Date not set';
+          const date = item.date || translate('dateNotSet');
           if (!days.has(date)) days.set(date, []);
           days.get(date).push(item);
         });
@@ -704,26 +842,26 @@
             ? renderProgramCalendar(filteredItems)
             : filteredItems.map(item => `
               <article class="card" data-program-name="${item.name}">
-                <span class="badge">Program</span>
+                <span class="badge">${translate('programBadge')}</span>
                 <h3>${item.name}</h3>
                 ${detailMode === 'full' ? `<p>${item.desc}</p>` : ''}
                 <div class="meta">
                   <a href="#" class="chip chip-link" data-location="${item.location}">${item.location}</a>
-                  <span class="chip">${item.date}</span>
+                  <span class="chip">${formatProgramDate(item.date)}</span>
                   <span class="chip">${item.start} - ${item.end}</span>
-                  <span class="chip">${item.duration} min</span>
+                  <span class="chip">${translate('minutes', { count: item.duration })}</span>
                 </div>
                 ${detailMode === 'full' ? `
                   <div class="meta">
                     ${(item.languages || []).map(lang => `<span class="chip">${lang}</span>`).join('')}
                   </div>
-                  <p><strong>Contributors:</strong></p>
+                  <p><strong>${translate('contributors')}</strong></p>
                   <ul>${(item.contributers || []).map(name => `<li>${name}</li>`).join('')}</ul>
                 ` : ''}
                 ${renderLikeControl(item, 'program')}
               </article>
             `).join('')
-          : '<p class="loading">No program items match these filters.</p>';
+          : `<p class="loading">${translate('programNoMatches')}</p>`;
 
         attachLikeHandlers(root);
         document.querySelectorAll('[data-location]').forEach(link => {
@@ -778,29 +916,29 @@
               const isProgram = !!item.date;
               return `
                 <article class="card">
-                  <span class="badge">${isProgram ? 'Program' : 'Topic'}</span>
+                  <span class="badge">${translate(isProgram ? 'programBadge' : 'topicBadge')}</span>
                   <h3>${item.name}</h3>
                   ${detailMode === 'full' ? `<p>${item.desc}</p>` : ''}
                   ${isProgram ? `
                     <div class="meta">
                       <a href="#" class="chip chip-link" data-location="${item.location}">${item.location}</a>
-                      <span class="chip">${item.date}</span>
+                      <span class="chip">${formatProgramDate(item.date)}</span>
                       <span class="chip">${item.start} - ${item.end}</span>
-                      <span class="chip">${item.duration} min</span>
+                      <span class="chip">${translate('minutes', { count: item.duration })}</span>
                     </div>
                   ` : ''}
                   ${detailMode === 'full' ? `
                     <div class="meta">
                       ${(item.languages || []).map(lang => `<span class="chip">${lang}</span>`).join('')}
                     </div>
-                    <p><strong>Contributors:</strong></p>
+                    <p><strong>${translate('contributors')}</strong></p>
                     <ul>${(item.contributers || []).map(name => `<li>${name}</li>`).join('')}</ul>
                   ` : ''}
                   ${renderLikeControl(item, isProgram ? 'program' : 'topics')}
                 </article>
               `;
             }).join('')
-          : '<p class="loading">No program items or topics match these filters.</p>';
+          : `<p class="loading">${translate('itemsNoMatches')}</p>`;
 
         attachLikeHandlers(root);
         document.querySelectorAll('[data-location]').forEach(link => {
@@ -828,21 +966,21 @@
                       ${programItem.date} • ${programItem.start} - ${programItem.end}
                     </li>
                   `).join('')
-                : '<li>No program items</li>';
+                : `<li>${translate('noProgramItems')}</li>`;
 
               return `
                 <article id="location-${location.name}" class="card">
-                  <span class="badge">Location</span>
+                  <span class="badge">${translate('locationBadge')}</span>
                   <h3>${location.name}</h3>
                   <p>${location.desc}</p>
-                  ${location.capacity != null ? `<p><strong>Capacity:</strong> ${location.capacity}</p>` : ''}
+                  ${location.capacity != null ? `<p><strong>${translate('capacity')}</strong> ${location.capacity}</p>` : ''}
                   ${(location.facilities || []).length ? `
-                    <p><strong>Facilities:</strong></p>
+                    <p><strong>${translate('facilities')}</strong></p>
                     <div class="meta">
                       ${location.facilities.map(facility => `<span class="chip">${facility}</span>`).join('')}
                     </div>
                   ` : ''}
-                  <p><strong>Program items:</strong></p>
+                  <p><strong>${translate('programItems')}</strong></p>
                   <ul>${programNames}</ul>
                 </article>
               `;
@@ -851,12 +989,12 @@
           .catch(() => {
             root.innerHTML = items.map(location => `
               <article id="location-${location.name}" class="card">
-                <span class="badge">Location</span>
+                <span class="badge">${translate('locationBadge')}</span>
                 <h3>${location.name}</h3>
                 <p>${location.desc}</p>
-                ${location.capacity != null ? `<p><strong>Capacity:</strong> ${location.capacity}</p>` : ''}
+                ${location.capacity != null ? `<p><strong>${translate('capacity')}</strong> ${location.capacity}</p>` : ''}
                 ${(location.facilities || []).length ? `
-                  <p><strong>Facilities:</strong></p>
+                  <p><strong>${translate('facilities')}</strong></p>
                   <div class="meta">
                     ${location.facilities.map(facility => `<span class="chip">${facility}</span>`).join('')}
                   </div>
@@ -865,13 +1003,13 @@
             `).join('');
           });
 
-        root.addEventListener('click', event => {
+        root.onclick = event => {
           const link = event.target.closest('[data-program-item]');
           if (!link) return;
 
           event.preventDefault();
           openProgramItem(link.dataset.programItem);
-        });
+        };
       }
 
       function openLocationTab(locationName) {
@@ -921,6 +1059,7 @@
         });
       });
 
+      initializePageLanguage();
       initializeUserName();
       loadData();
     </script>
