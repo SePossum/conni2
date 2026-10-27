@@ -1025,31 +1025,65 @@
     "locations": [
         {
             "name": "Main Hall",
-            "desc": "Description of the main hall"
+            "desc": "Description of the main hall",
+            "capacity": 200,
+            "facilities": [
+                "Projector",
+                "Sound System",
+                "Stage Lighting"
+            ]
         },
         {
             "name": "Workshop Room A",
-            "desc": "Description of workshop room A"
+            "desc": "Description of workshop room A",
+            "capacity": 50,
+            "facilities": [
+                "Whiteboard",
+                "Computers"
+            ]
         },
         {
             "name": "Studio B",
-            "desc": "A flexible studio for small-group workshops and creative sessions."
+            "desc": "A flexible studio for small-group workshops and creative sessions.",
+            "capacity": 30,
+            "facilities": [
+                "Whiteboard",
+                "Computers"
+            ]
         },
         {
             "name": "Garden Pavilion",
-            "desc": "A covered outdoor space for community activities and informal gatherings."
+            "desc": "A covered outdoor space for community activities and informal gatherings.",
+            "capacity": 100,
+            "facilities": [
+                "Outdoor Seating",
+                "Grass Area"
+            ]
         },
         {
             "name": "Media Lab",
-            "desc": "A workspace equipped for digital media, sound, and hands-on technology sessions."
+            "desc": "A workspace equipped for digital media, sound, and hands-on technology sessions.",
+            "capacity": 25,
+            "facilities": [
+                "Digital Equipment",
+                "Sound System"
+            ]
         },
         {
             "name": "Riverside Terrace",
-            "desc": "An open-air terrace suited to relaxed discussions and outdoor activities."
+            "desc": "An open-air terrace suited to relaxed discussions and outdoor activities.",
+            "capacity": 150,
+            "facilities": [
+                "Outdoor Seating"
+            ]
         },
         {
             "name": "Community Lounge",
-            "desc": "A comfortable shared space for conversation, breaks, and informal meetups."
+            "desc": "A comfortable shared space for conversation, breaks, and informal meetups.",
+            "capacity": 40,
+            "facilities": [
+                "Comfortable Seating"
+            ]
         }
     ]
 }

@@ -489,6 +489,13 @@
                   <span class="badge">Location</span>
                   <h3>${location.name}</h3>
                   <p>${location.desc}</p>
+                  ${location.capacity != null ? `<p><strong>Capacity:</strong> ${location.capacity}</p>` : ''}
+                  ${(location.facilities || []).length ? `
+                    <p><strong>Facilities:</strong></p>
+                    <div class="meta">
+                      ${location.facilities.map(facility => `<span class="chip">${facility}</span>`).join('')}
+                    </div>
+                  ` : ''}
                   <p><strong>Program items:</strong></p>
                   <ul>${programNames}</ul>
                 </article>
@@ -501,6 +508,13 @@
                 <span class="badge">Location</span>
                 <h3>${location.name}</h3>
                 <p>${location.desc}</p>
+                ${location.capacity != null ? `<p><strong>Capacity:</strong> ${location.capacity}</p>` : ''}
+                ${(location.facilities || []).length ? `
+                  <p><strong>Facilities:</strong></p>
+                  <div class="meta">
+                    ${location.facilities.map(facility => `<span class="chip">${facility}</span>`).join('')}
+                  </div>
+                ` : ''}
               </article>
             `).join('');
           });
