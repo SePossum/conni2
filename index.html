@@ -115,6 +115,27 @@
         line-height: 1.5;
       }
 
+      .filter-bar {
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .filter-bar label {
+        font-weight: 700;
+      }
+
+      .filter-bar select {
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 8px 12px;
+        background: white;
+        color: var(--text);
+        min-width: 150px;
+      }
+
       .meta {
         display: flex;
         flex-wrap: wrap;
@@ -176,6 +197,12 @@
 
       <section id="program-section" class="section active">
         <h2>Program</h2>
+        <div class="filter-bar">
+          <label for="program-language-filter">Language:</label>
+          <select id="program-language-filter">
+            <option value="all">All</option>
+          </select>
+        </div>
         <div id="program-cards" class="cards">
           <div class="loading">Loading program...</div>
         </div>
@@ -183,6 +210,12 @@
 
       <section id="topics-section" class="section">
         <h2>Topics</h2>
+        <div class="filter-bar">
+          <label for="topics-language-filter">Language:</label>
+          <select id="topics-language-filter">
+            <option value="all">All</option>
+          </select>
+        </div>
         <div id="topics-cards" class="cards">
           <div class="loading">Loading topics...</div>
         </div>
@@ -205,7 +238,9 @@
           }
 
           const data = await response.json();
-          renderProgram(data.program || []);
+          window.allProgramItems = data.program || [];
+          populateLanguageFilters(window.allProgramItems, data.topics || []);
+          renderProgram(window.allProgramItems);
           renderTopics(data.topics || []);
           renderLocations(data.locations || []);
         } catch (error) {
@@ -215,27 +250,54 @@
         }
       }
 
-      function renderProgram(items) {
+      function populateLanguageFilters(programItems, topicItems) {
+        const allLanguages = new Set();
+        [...programItems, ...topicItems].forEach(item => {
+          (item.languages || []).forEach(language => allLanguages.add(language));
+        });
+
+        const programSelect = document.getElementById('program-language-filter');
+        const topicSelect = document.getElementById('topics-language-filter');
+
+        const languages = Array.from(allLanguages).sort();
+        const options = ['<option value="all">All</option>']
+          .concat(languages.map(language => `<option value="${language}">${language}</option>`))
+          .join('');
+
+        programSelect.innerHTML = options;
+        topicSelect.innerHTML = options;
+
+        programSelect.onchange = () => renderProgram(programItems, programSelect.value);
+        topicSelect.onchange = () => renderTopics(topicItems, topicSelect.value);
+      }
+
+      function renderProgram(items, selectedLanguage = 'all') {
         const root = document.getElementById('program-cards');
-        root.innerHTML = items.map(item => `
-          <article class="card">
-            <span class="badge">Program</span>
-            <h3>${item.name}</h3>
-            <p>${item.desc}</p>
-            <div class="meta">
-              <a href="#" class="chip chip-link" data-location="${item.location}">${item.location}</a>
-              <span class="chip">${item.date}</span>
-              <span class="chip">${item.start} - ${item.end}</span>
-              <span class="chip">${item.duration} min</span>
-            </div>
-            <div class="meta">
-              ${(item.languages || []).map(lang => `<span class="chip">${lang}</span>`).join('')}
-            </div>
-            <p><strong>Contributors:</strong></p>
-            <ul>${(item.contributers || []).map(name => `<li>${name}</li>`).join('')}</ul>
-            <p class="likes">♥ ${item.likeCount || 0} likes</p>
-          </article>
-        `).join('');
+        const filteredItems = selectedLanguage === 'all'
+          ? items
+          : items.filter(item => (item.languages || []).includes(selectedLanguage));
+
+        root.innerHTML = filteredItems.length
+          ? filteredItems.map(item => `
+              <article class="card">
+                <span class="badge">Program</span>
+                <h3>${item.name}</h3>
+                <p>${item.desc}</p>
+                <div class="meta">
+                  <a href="#" class="chip chip-link" data-location="${item.location}">${item.location}</a>
+                  <span class="chip">${item.date}</span>
+                  <span class="chip">${item.start} - ${item.end}</span>
+                  <span class="chip">${item.duration} min</span>
+                </div>
+                <div class="meta">
+                  ${(item.languages || []).map(lang => `<span class="chip">${lang}</span>`).join('')}
+                </div>
+                <p><strong>Contributors:</strong></p>
+                <ul>${(item.contributers || []).map(name => `<li>${name}</li>`).join('')}</ul>
+                <p class="likes">♥ ${item.likeCount || 0} likes</p>
+              </article>
+            `).join('')
+          : '<p class="loading">No program items match this language.</p>';
 
         document.querySelectorAll('[data-location]').forEach(link => {
           link.addEventListener('click', (event) => {
@@ -246,21 +308,52 @@
         });
       }
 
-      function renderTopics(items) {
+      function renderTopics(items, selectedLanguage = 'all') {
         const root = document.getElementById('topics-cards');
-        root.innerHTML = items.map(item => `
-          <article class="card">
-            <span class="badge">Topic</span>
-            <h3>${item.name}</h3>
-            <p>${item.desc}</p>
-            <div class="meta">
-              ${(item.languages || []).map(lang => `<span class="chip">${lang}</span>`).join('')}
-            </div>
-            <p><strong>Contributors:</strong></p>
-            <ul>${(item.contributers || []).map(name => `<li>${name}</li>`).join('')}</ul>
-            <p class="likes">♥ ${item.likeCount || 0} likes</p>
-          </article>
-        `).join('');
+        const topicItems = selectedLanguage === 'all'
+          ? items
+          : items.filter(item => (item.languages || []).includes(selectedLanguage));
+
+        const programItems = selectedLanguage === 'all'
+          ? window.allProgramItems || []
+          : (window.allProgramItems || []).filter(item => (item.languages || []).includes(selectedLanguage));
+
+        const mergedItems = [...programItems, ...topicItems];
+
+        root.innerHTML = mergedItems.length
+          ? mergedItems.map(item => {
+              const isProgram = !!item.date;
+              return `
+                <article class="card">
+                  <span class="badge">${isProgram ? 'Program' : 'Topic'}</span>
+                  <h3>${item.name}</h3>
+                  <p>${item.desc}</p>
+                  ${isProgram ? `
+                    <div class="meta">
+                      <a href="#" class="chip chip-link" data-location="${item.location}">${item.location}</a>
+                      <span class="chip">${item.date}</span>
+                      <span class="chip">${item.start} - ${item.end}</span>
+                      <span class="chip">${item.duration} min</span>
+                    </div>
+                  ` : ''}
+                  <div class="meta">
+                    ${(item.languages || []).map(lang => `<span class="chip">${lang}</span>`).join('')}
+                  </div>
+                  <p><strong>Contributors:</strong></p>
+                  <ul>${(item.contributers || []).map(name => `<li>${name}</li>`).join('')}</ul>
+                  <p class="likes">♥ ${item.likeCount || 0} likes</p>
+                </article>
+              `;
+            }).join('')
+          : '<p class="loading">No program items or topics match this language.</p>';
+
+        document.querySelectorAll('[data-location]').forEach(link => {
+          link.addEventListener('click', (event) => {
+            event.preventDefault();
+            const name = event.currentTarget.dataset.location;
+            openLocationTab(name);
+          });
+        });
       }
 
       function renderLocations(items) {
