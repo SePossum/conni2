@@ -557,13 +557,13 @@
           <div class="filter-group">
             <label for="program-language-filter" data-i18n="language">Language:</label>
             <select id="program-language-filter">
-              <option value="all" data-i18n="all">All</option>
+              <option value="all" data-i18n="all" selected>All</option>
             </select>
           </div>
           <div class="filter-group filter-group-mobile-wide">
             <label for="program-liked-filter" data-i18n="filter">Filter:</label>
             <select id="program-liked-filter">
-              <option value="all" data-i18n="all">All</option>
+              <option value="all" data-i18n="all" selected>All</option>
             </select>
           </div>
           <div class="filter-group filter-group-mobile-wide">
@@ -573,14 +573,14 @@
           <div class="filter-group">
             <label for="program-detail-filter" data-i18n="details">Details:</label>
             <select id="program-detail-filter">
-              <option value="full" data-i18n="full">Full</option>
+              <option value="full" data-i18n="full" selected>Full</option>
               <option value="compact" data-i18n="compact">Compact</option>
             </select>
           </div>
           <div class="filter-group">
             <label for="program-view-filter" data-i18n="view">View:</label>
             <select id="program-view-filter">
-              <option value="list" data-i18n="list">List</option>
+              <option value="list" data-i18n="list" selected>List</option>
               <option value="calendar" data-i18n="calendar">Calendar</option>
             </select>
           </div>
@@ -597,13 +597,13 @@
           <div class="filter-group">
             <label for="topics-language-filter" data-i18n="language">Language:</label>
             <select id="topics-language-filter">
-              <option value="all" data-i18n="all">All</option>
+              <option value="all" data-i18n="all" selected>All</option>
             </select>
           </div>
           <div class="filter-group filter-group-mobile-wide">
             <label for="topics-liked-filter" data-i18n="filter">Filter:</label>
             <select id="topics-liked-filter">
-              <option value="all" data-i18n="all">All</option>
+              <option value="all" data-i18n="all" selected>All</option>
             </select>
           </div>
           <div class="filter-group filter-group-mobile-wide">
@@ -613,14 +613,14 @@
           <div class="filter-group">
             <label for="topics-detail-filter" data-i18n="details">Details:</label>
             <select id="topics-detail-filter">
-              <option value="full" data-i18n="full">Full</option>
+              <option value="full" data-i18n="full" selected>Full</option>
               <option value="compact" data-i18n="compact">Compact</option>
             </select>
           </div>
           <div class="filter-group">
             <label for="topics-type-filter" data-i18n="show">Show:</label>
             <select id="topics-type-filter">
-              <option value="all" data-i18n="allItems">All items</option>
+              <option value="all" data-i18n="allItems" selected>All items</option>
               <option value="topics-only" data-i18n="topicsOnly">Topics only</option>
             </select>
           </div>
@@ -629,7 +629,7 @@
           <div class="filter-group">
             <label for="topics-sort-select" data-i18n="sortBy">Sort by:</label>
             <select id="topics-sort-select">
-              <option value="date" data-i18n="date">Date</option>
+              <option value="date" data-i18n="date" selected>Date</option>
               <option value="likes" data-i18n="likes">Likes</option>
               <option value="name" data-i18n="name">Name</option>
             </select>
@@ -1049,6 +1049,8 @@
       }
 
       function renderDeleteControl(item, itemType) {
+        if (!canManageItem(item)) return '';
+
         const label = translate('deleteItem');
         return `
           <button
@@ -1063,6 +1065,8 @@
       }
 
       function renderItemEditor(item, itemType) {
+        if (!canManageItem(item)) return '';
+
         const isProgram = itemType === 'program';
         const locations = (window.allLocations || []).map(location => `
           <option value="${escapeAttributeValue(location.name)}" ${item.location === location.name ? 'selected' : ''}>${escapeAttributeValue(location.name)}</option>
@@ -1409,10 +1413,18 @@
 
         const programLikedFilter = document.getElementById('program-liked-filter');
         const topicsLikedFilter = document.getElementById('topics-liked-filter');
+        const selectedProgramFilter = programLikedFilter.value;
+        const selectedTopicsFilter = topicsLikedFilter.value;
         programLikedFilter.innerHTML = likerOptions;
         topicsLikedFilter.innerHTML = likerOptions;
-        programLikedFilter.value = currentUserName ? 'my-likes' : 'all';
-        topicsLikedFilter.value = currentUserName ? 'my-likes' : 'all';
+        programLikedFilter.value = Array.from(programLikedFilter.options)
+          .some(option => option.value === selectedProgramFilter && !option.disabled)
+          ? selectedProgramFilter
+          : 'all';
+        topicsLikedFilter.value = Array.from(topicsLikedFilter.options)
+          .some(option => option.value === selectedTopicsFilter && !option.disabled)
+          ? selectedTopicsFilter
+          : 'all';
       }
 
       function populateLanguageFilters(programItems, topicItems) {
@@ -1480,6 +1492,15 @@
         );
         if (likedBy === 'my-contribution') return contributed;
         return likedBy === 'my-likes-and-contribution' && (liked || contributed);
+      }
+
+      function canManageItem(item) {
+        if (!currentUserName) return false;
+
+        const userKey = currentUserKey();
+        return (item.contributers || []).some(contributor =>
+          contributor.trim().toLocaleLowerCase() === userKey
+        );
       }
 
       function escapeAttributeValue(value) {

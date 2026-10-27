@@ -42,9 +42,10 @@
                 "user 2",
                 "user 4",
                 "user 9",
-                "user 14"
+                "user 14",
+                "J. Weber"
             ],
-            "likeCount": 4,
+            "likeCount": 5,
             "date": "2026-08-08",
             "start": "13:00",
             "end": "14:00",
@@ -141,9 +142,10 @@
                 "user 1",
                 "user 4",
                 "user 12",
-                "user 18"
+                "user 18",
+                "J. Weber"
             ],
-            "likeCount": 4,
+            "likeCount": 5,
             "date": "2026-08-09",
             "start": "15:00",
             "end": "16:30",
@@ -190,9 +192,10 @@
             "likers": [
                 "user 3",
                 "user 8",
-                "user 12"
+                "user 12",
+                "J. Weber"
             ],
-            "likeCount": 3,
+            "likeCount": 4,
             "date": "2026-08-10",
             "start": "13:00",
             "end": "14:30",
@@ -339,9 +342,10 @@
                 "user 9",
                 "user 13",
                 "user 17",
-                "B. Mattern"
+                "B. Mattern",
+                "J. Weber"
             ],
-            "likeCount": 5,
+            "likeCount": 6,
             "date": "2026-08-12",
             "start": "9:00",
             "end": "10:15",

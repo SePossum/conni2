@@ -30,12 +30,13 @@ Stop the server with `Ctrl+C`.
 
 For a small event with roughly 250 users, run one server process on a machine reachable by the attendees. To accept connections from the local network, start it with `--host 0.0.0.0` and share the machine's network address, for example `http://192.168.1.20:8000/`.
 
-The server runs up to 64 request workers and admits up to 256 additional queued requests. Data-changing requests are serialized so simultaneous likes, edits, and creates cannot overwrite one another in `program.json`. This lightweight JSON-backed setup assumes one server process and a trusted network; it has no user authentication and should not be exposed directly to the public internet. For multiple server instances or sustained high write volume, use a transactional database and an authenticated production web server.
+The server runs up to 64 request workers and admits up to 256 additional queued requests. Data-changing requests are serialized so simultaneous likes, edits, and creates cannot overwrite one another in `program.json`. This lightweight JSON-backed setup assumes one server process and a trusted network; it has no user authentication and should not be exposed directly to the public internet. Edit and delete controls are shown only when the entered name matches an item's contributor, but this is a client-side visibility rule, not access control: names can be changed and the API does not enforce the rule. For multiple server instances or sustained high write volume, use a transactional database and an authenticated production web server.
 
 ## Features
 
 - Browse the program in list or calendar view; filter by language, likes, contributions, or search terms and see the matching item count.
 - Browse and create topics, edit item details, and schedule a topic in the program; the topic view shows the count of matching items.
+- Language, item-type, and likes filters default to All, and topics default to date order. Entering a name does not change the selected likes filter.
 - Create and edit locations, including descriptions, capacity, and facilities. Renaming a location updates program items assigned to it.
 - Like items by entering a name. The name and selected page language are stored in browser local storage.
 - Choose from the supported page languages using the language selector.
