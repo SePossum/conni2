@@ -94,6 +94,49 @@ class ConniHandler(SimpleHTTPRequestHandler):
         except OSError:
             self.send_json(500, {"error": "Could not save program.json"})
 
+    def do_DELETE(self):
+        if urlparse(self.path).path != "/api/items":
+            self.send_json(404, {"error": "Not found"})
+            return
+
+        try:
+            request_size = int(self.headers.get("Content-Length", "0"))
+            if request_size <= 0 or request_size > MAX_REQUEST_SIZE:
+                self.send_json(400, {"error": "Invalid request size"})
+                return
+
+            request = json.loads(self.rfile.read(request_size))
+            if not isinstance(request, dict):
+                self.send_json(400, {"error": "Invalid request body"})
+                return
+
+            item_type = request.get("itemType")
+            item_name = request.get("itemName")
+            if item_type not in ("program", "topics"):
+                self.send_json(400, {"error": "Invalid item type"})
+                return
+            if not isinstance(item_name, str) or not item_name.strip():
+                self.send_json(400, {"error": "Invalid item name"})
+                return
+
+            data = json.loads(DATA_FILE.read_text(encoding="utf-8"))
+            items = data.get(item_type, [])
+            item_index = next(
+                (index for index, item in enumerate(items) if item.get("name") == item_name),
+                None,
+            )
+            if item_index is None:
+                self.send_json(404, {"error": "Item not found"})
+                return
+
+            deleted_item = items.pop(item_index)
+            self.write_data(data)
+            self.send_json(200, {"itemType": item_type, "item": deleted_item})
+        except (json.JSONDecodeError, UnicodeDecodeError, ValueError):
+            self.send_json(400, {"error": "Invalid JSON request"})
+        except OSError:
+            self.send_json(500, {"error": "Could not save program.json"})
+
     def create_topic(self, request):
         name = request.get("name")
         description = request.get("description")

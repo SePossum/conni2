@@ -1035,6 +1035,22 @@
                 "B. Mattern"
             ],
             "likeCount": 1
+        },
+        {
+            "name": "Topic",
+            "desc": "new topic",
+            "contributers": [
+                "L. Niss",
+                "H. Koy"
+            ],
+            "languages": [
+                "Deutsch",
+                "Japanisch"
+            ],
+            "likers": [
+                "B. Mattern"
+            ],
+            "likeCount": 1
         }
     ],
     "locations": [
@@ -1080,7 +1096,6 @@
             "desc": "A workspace equipped for digital media, sound, and hands-on technology sessions.",
             "capacity": 25,
             "facilities": [
-                "Digital Equipment",
                 "Sound System"
             ]
         },
