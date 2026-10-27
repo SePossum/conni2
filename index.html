@@ -1069,7 +1069,9 @@
 
         const isProgram = itemType === 'program';
         const locations = (window.allLocations || []).map(location => `
-          <option value="${escapeAttributeValue(location.name)}" ${item.location === location.name ? 'selected' : ''}>${escapeAttributeValue(location.name)}</option>
+          <option value="${escapeAttributeValue(location.name)}" ${item.location === location.name ? 'selected' : ''}>${escapeAttributeValue(location.capacity != null
+            ? `${location.name} (${translate('capacity')} ${new Intl.NumberFormat(getPageCollationLocale()).format(location.capacity)})`
+            : location.name)}</option>
         `).join('');
         return `
           <details class="item-editor">
