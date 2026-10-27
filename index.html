@@ -327,7 +327,7 @@
 
         root.innerHTML = filteredItems.length
           ? filteredItems.map(item => `
-              <article class="card">
+              <article class="card" data-program-name="${item.name}">
                 <span class="badge">Program</span>
                 <h3>${item.name}</h3>
                 <p>${item.desc}</p>
@@ -436,7 +436,7 @@
               const programNames = matchingItems.length
                 ? matchingItems.map(programItem => `
                     <li>
-                      <strong>${programItem.name}</strong><br>
+                      <a href="#" class="program-item-link" data-program-item="${programItem.name}">${programItem.name}</a><br>
                       ${programItem.date} • ${programItem.start} - ${programItem.end}
                     </li>
                   `).join('')
@@ -462,6 +462,14 @@
               </article>
             `).join('');
           });
+
+        root.addEventListener('click', event => {
+          const link = event.target.closest('[data-program-item]');
+          if (!link) return;
+
+          event.preventDefault();
+          openProgramItem(link.dataset.programItem);
+        });
       }
 
       function openLocationTab(locationName) {
@@ -476,6 +484,23 @@
         const target = document.getElementById(`location-${locationName}`);
         if (target) {
           target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
+
+      function openProgramItem(programName) {
+        const programLanguageFilter = document.getElementById('program-language-filter');
+        programLanguageFilter.value = 'all';
+        renderProgram(window.allProgramItems || [], 'all');
+
+        document.querySelectorAll('.tab').forEach(tab => tab.classList.toggle('active', tab.dataset.tab === 'program'));
+        document.querySelectorAll('.section').forEach(section => {
+          section.classList.toggle('active', section.id === 'program-section');
+        });
+
+        const target = Array.from(document.querySelectorAll('[data-program-name]'))
+          .find(card => card.dataset.programName === programName);
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
       }
 

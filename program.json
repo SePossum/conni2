@@ -1030,6 +1030,26 @@
         {
             "name": "Workshop Room A",
             "desc": "Description of workshop room A"
+        },
+        {
+            "name": "Studio B",
+            "desc": "A flexible studio for small-group workshops and creative sessions."
+        },
+        {
+            "name": "Garden Pavilion",
+            "desc": "A covered outdoor space for community activities and informal gatherings."
+        },
+        {
+            "name": "Media Lab",
+            "desc": "A workspace equipped for digital media, sound, and hands-on technology sessions."
+        },
+        {
+            "name": "Riverside Terrace",
+            "desc": "An open-air terrace suited to relaxed discussions and outdoor activities."
+        },
+        {
+            "name": "Community Lounge",
+            "desc": "A comfortable shared space for conversation, breaks, and informal meetups."
         }
     ]
 }
