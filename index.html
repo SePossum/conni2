@@ -491,7 +491,11 @@
       <p class="subtitle" data-i18n="welcome">Welcome to the seminar weekend!</p>
       <div class="filter-bar">
         <div class="filter-group">
-          <label for="page-language-filter" data-i18n="pageLanguage">Page language:</label>
+          <label for="current-user-name" data-i18n="yourName">Your name:</label>
+          <input id="current-user-name" type="text" autocomplete="name" placeholder="Enter your name" data-i18n-placeholder="enterName" />
+        </div>
+        <div class="filter-group">
+          <label for="page-language-filter" data-i18n="pageLanguage">Your language:</label>
           <select id="page-language-filter">
             <option value="en">English</option>
             <option value="de">Deutsch</option>
@@ -508,12 +512,6 @@
             <option value="ar">العربية</option>
             <option value="he">עברית</option>
           </select>
-        </div>
-      </div>
-      <div class="filter-bar">
-        <div class="filter-group">
-          <label for="current-user-name" data-i18n="yourName">Your name:</label>
-          <input id="current-user-name" type="text" autocomplete="name" placeholder="Enter your name" data-i18n-placeholder="enterName" />
         </div>
         <span id="user-name-status" class="save-status" role="status" aria-live="polite"></span>
       </div>
@@ -649,7 +647,7 @@
       const pageLanguageStorageKey = 'conni2-page-language';
       const pageTranslations = {
         en: {
-          welcome: 'Welcome to the seminar weekend!', pageLanguage: 'Page language:', yourName: 'Your name:', enterName: 'Enter your name', saved: 'Saved',
+          welcome: 'Welcome to the seminar weekend!', pageLanguage: 'Language:', yourName: 'Your name:', enterName: 'Enter your name', saved: 'Saved',
           nameStorageUnavailable: 'Name storage is unavailable', likesSaveFailed: 'Could not save likes', program: 'Program', topics: 'Topics', locations: 'Locations',
           language: 'Language:', all: 'All', likedBy: 'Liked by:', allUsers: 'All users', myLikes: 'My likes', search: 'Search:',
           searchPlaceholder: 'Name, description, contributor', details: 'Details:', full: 'Full', compact: 'Compact', view: 'View:', list: 'List', calendar: 'Calendar',
@@ -661,7 +659,7 @@
           capacity: 'Capacity:', facilities: 'Facilities:', programItems: 'Program items:', noProgramItems: 'No program items', locationBadge: 'Location', minutes: '{count} min', loadError: 'Could not load program data.'
         },
         de: {
-          welcome: 'Willkommen zum Seminarwochenende!', pageLanguage: 'Seitensprache:', yourName: 'Dein Name:', enterName: 'Namen eingeben', saved: 'Gespeichert',
+          welcome: 'Willkommen zum Seminarwochenende!', pageLanguage: 'Sprache:', yourName: 'Dein Name:', enterName: 'Namen eingeben', saved: 'Gespeichert',
           nameStorageUnavailable: 'Name kann nicht gespeichert werden', likesSaveFailed: 'Likes konnten nicht gespeichert werden', program: 'Programm', topics: 'Themen', locations: 'Orte',
           language: 'Sprache:', all: 'Alle', likedBy: 'Gefällt:', allUsers: 'Alle', myLikes: 'Meine Likes', search: 'Suche:',
           searchPlaceholder: 'Name, Beschreibung, Mitwirkende', details: 'Details:', full: 'Vollständig', compact: 'Kompakt', view: 'Ansicht:', list: 'Liste', calendar: 'Kalender',
@@ -673,7 +671,7 @@
           capacity: 'Kapazität:', facilities: 'Ausstattung:', programItems: 'Programmpunkte:', noProgramItems: 'Keine Programmpunkte', locationBadge: 'Ort', minutes: '{count} Min.', loadError: 'Programmdaten konnten nicht geladen werden.'
         },
         fr: {
-          welcome: 'Bienvenue au week-end de séminaire !', pageLanguage: 'Langue de la page :', yourName: 'Votre nom :', enterName: 'Saisissez votre nom', saved: 'Enregistré',
+          welcome: 'Bienvenue au week-end de séminaire !', pageLanguage: 'Langue:', yourName: 'Votre nom :', enterName: 'Saisissez votre nom', saved: 'Enregistré',
           nameStorageUnavailable: 'Le nom ne peut pas être enregistré', likesSaveFailed: 'Impossible d’enregistrer les mentions J’aime', program: 'Programme', topics: 'Thèmes', locations: 'Lieux',
           language: 'Langue :', all: 'Tout', likedBy: 'Apprécié par :', allUsers: 'Tout le monde', myLikes: 'Mes mentions J’aime', search: 'Rechercher :',
           searchPlaceholder: 'Nom, description, contributeur', details: 'Détails :', full: 'Complet', compact: 'Compact', view: 'Vue :', list: 'Liste', calendar: 'Calendrier',
@@ -685,7 +683,7 @@
           capacity: 'Capacité :', facilities: 'Équipements :', programItems: 'Éléments du programme :', noProgramItems: 'Aucun élément du programme', locationBadge: 'Lieu', minutes: '{count} min', loadError: 'Impossible de charger les données du programme.'
         },
         es: {
-          welcome: '¡Te damos la bienvenida al fin de semana de seminarios!', pageLanguage: 'Idioma de la página:', yourName: 'Tu nombre:', enterName: 'Escribe tu nombre', saved: 'Guardado',
+          welcome: '¡Te damos la bienvenida al fin de semana de seminarios!', pageLanguage: 'Idioma:', yourName: 'Tu nombre:', enterName: 'Escribe tu nombre', saved: 'Guardado',
           nameStorageUnavailable: 'No se puede guardar el nombre', likesSaveFailed: 'No se pudieron guardar los Me gusta', program: 'Programa', topics: 'Temas', locations: 'Lugares',
           language: 'Idioma:', all: 'Todos', likedBy: 'Le gusta a:', allUsers: 'Todos', myLikes: 'Mis Me gusta', search: 'Buscar:',
           searchPlaceholder: 'Nombre, descripción, colaborador', details: 'Detalles:', full: 'Completo', compact: 'Compacto', view: 'Vista:', list: 'Lista', calendar: 'Calendario',
@@ -697,7 +695,7 @@
           capacity: 'Capacidad:', facilities: 'Instalaciones:', programItems: 'Elementos del programa:', noProgramItems: 'No hay elementos del programa', locationBadge: 'Lugar', minutes: '{count} min', loadError: 'No se pudieron cargar los datos del programa.'
         },
         it: {
-          welcome: 'Benvenuti al weekend di seminari!', pageLanguage: 'Lingua della pagina:', yourName: 'Il tuo nome:', enterName: 'Inserisci il tuo nome', saved: 'Salvato',
+          welcome: 'Benvenuti al weekend di seminari!', pageLanguage: 'Lingua:', yourName: 'Il tuo nome:', enterName: 'Inserisci il tuo nome', saved: 'Salvato',
           nameStorageUnavailable: 'Impossibile salvare il nome', likesSaveFailed: 'Impossibile salvare i Mi piace', program: 'Programma', topics: 'Temi', locations: 'Luoghi',
           language: 'Lingua:', all: 'Tutti', likedBy: 'Piace a:', allUsers: 'Tutti', myLikes: 'I miei Mi piace', search: 'Cerca:',
           searchPlaceholder: 'Nome, descrizione, collaboratore', details: 'Dettagli:', full: 'Completo', compact: 'Compatto', view: 'Vista:', list: 'Elenco', calendar: 'Calendario',
@@ -709,7 +707,7 @@
           capacity: 'Capienza:', facilities: 'Servizi:', programItems: 'Elementi del programma:', noProgramItems: 'Nessun elemento del programma', locationBadge: 'Luogo', minutes: '{count} min', loadError: 'Impossibile caricare i dati del programma.'
         },
         sq: {
-          welcome: 'Mirë se vini në fundjavën e seminarit!', pageLanguage: 'Gjuha e faqes:', yourName: 'Emri juaj:', enterName: 'Shkruani emrin tuaj', saved: 'U ruajt',
+          welcome: 'Mirë se vini në fundjavën e seminarit!', pageLanguage: 'Gjuha:', yourName: 'Emri juaj:', enterName: 'Shkruani emrin tuaj', saved: 'U ruajt',
           nameStorageUnavailable: 'Emri nuk mund të ruhet', likesSaveFailed: 'Pëlqimet nuk mund të ruhen', program: 'Programi', topics: 'Temat', locations: 'Vendndodhjet',
           language: 'Gjuha:', all: 'Të gjitha', likedBy: 'Pëlqyer nga:', allUsers: 'Të gjithë', myLikes: 'Pëlqimet e mia', search: 'Kërko:',
           searchPlaceholder: 'Emri, përshkrimi, kontribuesi', details: 'Detajet:', full: 'Të plota', compact: 'Të përmbledhura', view: 'Pamja:', list: 'Listë', calendar: 'Kalendar',
@@ -721,7 +719,7 @@
           capacity: 'Kapaciteti:', facilities: 'Pajisjet:', programItems: 'Elementet e programit:', noProgramItems: 'Nuk ka elemente programi', locationBadge: 'Vendndodhje', minutes: '{count} min', loadError: 'Të dhënat e programit nuk mund të ngarkohen.'
         },
         nds: {
-          welcome: 'Moin un willkamen bi dat Seminarweekend!', pageLanguage: 'Spraak op de Siet:', yourName: 'Dien Naam:', enterName: 'Naam ingeven', saved: 'Spiekert',
+          welcome: 'Moin un willkamen bi dat Seminarweekend!', pageLanguage: 'Spraak:', yourName: 'Dien Naam:', enterName: 'Naam ingeven', saved: 'Spiekert',
           nameStorageUnavailable: 'De Naam lett sik nich spiekern', likesSaveFailed: 'Likes kunn nich spiekert warrn', program: 'Programm', topics: 'Themen', locations: 'Öörd',
           language: 'Spraak:', all: 'All', likedBy: 'Dat gefallt:', allUsers: 'All', myLikes: 'Mien Likes', search: 'Söken:',
           searchPlaceholder: 'Naam, Beschrieven, Mitwirkende', details: 'Details:', full: 'Vull', compact: 'Kort', view: 'Ansicht:', list: 'List', calendar: 'Kalender',
@@ -733,7 +731,7 @@
           capacity: 'Platz för:', facilities: 'Utstafferen:', programItems: 'Programmelemente:', noProgramItems: 'Keen Programmelemente', locationBadge: 'Steed', minutes: '{count} Min.', loadError: 'Programmdaten kunn nich laadt warrn.'
         },
         fy: {
-          welcome: 'Wolkom op it seminarwykein!', pageLanguage: 'Taal fan de side:', yourName: 'Dyn namme:', enterName: 'Folje dyn namme yn', saved: 'Bewarre',
+          welcome: 'Wolkom op it seminarwykein!', pageLanguage: 'Taal:', yourName: 'Dyn namme:', enterName: 'Folje dyn namme yn', saved: 'Bewarre',
           nameStorageUnavailable: 'De namme kin net bewarre wurde', likesSaveFailed: 'Likes koene net bewarre wurde', program: 'Programma', topics: 'Tema’s', locations: 'Lokaasjes',
           language: 'Taal:', all: 'Alles', likedBy: 'Liket troch:', allUsers: 'Elkenien', myLikes: 'Myn likes', search: 'Sykje:',
           searchPlaceholder: 'Namme, beskriuwing, meiwurker', details: 'Details:', full: 'Folslein', compact: 'Koart', view: 'Werjefte:', list: 'List', calendar: 'Aginda',
@@ -745,7 +743,7 @@
           capacity: 'Kapasiteit:', facilities: 'Foarsjennings:', programItems: 'Programma-items:', noProgramItems: 'Gjin programma-items', locationBadge: 'Lokaasje', minutes: '{count} min.', loadError: 'Programmagegevens koene net laden wurde.'
         },
         bar: {
-          welcome: 'Griaß God zum Seminarwochenend!', pageLanguage: 'Sproch vo da Seitn:', yourName: 'Dei Nam:', enterName: 'Gib dein Nam ei', saved: 'Gspeichert',
+          welcome: 'Griaß God zum Seminarwochenend!', pageLanguage: 'Sproch:', yourName: 'Dei Nam:', enterName: 'Gib dein Nam ei', saved: 'Gspeichert',
           nameStorageUnavailable: 'Da Nam ko ned gspeichert wern', likesSaveFailed: 'De Likes ham ned gspeichert wern kenna', program: 'Programm', topics: 'Themen', locations: 'Orte',
           language: 'Sproch:', all: 'Olle', likedBy: 'Gfoit wem?', allUsers: 'Olle', myLikes: 'Mei Likes', search: 'Suacha:',
           searchPlaceholder: 'Nam, Beschreibung, Mitwirkende', details: 'Details:', full: 'Voll', compact: 'Kompakt', view: 'Ansicht:', list: 'Listn', calendar: 'Kalender',
@@ -757,7 +755,7 @@
           capacity: 'Platz fia:', facilities: 'Ausstattung:', programItems: 'Programmeinträge:', noProgramItems: 'Koane Programmeinträge', locationBadge: 'Ort', minutes: '{count} Min.', loadError: 'Programmdaten ham ned glodn wern kenna.'
         },
         frk: {
-          welcome: 'Grüß Gott zum Seminarwochenend!', pageLanguage: 'Seitnsproch:', yourName: 'Dei Nam:', enterName: 'Nam ei gebn', saved: 'Gspeichert',
+          welcome: 'Grüß Gott zum Seminarwochenend!', pageLanguage: 'Sproch:', yourName: 'Dei Nam:', enterName: 'Nam ei gebn', saved: 'Gspeichert',
           nameStorageUnavailable: 'Nam kon ned gspeichert wern', likesSaveFailed: 'Likes ham ned gspeichert wern kenna', program: 'Programm', topics: 'Themen', locations: 'Orte',
           language: 'Sproch:', all: 'Olle', likedBy: 'Gfällt wem?', allUsers: 'Olle', myLikes: 'Mei Likes', search: 'Suachn:',
           searchPlaceholder: 'Nam, Beschreibung, Mitwirkende', details: 'Details:', full: 'Vollständig', compact: 'Kompakt', view: 'Ansicht:', list: 'Listn', calendar: 'Kalender',
@@ -769,7 +767,7 @@
           capacity: 'Platz für:', facilities: 'Ausstattung:', programItems: 'Programmeinträge:', noProgramItems: 'Koane Programmeinträge', locationBadge: 'Ort', minutes: '{count} Min.', loadError: 'Programmdaten ham ned glodn wern kenna.'
         },
         hes: {
-          welcome: 'Ei Gude zum Seminarwochenende!', pageLanguage: 'Seitensprooch:', yourName: 'Dein Name:', enterName: 'Name eingebe', saved: 'Gespeichert',
+          welcome: 'Ei Gude zum Seminarwochenende!', pageLanguage: 'Sprooch:', yourName: 'Dein Name:', enterName: 'Name eingebe', saved: 'Gespeichert',
           nameStorageUnavailable: 'Name kann net gespeichert wern', likesSaveFailed: 'Likes konnte net gespeichert wern', program: 'Programm', topics: 'Themen', locations: 'Orte',
           language: 'Sprooch:', all: 'Alle', likedBy: 'Gefällt wem?', allUsers: 'Alle', myLikes: 'Mei Likes', search: 'Suche:',
           searchPlaceholder: 'Name, Beschreibung, Mitwirkende', details: 'Details:', full: 'Vollständig', compact: 'Kompakt', view: 'Ansicht:', list: 'Liste', calendar: 'Kalender',
@@ -781,7 +779,7 @@
           capacity: 'Platz für:', facilities: 'Ausstattung:', programItems: 'Programmpunkte:', noProgramItems: 'Kee Programmpunkte', locationBadge: 'Ort', minutes: '{count} Min.', loadError: 'Programmdaten konnte net gelade wern.'
         },
         ksh: {
-          welcome: 'Jode Daach un willkumme beim Seminarwochenend!', pageLanguage: 'Sproch vun dä Sigg:', yourName: 'Ding Name:', enterName: 'Ding Name aanjävve', saved: 'Jespeschert',
+          welcome: 'Jode Daach un willkumme beim Seminarwochenend!', pageLanguage: 'Sproch:', yourName: 'Ding Name:', enterName: 'Ding Name aanjävve', saved: 'Jespeschert',
           nameStorageUnavailable: 'Dä Name kunnt nit jeseschert wäde', likesSaveFailed: 'Ding Likes kunnte nit jeseschert wäde', program: 'Programm', topics: 'Themen', locations: 'Plätz',
           language: 'Sproch:', all: 'Alles', likedBy: 'Jefällt wem?', allUsers: 'All Minsche', myLikes: 'Ming Likes', search: 'Söke:',
           searchPlaceholder: 'Name, Beschrievung, Metwirkende', details: 'Details:', full: 'Voll', compact: 'Kompakt', view: 'Ansicht:', list: 'Leß', calendar: 'Kalender',
