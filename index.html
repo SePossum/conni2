@@ -138,6 +138,11 @@
         font: inherit;
       }
 
+      .save-status {
+        color: var(--muted);
+        font-size: 0.875rem;
+      }
+
       .sort-bar {
         margin-bottom: 20px;
         display: flex;
@@ -252,6 +257,11 @@
     <div class="container">
       <h1>Seminarwochenende 2027</h1>
       <p class="subtitle">Welcome to the seminar weekend!</p>
+      <div class="filter-bar">
+        <label for="current-user-name">Your name:</label>
+        <input id="current-user-name" type="text" autocomplete="name" placeholder="Enter your name" />
+        <span id="user-name-status" class="save-status" role="status" aria-live="polite"></span>
+      </div>
 
       <div class="tab-bar">
         <button class="tab active" data-tab="program">Program</button>
@@ -334,6 +344,60 @@
     </div>
 
     <script>
+      const userNameStorageKey = 'conni2-user-name';
+      let currentUserName = '';
+
+      function initializeUserName() {
+        const nameInput = document.getElementById('current-user-name');
+        const status = document.getElementById('user-name-status');
+        try {
+          currentUserName = localStorage.getItem(userNameStorageKey) || '';
+          status.textContent = currentUserName ? 'Saved' : '';
+        } catch {
+          status.textContent = 'Name storage is unavailable';
+        }
+        nameInput.value = currentUserName;
+
+        nameInput.addEventListener('input', () => {
+          currentUserName = nameInput.value.trim();
+          try {
+            if (currentUserName) {
+              localStorage.setItem(userNameStorageKey, currentUserName);
+              status.textContent = 'Saved';
+            } else {
+              localStorage.removeItem(userNameStorageKey);
+              status.textContent = '';
+            }
+          } catch {
+            status.textContent = 'Name storage is unavailable';
+          }
+
+          if (!window.allProgramItems) return;
+
+          populateLikerFilters();
+          const programLikedFilter = document.getElementById('program-liked-filter');
+          const topicsLikedFilter = document.getElementById('topics-liked-filter');
+          programLikedFilter.value = currentUserName ? 'my-likes' : 'all';
+          topicsLikedFilter.value = currentUserName ? 'my-likes' : 'all';
+          renderProgram(
+            window.allProgramItems,
+            document.getElementById('program-language-filter').value,
+            document.getElementById('program-detail-filter').value,
+            document.getElementById('program-search-filter').value,
+            programLikedFilter.value
+          );
+          renderTopics(
+            window.allTopics || [],
+            document.getElementById('topics-language-filter').value,
+            document.getElementById('topics-sort-select').value,
+            document.getElementById('topics-type-filter').value === 'topics-only',
+            document.getElementById('topics-detail-filter').value,
+            document.getElementById('topics-search-filter').value,
+            topicsLikedFilter.value
+          );
+        });
+      }
+
       async function loadData() {
         try {
           const response = await fetch('program.json');
@@ -353,6 +417,19 @@
           document.getElementById('topics-cards').innerHTML = `<p class="loading">${error.message}</p>`;
           document.getElementById('locations-cards').innerHTML = `<p class="loading">${error.message}</p>`;
         }
+      }
+
+      function populateLikerFilters() {
+        const likerOptions = ['<option value="all">All users</option>']
+          .concat(`<option value="my-likes" ${currentUserName ? '' : 'disabled'}>My likes</option>`)
+          .join('');
+
+        const programLikedFilter = document.getElementById('program-liked-filter');
+        const topicsLikedFilter = document.getElementById('topics-liked-filter');
+        programLikedFilter.innerHTML = likerOptions;
+        topicsLikedFilter.innerHTML = likerOptions;
+        programLikedFilter.value = currentUserName ? 'my-likes' : 'all';
+        topicsLikedFilter.value = currentUserName ? 'my-likes' : 'all';
       }
 
       function populateLanguageFilters(programItems, topicItems) {
@@ -380,15 +457,7 @@
 
         programSelect.innerHTML = options;
         topicSelect.innerHTML = options;
-
-        const likers = Array.from(new Set(
-          [...programItems, ...topicItems].flatMap(item => item.likers || [])
-        )).sort((a, b) => a.localeCompare(b));
-        const likerOptions = ['<option value="all">All users</option>']
-          .concat(likers.map(liker => `<option value="${liker}">${liker}</option>`))
-          .join('');
-        programLikedFilter.innerHTML = likerOptions;
-        topicsLikedFilter.innerHTML = likerOptions;
+        populateLikerFilters();
 
         programSelect.onchange = () => renderProgram(programItems, programSelect.value, programDetailFilter.value, programSearch.value, programLikedFilter.value);
         programLikedFilter.onchange = () => renderProgram(programItems, programSelect.value, programDetailFilter.value, programSearch.value, programLikedFilter.value);
@@ -412,6 +481,14 @@
           .join(' ')
           .toLocaleLowerCase();
         return searchableText.includes(normalizedQuery);
+      }
+
+      function matchesLikedBy(item, likedBy) {
+        if (likedBy === 'all') return true;
+        const selectedName = likedBy === 'my-likes' ? currentUserName : likedBy;
+        return !!selectedName && (item.likers || []).some(liker =>
+          liker.toLocaleLowerCase() === selectedName.toLocaleLowerCase()
+        );
       }
 
       function getSortDateTimeValue(item) {
@@ -469,7 +546,7 @@
           ? items
           : items.filter(item => (item.languages || []).includes(selectedLanguage)))
           .filter(item => matchesSearch(item, searchText))
-          .filter(item => likedBy === 'all' || (item.likers || []).includes(likedBy))
+          .filter(item => matchesLikedBy(item, likedBy))
           .slice()
           .sort((a, b) => new Date(getSortDateTimeValue(a)) - new Date(getSortDateTimeValue(b)));
 
@@ -514,14 +591,14 @@
           ? items
           : items.filter(item => (item.languages || []).includes(selectedLanguage)))
           .filter(item => matchesSearch(item, searchText))
-          .filter(item => likedBy === 'all' || (item.likers || []).includes(likedBy))
+          .filter(item => matchesLikedBy(item, likedBy))
           .slice();
 
         const programItems = (selectedLanguage === 'all'
           ? window.allProgramItems || []
           : (window.allProgramItems || []).filter(item => (item.languages || []).includes(selectedLanguage)))
           .filter(item => matchesSearch(item, searchText))
-          .filter(item => likedBy === 'all' || (item.likers || []).includes(likedBy))
+          .filter(item => matchesLikedBy(item, likedBy))
           .slice();
 
         const mergedItems = showOnlyTopics ? topicItems : [...programItems, ...topicItems];
@@ -691,6 +768,7 @@
         });
       });
 
+      initializeUserName();
       loadData();
     </script>
   </body>
