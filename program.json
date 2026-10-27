@@ -9,6 +9,12 @@
                 "name 3"
             ],
             "location": "Main Hall",
+            "likers": [
+                "user 1",
+                "user 2",
+                "user 3"
+            ],
+            "likeCount": 3,
             "date": "8.8.2026",
             "start": "9:00",
             "end": "10:30",
@@ -23,6 +29,13 @@
                 "name 3"
             ],
             "location": "Workshop Room A",
+            "likers": [
+                "user 2",
+                "user 4",
+                "user 5",
+                "user 6"
+            ],
+            "likeCount": 4,
             "date": "9.8.2026",
             "start": "10:30",
             "end": "11:30",
@@ -37,7 +50,13 @@
                 "name 1",
                 "name 2",
                 "name 3"
-            ]
+            ],
+            "likers": [
+                "user 1",
+                "user 3",
+                "user 7"
+            ],
+            "likeCount": 3
         },
         {
             "name": "Topic 2",
@@ -46,7 +65,14 @@
                 "name 1",
                 "name 2",
                 "name 3"
-            ]
+            ],
+            "likers": [
+                "user 2",
+                "user 4",
+                "user 5",
+                "user 8"
+            ],
+            "likeCount": 4
         }
     ],
     "locations": [
