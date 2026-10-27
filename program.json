@@ -1,0 +1,30 @@
+{
+    "program": [
+        {
+            "name": "Name of a workshop 1",
+            "desc": "Description of the workshop 1",
+            "contributers": [
+                "name 1",
+                "name 2",
+                "name 3"
+            ],
+            "date": "8.8.2026",
+            "start": "9:00",
+            "end": "10:30",
+            "duration": 90
+        },
+        {
+            "name": "Name of a workshop 2",
+            "desc": "Description of the workshop 2",
+            "contributers": [
+                "name 1",
+                "name 2",
+                "name 3"
+            ],
+            "date": "9.8.2026",
+            "start": "10:30",
+            "end": "11:30",
+            "duration": 60
+        }
+    ]
+}
