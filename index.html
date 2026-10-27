@@ -205,6 +205,47 @@
         color: var(--muted);
         font-size: 1rem;
       }
+
+      .program-calendar {
+        display: grid;
+        grid-column: 1 / -1;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 16px;
+        align-items: start;
+      }
+
+      .calendar-day {
+        min-width: 0;
+        padding: 16px;
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+      }
+
+      .calendar-day h3 {
+        margin: 0 0 14px;
+        font-size: 1rem;
+      }
+
+      .calendar-events {
+        display: grid;
+        gap: 10px;
+      }
+
+      .calendar-event {
+        display: grid;
+        gap: 5px;
+        padding: 10px;
+        border-left: 3px solid var(--primary);
+        background: var(--primary-soft);
+        border-radius: 4px;
+      }
+
+      .calendar-time {
+        color: var(--muted);
+        font-size: 0.85rem;
+        font-weight: 700;
+      }
     </style>
   </head>
   <body>
@@ -235,6 +276,11 @@
           <select id="program-detail-filter">
             <option value="full">Full</option>
             <option value="compact">Compact</option>
+          </select>
+          <label for="program-view-filter">View:</label>
+          <select id="program-view-filter">
+            <option value="list">List</option>
+            <option value="calendar">Calendar</option>
           </select>
         </div>
         <div id="program-cards" class="cards">
@@ -319,6 +365,7 @@
         const programLikedFilter = document.getElementById('program-liked-filter');
         const programSearch = document.getElementById('program-search-filter');
         const programDetailFilter = document.getElementById('program-detail-filter');
+        const programViewFilter = document.getElementById('program-view-filter');
         const topicSelect = document.getElementById('topics-language-filter');
         const topicsLikedFilter = document.getElementById('topics-liked-filter');
         const topicsSearch = document.getElementById('topics-search-filter');
@@ -347,6 +394,7 @@
         programLikedFilter.onchange = () => renderProgram(programItems, programSelect.value, programDetailFilter.value, programSearch.value, programLikedFilter.value);
         programSearch.oninput = () => renderProgram(programItems, programSelect.value, programDetailFilter.value, programSearch.value, programLikedFilter.value);
         programDetailFilter.onchange = () => renderProgram(programItems, programSelect.value, programDetailFilter.value, programSearch.value, programLikedFilter.value);
+        programViewFilter.onchange = () => renderProgram(programItems, programSelect.value, programDetailFilter.value, programSearch.value, programLikedFilter.value);
         topicSelect.onchange = () => renderTopics(topicItems, topicSelect.value, topicsSortSelect.value, topicsTypeFilter.value === 'topics-only', topicsDetailFilter.value, topicsSearch.value, topicsLikedFilter.value);
         topicsLikedFilter.onchange = () => renderTopics(topicItems, topicSelect.value, topicsSortSelect.value, topicsTypeFilter.value === 'topics-only', topicsDetailFilter.value, topicsSearch.value, topicsLikedFilter.value);
         topicsSearch.oninput = () => renderTopics(topicItems, topicSelect.value, topicsSortSelect.value, topicsTypeFilter.value === 'topics-only', topicsDetailFilter.value, topicsSearch.value, topicsLikedFilter.value);
@@ -370,11 +418,53 @@
         const date = item.date || '0000-00-00';
         const time = item.start || '00:00';
         const normalizedDate = date.split('.').reverse().join('-');
-        return `${normalizedDate}T${time}:00`;
+        const [hour = '00', minute = '00'] = time.split(':');
+        return `${normalizedDate}T${hour.padStart(2, '0')}:${minute.padStart(2, '0')}:00`;
+      }
+
+      function formatProgramDate(dateValue) {
+        const [year, month, day] = (dateValue || '').split('-').map(Number);
+        if (!year || !month || !day) return dateValue || 'Date not set';
+
+        return new Intl.DateTimeFormat(undefined, {
+          weekday: 'long',
+          month: 'long',
+          day: 'numeric',
+          year: 'numeric'
+        }).format(new Date(year, month - 1, day));
+      }
+
+      function renderProgramCalendar(items) {
+        const days = new Map();
+        items.forEach(item => {
+          const date = item.date || 'Date not set';
+          if (!days.has(date)) days.set(date, []);
+          days.get(date).push(item);
+        });
+
+        return `
+          <div class="program-calendar">
+            ${Array.from(days, ([date, dayItems]) => `
+              <section class="calendar-day">
+                <h3>${formatProgramDate(date)}</h3>
+                <div class="calendar-events">
+                  ${dayItems.map(item => `
+                    <article class="calendar-event" data-program-name="${item.name}">
+                      <span class="calendar-time">${item.start || ''}${item.end ? ` - ${item.end}` : ''}</span>
+                      <strong>${item.name}</strong>
+                      ${item.location ? `<a href="#" class="chip-link" data-location="${item.location}">${item.location}</a>` : ''}
+                    </article>
+                  `).join('')}
+                </div>
+              </section>
+            `).join('')}
+          </div>
+        `;
       }
 
       function renderProgram(items, selectedLanguage = 'all', detailMode = 'full', searchText = '', likedBy = 'all') {
         const root = document.getElementById('program-cards');
+        const viewMode = document.getElementById('program-view-filter').value;
         const filteredItems = (selectedLanguage === 'all'
           ? items
           : items.filter(item => (item.languages || []).includes(selectedLanguage)))
@@ -384,7 +474,9 @@
           .sort((a, b) => new Date(getSortDateTimeValue(a)) - new Date(getSortDateTimeValue(b)));
 
         root.innerHTML = filteredItems.length
-          ? filteredItems.map(item => `
+          ? viewMode === 'calendar'
+            ? renderProgramCalendar(filteredItems)
+            : filteredItems.map(item => `
               <article class="card" data-program-name="${item.name}">
                 <span class="badge">Program</span>
                 <h3>${item.name}</h3>
