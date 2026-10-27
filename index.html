@@ -264,6 +264,93 @@
         opacity: 0.6;
       }
 
+      .item-editor {
+        margin-top: 14px;
+      }
+
+      .item-editor summary {
+        color: var(--primary);
+        cursor: pointer;
+        font-weight: 700;
+      }
+
+      .item-editor-form {
+        display: grid;
+        gap: 12px;
+        padding-top: 12px;
+      }
+
+      .item-editor-fields {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+        gap: 12px;
+      }
+
+      .item-editor-field {
+        display: grid;
+        gap: 6px;
+        min-width: 0;
+      }
+
+      .item-editor-field label,
+      .item-editor-move {
+        font-weight: 700;
+      }
+
+      .item-editor-field input,
+      .item-editor-field textarea,
+      .item-editor-field select {
+        width: 100%;
+        min-width: 0;
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 9px 10px;
+        background: white;
+        color: var(--text);
+        font: inherit;
+      }
+
+      .item-editor-field textarea {
+        resize: vertical;
+      }
+
+      .item-editor-description {
+        grid-column: 1 / -1;
+      }
+
+      .item-editor-schedule {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 12px;
+      }
+
+      .item-editor-schedule[hidden] {
+        display: none;
+      }
+
+      .item-editor-form .save-item {
+        justify-self: start;
+        border: 1px solid var(--primary);
+        border-radius: 6px;
+        padding: 9px 14px;
+        background: var(--primary);
+        color: white;
+        font: inherit;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      .item-editor-form .save-item:disabled {
+        cursor: wait;
+        opacity: 0.65;
+      }
+
+      .item-editor-status {
+        min-height: 1.2em;
+        margin: 0;
+        color: var(--muted);
+      }
+
       @media (max-width: 480px) {
         .container {
           padding-right: 12px;
@@ -732,7 +819,7 @@
       };
 
       const topicFormTranslations = {
-        en: { topicDescription: 'Description:', createTopic: 'Create a topic', addTopic: 'Add topic', topicSaved: 'Topic created.', topicCreateError: 'Could not create the topic.', deleteItem: 'Delete', deleteConfirm: 'Delete "{name}" permanently?', itemDeleted: 'Item deleted.', deleteFailed: 'Could not delete the item.' },
+        en: { topicDescription: 'Description:', createTopic: 'Create a topic', addTopic: 'Add topic', topicSaved: 'Topic created.', topicCreateError: 'Could not create the topic.', deleteItem: 'Delete', deleteConfirm: 'Delete "{name}" permanently?', itemDeleted: 'Item deleted.', deleteFailed: 'Could not delete the item.', editItem: 'Edit', saveItem: 'Save changes', itemSaved: 'Changes saved.', itemSaveFailed: 'Could not save changes.', moveToProgram: 'Schedule in program', location: 'Location', startTime: 'Start time', endTime: 'End time' },
         de: { topicDescription: 'Beschreibung:', createTopic: 'Thema erstellen', addTopic: 'Thema hinzufügen', topicSaved: 'Thema erstellt.', topicCreateError: 'Thema konnte nicht erstellt werden.', deleteItem: 'Löschen', deleteConfirm: '„{name}“ dauerhaft löschen?', itemDeleted: 'Eintrag gelöscht.', deleteFailed: 'Eintrag konnte nicht gelöscht werden.' },
         fr: { topicDescription: 'Description :', createTopic: 'Créer un thème', addTopic: 'Ajouter le thème', topicSaved: 'Thème créé.', topicCreateError: 'Impossible de créer le thème.', deleteItem: 'Supprimer', deleteConfirm: 'Supprimer définitivement « {name} » ?', itemDeleted: 'Élément supprimé.', deleteFailed: 'Impossible de supprimer cet élément.' },
         es: { topicDescription: 'Descripción:', createTopic: 'Crear un tema', addTopic: 'Añadir tema', topicSaved: 'Tema creado.', topicCreateError: 'No se pudo crear el tema.', deleteItem: 'Eliminar', deleteConfirm: '¿Eliminar «{name}» permanentemente?', itemDeleted: 'Elemento eliminado.', deleteFailed: 'No se pudo eliminar el elemento.' },
@@ -901,6 +988,139 @@
             title="${escapeAttributeValue(label)}"
           >${label}</button>
         `;
+      }
+
+      function renderItemEditor(item, itemType) {
+        const isProgram = itemType === 'program';
+        const locations = (window.allLocations || []).map(location => `
+          <option value="${escapeAttributeValue(location.name)}" ${item.location === location.name ? 'selected' : ''}>${escapeAttributeValue(location.name)}</option>
+        `).join('');
+        return `
+          <details class="item-editor">
+            <summary>${translate('editItem')}</summary>
+            <form class="item-editor-form" data-edit-type="${itemType}" data-edit-name="${escapeAttributeValue(item.name)}">
+              <div class="item-editor-fields">
+                <div class="item-editor-field">
+                  <label>${translate('name')}</label>
+                  <input name="name" type="text" maxlength="160" value="${escapeAttributeValue(item.name)}" required />
+                </div>
+                <div class="item-editor-field">
+                  <label>${translate('contributors')}</label>
+                  <input name="contributors" type="text" value="${escapeAttributeValue((item.contributers || []).join(', '))}" />
+                </div>
+                <div class="item-editor-field">
+                  <label>${translate('language')}</label>
+                  <input name="languages" type="text" value="${escapeAttributeValue((item.languages || []).join(', '))}" />
+                </div>
+                <div class="item-editor-field item-editor-description">
+                  <label>${translate('topicDescription')}</label>
+                  <textarea name="description" rows="3" maxlength="4000">${escapeAttributeValue(item.desc || '')}</textarea>
+                </div>
+              </div>
+              ${isProgram ? '' : `
+                <label class="item-editor-move">
+                  <input type="checkbox" name="moveToProgram" /> ${translate('moveToProgram')}
+                </label>
+              `}
+              <div class="item-editor-schedule" ${isProgram ? '' : 'hidden'}>
+                <div class="item-editor-field">
+                  <label>${translate('location')}</label>
+                  <select name="location" ${isProgram ? 'required' : ''}>
+                    <option value=""></option>${locations}
+                  </select>
+                </div>
+                <div class="item-editor-field">
+                  <label>${translate('date')}</label>
+                  <input name="date" type="date" value="${escapeAttributeValue(item.date || '')}" ${isProgram ? 'required' : ''} />
+                </div>
+                <div class="item-editor-field">
+                  <label>${translate('startTime')}</label>
+                  <input name="start" type="time" value="${escapeAttributeValue(item.start || '')}" ${isProgram ? 'required' : ''} />
+                </div>
+                <div class="item-editor-field">
+                  <label>${translate('endTime')}</label>
+                  <input name="end" type="time" value="${escapeAttributeValue(item.end || '')}" ${isProgram ? 'required' : ''} />
+                </div>
+              </div>
+              <button class="save-item" type="submit">${translate('saveItem')}</button>
+              <p class="item-editor-status" role="status" aria-live="polite"></p>
+            </form>
+          </details>
+        `;
+      }
+
+      async function saveItem(form) {
+        const sourceType = form.dataset.editType;
+        const itemName = form.dataset.editName;
+        const formData = new FormData(form);
+        const splitValues = value => value.split(',').map(part => part.trim()).filter(Boolean);
+        const moveToProgram = formData.get('moveToProgram') === 'on';
+        const targetType = sourceType === 'topics' && !moveToProgram ? 'topics' : 'program';
+        const status = form.querySelector('.item-editor-status');
+        const saveButton = form.querySelector('.save-item');
+        saveButton.disabled = true;
+        status.textContent = '';
+
+        try {
+          const response = await fetch('/api/items', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              itemType: sourceType,
+              targetType,
+              itemName,
+              name: formData.get('name'),
+              description: formData.get('description'),
+              contributors: splitValues(formData.get('contributors')),
+              languages: splitValues(formData.get('languages')),
+              location: formData.get('location'),
+              date: formData.get('date'),
+              start: formData.get('start'),
+              end: formData.get('end')
+            })
+          });
+          const result = await response.json();
+          if (!response.ok) throw new Error(result.error || translate('itemSaveFailed'));
+
+          const sourceItems = sourceType === 'program' ? window.allProgramItems : window.allTopics;
+          const targetItems = targetType === 'program' ? window.allProgramItems : window.allTopics;
+          const remainingItems = sourceItems.filter(item => item.name !== itemName);
+          if (sourceType === targetType) {
+            const index = sourceItems.findIndex(item => item.name === itemName);
+            sourceItems[index] = result.item;
+          } else {
+            window[sourceType === 'program' ? 'allProgramItems' : 'allTopics'] = remainingItems;
+            targetItems.push(result.item);
+          }
+
+          populateLanguageFilters(window.allProgramItems || [], window.allTopics || []);
+          renderCurrentViews();
+          renderLocations(window.allLocations || []);
+          document.getElementById('user-name-status').textContent = translate('itemSaved');
+        } catch (error) {
+          status.textContent = error.message || translate('itemSaveFailed');
+        } finally {
+          if (saveButton.isConnected) saveButton.disabled = false;
+        }
+      }
+
+      function attachItemEditorHandlers(root) {
+        root.querySelectorAll('.item-editor-form').forEach(form => {
+          const moveToggle = form.querySelector('[name="moveToProgram"]');
+          const scheduleFields = form.querySelector('.item-editor-schedule');
+          if (moveToggle) {
+            moveToggle.addEventListener('change', () => {
+              scheduleFields.hidden = !moveToggle.checked;
+              scheduleFields.querySelectorAll('input, select').forEach(field => {
+                field.required = moveToggle.checked;
+              });
+            });
+          }
+          form.addEventListener('submit', event => {
+            event.preventDefault();
+            saveItem(form);
+          });
+        });
       }
 
       async function deleteItem(itemType, itemName) {
@@ -1233,11 +1453,12 @@
                 <h3>${formatProgramDate(date)}</h3>
                 <div class="calendar-events">
                   ${dayItems.map(item => `
-                    <article class="calendar-event" data-program-name="${item.name}">
-                      <span class="calendar-time">${item.start || ''}${item.end ? ` - ${item.end}` : ''}</span>
-                      <strong>${item.name}</strong>
-                      ${item.location ? `<a href="#" class="chip-link" data-location="${item.location}">${item.location}</a>` : ''}
+                    <article class="calendar-event" data-program-name="${escapeAttributeValue(item.name)}">
+                      <span class="calendar-time">${escapeAttributeValue(item.start || '')}${item.end ? ` - ${escapeAttributeValue(item.end)}` : ''}</span>
+                      <strong>${escapeAttributeValue(item.name)}</strong>
+                      ${item.location ? `<a href="#" class="chip-link" data-location="${escapeAttributeValue(item.location)}">${escapeAttributeValue(item.location)}</a>` : ''}
                       ${renderLikeControl(item, 'program')}
+                      ${renderItemEditor(item, 'program')}
                       ${renderDeleteControl(item, 'program')}
                     </article>
                   `).join('')}
@@ -1263,30 +1484,32 @@
           ? viewMode === 'calendar'
             ? renderProgramCalendar(filteredItems)
             : filteredItems.map(item => `
-              <article class="card" data-program-name="${item.name}">
+              <article class="card" data-program-name="${escapeAttributeValue(item.name)}">
                 <span class="badge">${translate('programBadge')}</span>
-                <h3>${item.name}</h3>
-                ${detailMode === 'full' ? `<p>${item.desc}</p>` : ''}
+                <h3>${escapeAttributeValue(item.name)}</h3>
+                ${detailMode === 'full' ? `<p>${escapeAttributeValue(item.desc || '')}</p>` : ''}
                 <div class="meta">
-                  <a href="#" class="chip chip-link" data-location="${item.location}">${item.location}</a>
+                  <a href="#" class="chip chip-link" data-location="${escapeAttributeValue(item.location || '')}">${escapeAttributeValue(item.location || '')}</a>
                   <span class="chip">${formatProgramDate(item.date)}</span>
                   <span class="chip">${item.start} - ${item.end}</span>
                   <span class="chip">${translate('minutes', { count: item.duration })}</span>
                 </div>
                 ${detailMode === 'full' ? `
                   <div class="meta">
-                    ${(item.languages || []).map(lang => `<span class="chip">${lang}</span>`).join('')}
+                    ${(item.languages || []).map(lang => `<span class="chip">${escapeAttributeValue(lang)}</span>`).join('')}
                   </div>
                   <p><strong>${translate('contributors')}</strong></p>
-                  <ul>${(item.contributers || []).map(name => `<li>${name}</li>`).join('')}</ul>
+                  <ul>${(item.contributers || []).map(name => `<li>${escapeAttributeValue(name)}</li>`).join('')}</ul>
                 ` : ''}
                 ${renderLikeControl(item, 'program')}
+                ${renderItemEditor(item, 'program')}
                 ${renderDeleteControl(item, 'program')}
               </article>
             `).join('')
           : `<p class="loading">${translate('programNoMatches')}</p>`;
 
         attachLikeHandlers(root);
+        attachItemEditorHandlers(root);
         attachDeleteHandlers(root);
         document.querySelectorAll('[data-location]').forEach(link => {
           link.addEventListener('click', (event) => {
@@ -1345,7 +1568,7 @@
                   ${detailMode === 'full' ? `<p>${escapeAttributeValue(item.desc || '')}</p>` : ''}
                   ${isProgram ? `
                     <div class="meta">
-                      <a href="#" class="chip chip-link" data-location="${item.location}">${item.location}</a>
+                      <a href="#" class="chip chip-link" data-location="${escapeAttributeValue(item.location || '')}">${escapeAttributeValue(item.location || '')}</a>
                       <span class="chip">${formatProgramDate(item.date)}</span>
                       <span class="chip">${item.start} - ${item.end}</span>
                       <span class="chip">${translate('minutes', { count: item.duration })}</span>
@@ -1359,6 +1582,7 @@
                     <ul>${(item.contributers || []).map(name => `<li>${escapeAttributeValue(name)}</li>`).join('')}</ul>
                   ` : ''}
                   ${renderLikeControl(item, isProgram ? 'program' : 'topics')}
+                  ${renderItemEditor(item, isProgram ? 'program' : 'topics')}
                   ${renderDeleteControl(item, isProgram ? 'program' : 'topics')}
                 </article>
               `;
@@ -1366,6 +1590,7 @@
           : `<p class="loading">${translate('itemsNoMatches')}</p>`;
 
         attachLikeHandlers(root);
+        attachItemEditorHandlers(root);
         attachDeleteHandlers(root);
         document.querySelectorAll('[data-location]').forEach(link => {
           link.addEventListener('click', (event) => {

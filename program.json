@@ -115,9 +115,10 @@
             "likers": [
                 "user 5",
                 "user 10",
-                "user 15"
+                "user 15",
+                "B. Mattern"
             ],
-            "likeCount": 3,
+            "likeCount": 4,
             "date": "2026-08-09",
             "start": "11:15",
             "end": "12:30",
@@ -189,9 +190,10 @@
             "likers": [
                 "user 2",
                 "user 11",
-                "user 15"
+                "user 15",
+                "B. Mattern"
             ],
-            "likeCount": 3,
+            "likeCount": 4,
             "date": "2026-08-10",
             "start": "9:00",
             "end": "10:30",
@@ -386,9 +388,10 @@
                 "user 8",
                 "user 9",
                 "user 13",
-                "user 17"
+                "user 17",
+                "B. Mattern"
             ],
-            "likeCount": 4,
+            "likeCount": 5,
             "date": "2026-08-12",
             "start": "9:00",
             "end": "10:15",
@@ -484,9 +487,10 @@
                 "user 1",
                 "user 5",
                 "user 10",
-                "user 13"
+                "user 13",
+                "B. Mattern"
             ],
-            "likeCount": 4,
+            "likeCount": 5,
             "date": "2026-08-13",
             "start": "9:15",
             "end": "10:45",
@@ -540,6 +544,31 @@
             "start": "13:30",
             "end": "15:00",
             "duration": 90
+        },
+        {
+            "name": "Sustainable Futures",
+            "desc": "Long-term thinking about ecology, resource use, and resilient local systems.",
+            "contributers": [
+                "C. Hall",
+                "K. Meyer",
+                "P. Costa"
+            ],
+            "languages": [
+                "English",
+                "French"
+            ],
+            "likers": [
+                "user 3",
+                "user 8",
+                "user 17",
+                "B. Mattern"
+            ],
+            "likeCount": 4,
+            "location": "Media Lab",
+            "date": "2026-10-21",
+            "start": "17:49",
+            "end": "20:46",
+            "duration": 177
         }
     ],
     "topics": [
@@ -562,25 +591,6 @@
                 "user 16"
             ],
             "likeCount": 4
-        },
-        {
-            "name": "Sustainable Futures",
-            "desc": "Long-term thinking about ecology, resource use, and resilient local systems.",
-            "contributers": [
-                "C. Hall",
-                "K. Meyer",
-                "P. Costa"
-            ],
-            "languages": [
-                "English",
-                "French"
-            ],
-            "likers": [
-                "user 3",
-                "user 8",
-                "user 17"
-            ],
-            "likeCount": 3
         },
         {
             "name": "Digital Literacy",

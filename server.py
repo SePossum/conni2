@@ -2,6 +2,7 @@ import argparse
 import json
 import os
 import tempfile
+from datetime import datetime
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import urlparse
@@ -132,6 +133,131 @@ class ConniHandler(SimpleHTTPRequestHandler):
             deleted_item = items.pop(item_index)
             self.write_data(data)
             self.send_json(200, {"itemType": item_type, "item": deleted_item})
+        except (json.JSONDecodeError, UnicodeDecodeError, ValueError):
+            self.send_json(400, {"error": "Invalid JSON request"})
+        except OSError:
+            self.send_json(500, {"error": "Could not save program.json"})
+
+    def do_PUT(self):
+        if urlparse(self.path).path != "/api/items":
+            self.send_json(404, {"error": "Not found"})
+            return
+
+        try:
+            request_size = int(self.headers.get("Content-Length", "0"))
+            if request_size <= 0 or request_size > MAX_REQUEST_SIZE:
+                self.send_json(400, {"error": "Invalid request size"})
+                return
+
+            request = json.loads(self.rfile.read(request_size))
+            if not isinstance(request, dict):
+                self.send_json(400, {"error": "Invalid request body"})
+                return
+
+            source_type = request.get("itemType")
+            target_type = request.get("targetType", source_type)
+            item_name = request.get("itemName")
+            name = request.get("name")
+            description = request.get("description")
+            contributors = request.get("contributors")
+            languages = request.get("languages")
+
+            if source_type not in ("program", "topics") or target_type not in ("program", "topics"):
+                self.send_json(400, {"error": "Invalid item type"})
+                return
+            if not isinstance(item_name, str) or not item_name.strip():
+                self.send_json(400, {"error": "Invalid item name"})
+                return
+            if not isinstance(name, str) or not name.strip() or len(name.strip()) > 160:
+                self.send_json(400, {"error": "A name of 1 to 160 characters is required"})
+                return
+            if not isinstance(description, str) or len(description.strip()) > 4000:
+                self.send_json(400, {"error": "Description must be at most 4000 characters"})
+                return
+            if not self.valid_string_list(contributors, max_items=30, max_length=120):
+                self.send_json(400, {"error": "Invalid contributor list"})
+                return
+            if not self.valid_string_list(languages, max_items=20, max_length=80):
+                self.send_json(400, {"error": "Invalid language list"})
+                return
+
+            data = json.loads(DATA_FILE.read_text(encoding="utf-8"))
+            source_items = data.get(source_type, [])
+            source_index = next(
+                (index for index, entry in enumerate(source_items) if entry.get("name") == item_name),
+                None,
+            )
+            if source_index is None:
+                self.send_json(404, {"error": "Item not found"})
+                return
+
+            item = source_items[source_index]
+            target_items = data.setdefault(target_type, [])
+            normalized_name = name.strip().casefold()
+            if any(
+                entry is not item and entry.get("name", "").strip().casefold() == normalized_name
+                for entry in target_items
+            ):
+                self.send_json(409, {"error": "An item with that name already exists"})
+                return
+
+            updated_item = dict(item)
+            updated_item.update({
+                "name": name.strip(),
+                "desc": description.strip(),
+                "contributers": self.clean_string_list(contributors),
+                "languages": self.clean_string_list(languages),
+            })
+
+            if target_type == "program":
+                location = request.get("location")
+                date = request.get("date")
+                start = request.get("start")
+                end = request.get("end")
+                valid_location = isinstance(location, str) and any(
+                    entry.get("name") == location for entry in data.get("locations", [])
+                )
+                if not valid_location:
+                    self.send_json(400, {"error": "Select a valid location"})
+                    return
+                try:
+                    valid_date = isinstance(date, str) and datetime.strptime(date, "%Y-%m-%d").strftime("%Y-%m-%d") == date
+                    start_time = datetime.strptime(start, "%H:%M") if isinstance(start, str) else None
+                    end_time = datetime.strptime(end, "%H:%M") if isinstance(end, str) else None
+                except ValueError:
+                    valid_date = False
+                    start_time = None
+                    end_time = None
+                if not valid_date or start_time is None or end_time is None:
+                    self.send_json(400, {"error": "Enter a valid date and start/end time"})
+                    return
+                duration = int((end_time - start_time).total_seconds() // 60)
+                if duration <= 0:
+                    self.send_json(400, {"error": "End time must be after start time"})
+                    return
+                updated_item.update({
+                    "location": location,
+                    "date": date,
+                    "start": start_time.strftime("%H:%M"),
+                    "end": end_time.strftime("%H:%M"),
+                    "duration": duration,
+                })
+            else:
+                for field in ("location", "date", "start", "end", "duration"):
+                    updated_item.pop(field, None)
+
+            if target_type == source_type:
+                source_items[source_index] = updated_item
+            else:
+                source_items.pop(source_index)
+                target_items.append(updated_item)
+
+            self.write_data(data)
+            self.send_json(200, {
+                "sourceType": source_type,
+                "targetType": target_type,
+                "item": updated_item,
+            })
         except (json.JSONDecodeError, UnicodeDecodeError, ValueError):
             self.send_json(400, {"error": "Invalid JSON request"})
         except OSError:
