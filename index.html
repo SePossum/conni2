@@ -225,6 +225,10 @@
           <select id="program-language-filter">
             <option value="all">All</option>
           </select>
+          <label for="program-liked-filter">Liked by:</label>
+          <select id="program-liked-filter">
+            <option value="all">All users</option>
+          </select>
           <label for="program-search-filter">Search:</label>
           <input id="program-search-filter" type="search" placeholder="Name, description, contributor" />
           <label for="program-detail-filter">Details:</label>
@@ -244,6 +248,10 @@
           <label for="topics-language-filter">Language:</label>
           <select id="topics-language-filter">
             <option value="all">All</option>
+          </select>
+          <label for="topics-liked-filter">Liked by:</label>
+          <select id="topics-liked-filter">
+            <option value="all">All users</option>
           </select>
           <label for="topics-search-filter">Search:</label>
           <input id="topics-search-filter" type="search" placeholder="Name, description, contributor" />
@@ -308,9 +316,11 @@
         });
 
         const programSelect = document.getElementById('program-language-filter');
+        const programLikedFilter = document.getElementById('program-liked-filter');
         const programSearch = document.getElementById('program-search-filter');
         const programDetailFilter = document.getElementById('program-detail-filter');
         const topicSelect = document.getElementById('topics-language-filter');
+        const topicsLikedFilter = document.getElementById('topics-liked-filter');
         const topicsSearch = document.getElementById('topics-search-filter');
         const topicsDetailFilter = document.getElementById('topics-detail-filter');
         const topicsTypeFilter = document.getElementById('topics-type-filter');
@@ -324,14 +334,25 @@
         programSelect.innerHTML = options;
         topicSelect.innerHTML = options;
 
-        programSelect.onchange = () => renderProgram(programItems, programSelect.value, programDetailFilter.value, programSearch.value);
-        programSearch.oninput = () => renderProgram(programItems, programSelect.value, programDetailFilter.value, programSearch.value);
-        programDetailFilter.onchange = () => renderProgram(programItems, programSelect.value, programDetailFilter.value, programSearch.value);
-        topicSelect.onchange = () => renderTopics(topicItems, topicSelect.value, topicsSortSelect.value, topicsTypeFilter.value === 'topics-only', topicsDetailFilter.value, topicsSearch.value);
-        topicsSearch.oninput = () => renderTopics(topicItems, topicSelect.value, topicsSortSelect.value, topicsTypeFilter.value === 'topics-only', topicsDetailFilter.value, topicsSearch.value);
-        topicsDetailFilter.onchange = () => renderTopics(topicItems, topicSelect.value, topicsSortSelect.value, topicsTypeFilter.value === 'topics-only', topicsDetailFilter.value, topicsSearch.value);
-        topicsTypeFilter.onchange = () => renderTopics(topicItems, topicSelect.value, topicsSortSelect.value, topicsTypeFilter.value === 'topics-only', topicsDetailFilter.value, topicsSearch.value);
-        topicsSortSelect.onchange = () => renderTopics(topicItems, topicSelect.value, topicsSortSelect.value, topicsTypeFilter.value === 'topics-only', topicsDetailFilter.value, topicsSearch.value);
+        const likers = Array.from(new Set(
+          [...programItems, ...topicItems].flatMap(item => item.likers || [])
+        )).sort((a, b) => a.localeCompare(b));
+        const likerOptions = ['<option value="all">All users</option>']
+          .concat(likers.map(liker => `<option value="${liker}">${liker}</option>`))
+          .join('');
+        programLikedFilter.innerHTML = likerOptions;
+        topicsLikedFilter.innerHTML = likerOptions;
+
+        programSelect.onchange = () => renderProgram(programItems, programSelect.value, programDetailFilter.value, programSearch.value, programLikedFilter.value);
+        programLikedFilter.onchange = () => renderProgram(programItems, programSelect.value, programDetailFilter.value, programSearch.value, programLikedFilter.value);
+        programSearch.oninput = () => renderProgram(programItems, programSelect.value, programDetailFilter.value, programSearch.value, programLikedFilter.value);
+        programDetailFilter.onchange = () => renderProgram(programItems, programSelect.value, programDetailFilter.value, programSearch.value, programLikedFilter.value);
+        topicSelect.onchange = () => renderTopics(topicItems, topicSelect.value, topicsSortSelect.value, topicsTypeFilter.value === 'topics-only', topicsDetailFilter.value, topicsSearch.value, topicsLikedFilter.value);
+        topicsLikedFilter.onchange = () => renderTopics(topicItems, topicSelect.value, topicsSortSelect.value, topicsTypeFilter.value === 'topics-only', topicsDetailFilter.value, topicsSearch.value, topicsLikedFilter.value);
+        topicsSearch.oninput = () => renderTopics(topicItems, topicSelect.value, topicsSortSelect.value, topicsTypeFilter.value === 'topics-only', topicsDetailFilter.value, topicsSearch.value, topicsLikedFilter.value);
+        topicsDetailFilter.onchange = () => renderTopics(topicItems, topicSelect.value, topicsSortSelect.value, topicsTypeFilter.value === 'topics-only', topicsDetailFilter.value, topicsSearch.value, topicsLikedFilter.value);
+        topicsTypeFilter.onchange = () => renderTopics(topicItems, topicSelect.value, topicsSortSelect.value, topicsTypeFilter.value === 'topics-only', topicsDetailFilter.value, topicsSearch.value, topicsLikedFilter.value);
+        topicsSortSelect.onchange = () => renderTopics(topicItems, topicSelect.value, topicsSortSelect.value, topicsTypeFilter.value === 'topics-only', topicsDetailFilter.value, topicsSearch.value, topicsLikedFilter.value);
       }
 
       function matchesSearch(item, query) {
@@ -352,12 +373,13 @@
         return `${normalizedDate}T${time}:00`;
       }
 
-      function renderProgram(items, selectedLanguage = 'all', detailMode = 'full', searchText = '') {
+      function renderProgram(items, selectedLanguage = 'all', detailMode = 'full', searchText = '', likedBy = 'all') {
         const root = document.getElementById('program-cards');
         const filteredItems = (selectedLanguage === 'all'
           ? items
           : items.filter(item => (item.languages || []).includes(selectedLanguage)))
           .filter(item => matchesSearch(item, searchText))
+          .filter(item => likedBy === 'all' || (item.likers || []).includes(likedBy))
           .slice()
           .sort((a, b) => new Date(getSortDateTimeValue(a)) - new Date(getSortDateTimeValue(b)));
 
@@ -394,18 +416,20 @@
         });
       }
 
-      function renderTopics(items, selectedLanguage = 'all', sortMode = 'date', showOnlyTopics = false, detailMode = 'full', searchText = '') {
+      function renderTopics(items, selectedLanguage = 'all', sortMode = 'date', showOnlyTopics = false, detailMode = 'full', searchText = '', likedBy = 'all') {
         const root = document.getElementById('topics-cards');
         const topicItems = (selectedLanguage === 'all'
           ? items
           : items.filter(item => (item.languages || []).includes(selectedLanguage)))
           .filter(item => matchesSearch(item, searchText))
+          .filter(item => likedBy === 'all' || (item.likers || []).includes(likedBy))
           .slice();
 
         const programItems = (selectedLanguage === 'all'
           ? window.allProgramItems || []
           : (window.allProgramItems || []).filter(item => (item.languages || []).includes(selectedLanguage)))
           .filter(item => matchesSearch(item, searchText))
+          .filter(item => likedBy === 'all' || (item.likers || []).includes(likedBy))
           .slice();
 
         const mergedItems = showOnlyTopics ? topicItems : [...programItems, ...topicItems];
@@ -545,10 +569,12 @@
 
       function openProgramItem(programName) {
         const programLanguageFilter = document.getElementById('program-language-filter');
+        const programLikedFilter = document.getElementById('program-liked-filter');
         const programSearch = document.getElementById('program-search-filter');
         programLanguageFilter.value = 'all';
+        programLikedFilter.value = 'all';
         programSearch.value = '';
-        renderProgram(window.allProgramItems || [], 'all', document.getElementById('program-detail-filter').value, '');
+        renderProgram(window.allProgramItems || [], 'all', document.getElementById('program-detail-filter').value, '', 'all');
 
         document.querySelectorAll('.tab').forEach(tab => tab.classList.toggle('active', tab.dataset.tab === 'program'));
         document.querySelectorAll('.section').forEach(section => {
