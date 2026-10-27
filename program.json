@@ -437,10 +437,9 @@
                 "user 1",
                 "user 5",
                 "user 10",
-                "user 13",
-                "B. Mattern"
+                "user 13"
             ],
-            "likeCount": 5,
+            "likeCount": 4,
             "date": "2026-08-13",
             "start": "9:15",
             "end": "10:45",
@@ -510,10 +509,9 @@
             "likers": [
                 "user 3",
                 "user 8",
-                "user 17",
-                "B. Mattern"
+                "user 17"
             ],
-            "likeCount": 4,
+            "likeCount": 3,
             "location": "Studio B",
             "date": "2026-10-21",
             "start": "17:49",
@@ -545,6 +543,30 @@
             "start": "16:28",
             "end": "18:28",
             "duration": 120
+        },
+        {
+            "name": "Media Ecology",
+            "desc": "How media systems and technologies shape communication, culture, and attention.",
+            "contributers": [
+                "S. Olsen",
+                "I. Rossi",
+                "N. Haddad"
+            ],
+            "languages": [
+                "German",
+                "Italian"
+            ],
+            "likers": [
+                "user 3",
+                "user 11",
+                "user 13"
+            ],
+            "likeCount": 3,
+            "location": "Garden Pavilion",
+            "date": "2026-10-28",
+            "start": "17:13",
+            "end": "18:15",
+            "duration": 62
         }
     ],
     "topics": [
@@ -583,9 +605,10 @@
             "likers": [
                 "user 5",
                 "user 10",
-                "user 20"
+                "user 20",
+                "B. Mattern"
             ],
-            "likeCount": 3
+            "likeCount": 4
         },
         {
             "name": "Creative Economies",
@@ -661,9 +684,10 @@
             "likers": [
                 "user 5",
                 "user 9",
-                "user 14"
+                "user 14",
+                "B. Mattern"
             ],
-            "likeCount": 3
+            "likeCount": 4
         },
         {
             "name": "Open Culture",
@@ -684,25 +708,6 @@
                 "user 19"
             ],
             "likeCount": 4
-        },
-        {
-            "name": "Media Ecology",
-            "desc": "How media systems and technologies shape communication, culture, and attention.",
-            "contributers": [
-                "S. Olsen",
-                "I. Rossi",
-                "N. Haddad"
-            ],
-            "languages": [
-                "German",
-                "Italian"
-            ],
-            "likers": [
-                "user 3",
-                "user 11",
-                "user 13"
-            ],
-            "likeCount": 3
         },
         {
             "name": "Design for Care",

@@ -123,6 +123,12 @@
         flex-wrap: wrap;
       }
 
+      .item-count {
+        margin: 0 0 12px;
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+
       .filter-group {
         display: flex;
         align-items: center;
@@ -579,6 +585,7 @@
             </select>
           </div>
         </div>
+        <p id="program-item-count" class="item-count" aria-live="polite"></p>
         <div id="program-cards" class="cards">
           <div class="loading" data-i18n="loadingProgram">Loading program...</div>
         </div>
@@ -628,6 +635,7 @@
             </select>
           </div>
         </div>
+        <p id="topics-item-count" class="item-count" aria-live="polite"></p>
         <details class="topic-create">
           <summary data-i18n="createTopic">Create a topic</summary>
           <form id="create-topic-form">
@@ -701,7 +709,7 @@
           searchPlaceholder: 'Name, description, contributor', details: 'Details:', full: 'Full', compact: 'Compact', view: 'View:', list: 'List', calendar: 'Calendar',
           loadingProgram: 'Loading program...', loadingTopics: 'Loading topics...', loadingLocations: 'Loading locations...', show: 'Show:', allItems: 'All items',
           topicsOnly: 'Topics only', sortBy: 'Sort by:', date: 'Date', likes: 'Likes', name: 'Name', programBadge: 'Program', topicBadge: 'Topic',
-          contributors: 'Contributors:', programNoMatches: 'No program items match these filters.', itemsNoMatches: 'No program items or topics match these filters.',
+          contributors: 'Contributors:', programNoMatches: 'No program items match these filters.', itemsNoMatches: 'No program items or topics match these filters.', itemsShown: 'Showing {count} items',
           dateNotSet: 'Date not set', likeAction: '♡ Like', unlikeAction: '♥ Liked', likeTitle: 'Like this item', unlikeTitle: 'Unlike this item',
           setNameFirst: 'Set your name first', likesCount: '{count} likes', likedByTooltip: 'Liked by: {names}', noLikerNames: 'No liker names available',
           capacity: 'Capacity:', facilities: 'Facilities:', programItems: 'Program items:', noProgramItems: 'No program items', locationBadge: 'Location', minutes: '{count} min', loadError: 'Could not load program data.'
@@ -713,7 +721,7 @@
           searchPlaceholder: 'Name, Beschreibung, Mitwirkende', details: 'Details:', full: 'Vollständig', compact: 'Kompakt', view: 'Ansicht:', list: 'Liste', calendar: 'Kalender',
           loadingProgram: 'Programm wird geladen...', loadingTopics: 'Themen werden geladen...', loadingLocations: 'Orte werden geladen...', show: 'Anzeigen:', allItems: 'Alle Einträge',
           topicsOnly: 'Nur Themen', sortBy: 'Sortieren nach:', date: 'Datum', likes: 'Likes', name: 'Name', programBadge: 'Programm', topicBadge: 'Thema',
-          contributors: 'Mitwirkende:', programNoMatches: 'Keine Programmpunkte entsprechen diesen Filtern.', itemsNoMatches: 'Keine Programmpunkte oder Themen entsprechen diesen Filtern.',
+          contributors: 'Mitwirkende:', programNoMatches: 'Keine Programmpunkte entsprechen diesen Filtern.', itemsNoMatches: 'Keine Programmpunkte oder Themen entsprechen diesen Filtern.', itemsShown: '{count} Einträge angezeigt',
           dateNotSet: 'Kein Datum festgelegt', likeAction: '♡ Gefällt mir', unlikeAction: '♥ Gefällt mir', likeTitle: 'Eintrag liken', unlikeTitle: 'Like entfernen',
           setNameFirst: 'Gib zuerst deinen Namen ein', likesCount: '{count} Likes', likedByTooltip: 'Gefällt: {names}', noLikerNames: 'Keine Namen verfügbar',
           capacity: 'Kapazität:', facilities: 'Ausstattung:', programItems: 'Programmpunkte:', noProgramItems: 'Keine Programmpunkte', locationBadge: 'Ort', minutes: '{count} Min.', loadError: 'Programmdaten konnten nicht geladen werden.'
@@ -725,7 +733,7 @@
           searchPlaceholder: 'Nom, description, contributeur', details: 'Détails :', full: 'Complet', compact: 'Compact', view: 'Vue :', list: 'Liste', calendar: 'Calendrier',
           loadingProgram: 'Chargement du programme...', loadingTopics: 'Chargement des thèmes...', loadingLocations: 'Chargement des lieux...', show: 'Afficher :', allItems: 'Tout',
           topicsOnly: 'Thèmes uniquement', sortBy: 'Trier par :', date: 'Date', likes: 'Mentions J’aime', name: 'Nom', programBadge: 'Programme', topicBadge: 'Thème',
-          contributors: 'Contributeurs :', programNoMatches: 'Aucun élément du programme ne correspond à ces filtres.', itemsNoMatches: 'Aucun élément du programme ou thème ne correspond à ces filtres.',
+          contributors: 'Contributeurs :', programNoMatches: 'Aucun élément du programme ne correspond à ces filtres.', itemsNoMatches: 'Aucun élément du programme ou thème ne correspond à ces filtres.', itemsShown: '{count} éléments affichés',
           dateNotSet: 'Date non définie', likeAction: '♡ J’aime', unlikeAction: '♥ Aimé', likeTitle: 'Aimer cet élément', unlikeTitle: 'Retirer la mention J’aime',
           setNameFirst: 'Saisissez d’abord votre nom', likesCount: '{count} mentions J’aime', likedByTooltip: 'Aimé par : {names}', noLikerNames: 'Aucun nom disponible',
           capacity: 'Capacité :', facilities: 'Équipements :', programItems: 'Éléments du programme :', noProgramItems: 'Aucun élément du programme', locationBadge: 'Lieu', minutes: '{count} min', loadError: 'Impossible de charger les données du programme.'
@@ -737,7 +745,7 @@
           searchPlaceholder: 'Nombre, descripción, colaborador', details: 'Detalles:', full: 'Completo', compact: 'Compacto', view: 'Vista:', list: 'Lista', calendar: 'Calendario',
           loadingProgram: 'Cargando programa...', loadingTopics: 'Cargando temas...', loadingLocations: 'Cargando lugares...', show: 'Mostrar:', allItems: 'Todos los elementos',
           topicsOnly: 'Solo temas', sortBy: 'Ordenar por:', date: 'Fecha', likes: 'Me gusta', name: 'Nombre', programBadge: 'Programa', topicBadge: 'Tema',
-          contributors: 'Colaboradores:', programNoMatches: 'Ningún elemento del programa coincide con estos filtros.', itemsNoMatches: 'Ningún elemento del programa o tema coincide con estos filtros.',
+          contributors: 'Colaboradores:', programNoMatches: 'Ningún elemento del programa coincide con estos filtros.', itemsNoMatches: 'Ningún elemento del programa o tema coincide con estos filtros.', itemsShown: '{count} elementos mostrados',
           dateNotSet: 'Fecha no establecida', likeAction: '♡ Me gusta', unlikeAction: '♥ Me gusta', likeTitle: 'Me gusta este elemento', unlikeTitle: 'Quitar Me gusta',
           setNameFirst: 'Primero escribe tu nombre', likesCount: '{count} Me gusta', likedByTooltip: 'Les gusta a: {names}', noLikerNames: 'No hay nombres disponibles',
           capacity: 'Capacidad:', facilities: 'Instalaciones:', programItems: 'Elementos del programa:', noProgramItems: 'No hay elementos del programa', locationBadge: 'Lugar', minutes: '{count} min', loadError: 'No se pudieron cargar los datos del programa.'
@@ -749,7 +757,7 @@
           searchPlaceholder: 'Nome, descrizione, collaboratore', details: 'Dettagli:', full: 'Completo', compact: 'Compatto', view: 'Vista:', list: 'Elenco', calendar: 'Calendario',
           loadingProgram: 'Caricamento programma...', loadingTopics: 'Caricamento temi...', loadingLocations: 'Caricamento luoghi...', show: 'Mostra:', allItems: 'Tutti gli elementi',
           topicsOnly: 'Solo temi', sortBy: 'Ordina per:', date: 'Data', likes: 'Mi piace', name: 'Nome', programBadge: 'Programma', topicBadge: 'Tema',
-          contributors: 'Collaboratori:', programNoMatches: 'Nessun elemento del programma corrisponde a questi filtri.', itemsNoMatches: 'Nessun elemento del programma o tema corrisponde a questi filtri.',
+          contributors: 'Collaboratori:', programNoMatches: 'Nessun elemento del programma corrisponde a questi filtri.', itemsNoMatches: 'Nessun elemento del programma o tema corrisponde a questi filtri.', itemsShown: '{count} elementi visualizzati',
           dateNotSet: 'Data non impostata', likeAction: '♡ Mi piace', unlikeAction: '♥ Ti piace', likeTitle: 'Metti Mi piace', unlikeTitle: 'Rimuovi Mi piace',
           setNameFirst: 'Inserisci prima il tuo nome', likesCount: '{count} Mi piace', likedByTooltip: 'Piace a: {names}', noLikerNames: 'Nessun nome disponibile',
           capacity: 'Capienza:', facilities: 'Servizi:', programItems: 'Elementi del programma:', noProgramItems: 'Nessun elemento del programma', locationBadge: 'Luogo', minutes: '{count} min', loadError: 'Impossibile caricare i dati del programma.'
@@ -761,7 +769,7 @@
           searchPlaceholder: 'Emri, përshkrimi, kontribuesi', details: 'Detajet:', full: 'Të plota', compact: 'Të përmbledhura', view: 'Pamja:', list: 'Listë', calendar: 'Kalendar',
           loadingProgram: 'Programi po ngarkohet...', loadingTopics: 'Temat po ngarkohen...', loadingLocations: 'Vendndodhjet po ngarkohen...', show: 'Shfaq:', allItems: 'Të gjithë elementet',
           topicsOnly: 'Vetëm temat', sortBy: 'Rendit sipas:', date: 'Datës', likes: 'Pëlqimeve', name: 'Emrit', programBadge: 'Program', topicBadge: 'Temë',
-          contributors: 'Kontribuesit:', programNoMatches: 'Asnjë element i programit nuk përputhet me filtrat.', itemsNoMatches: 'Asnjë element i programit apo temë nuk përputhet me filtrat.',
+          contributors: 'Kontribuesit:', programNoMatches: 'Asnjë element i programit nuk përputhet me filtrat.', itemsNoMatches: 'Asnjë element i programit apo temë nuk përputhet me filtrat.', itemsShown: '{count} elemente të shfaqura',
           dateNotSet: 'Data nuk është caktuar', likeAction: '♡ Pëlqeje', unlikeAction: '♥ E pëlqyer', likeTitle: 'Pëlqeje këtë element', unlikeTitle: 'Hiq pëlqimin',
           setNameFirst: 'Shkruani fillimisht emrin tuaj', likesCount: '{count} pëlqime', likedByTooltip: 'Pëlqyer nga: {names}', noLikerNames: 'Nuk ka emra të disponueshëm',
           capacity: 'Kapaciteti:', facilities: 'Pajisjet:', programItems: 'Elementet e programit:', noProgramItems: 'Nuk ka elemente programi', locationBadge: 'Vendndodhje', minutes: '{count} min', loadError: 'Të dhënat e programit nuk mund të ngarkohen.'
@@ -773,7 +781,7 @@
           searchPlaceholder: 'Naam, Beschrieven, Mitwirkende', details: 'Details:', full: 'Vull', compact: 'Kort', view: 'Ansicht:', list: 'List', calendar: 'Kalender',
           loadingProgram: 'Programm warrt laadt...', loadingTopics: 'Themen warrt laadt...', loadingLocations: 'Öörd warrt laadt...', show: 'Wiesen:', allItems: 'All Indrääg',
           topicsOnly: 'Blots Themen', sortBy: 'Sorteren na:', date: 'Datum', likes: 'Likes', name: 'Naam', programBadge: 'Programm', topicBadge: 'Thema',
-          contributors: 'Mitwirkende:', programNoMatches: 'Keen Programmelement passt to disse Filter.', itemsNoMatches: 'Keen Programmelement un keen Thema passt to disse Filter.',
+          contributors: 'Mitwirkende:', programNoMatches: 'Keen Programmelement passt to disse Filter.', itemsNoMatches: 'Keen Programmelement un keen Thema passt to disse Filter.', itemsShown: '{count} Indrääg wiest',
           dateNotSet: 'Datum nich fastleggt', likeAction: '♡ Gefallt mi', unlikeAction: '♥ Gefallt mi', likeTitle: 'Dit Element gefallt mi', unlikeTitle: 'Like torüchnemen',
           setNameFirst: 'Giff eerst Dien Naam in', likesCount: '{count} Likes', likedByTooltip: 'Gefallt: {names}', noLikerNames: 'Keen Naam verföögbor',
           capacity: 'Platz för:', facilities: 'Utstafferen:', programItems: 'Programmelemente:', noProgramItems: 'Keen Programmelemente', locationBadge: 'Steed', minutes: '{count} Min.', loadError: 'Programmdaten kunn nich laadt warrn.'
@@ -785,7 +793,7 @@
           searchPlaceholder: 'Namme, beskriuwing, meiwurker', details: 'Details:', full: 'Folslein', compact: 'Koart', view: 'Werjefte:', list: 'List', calendar: 'Aginda',
           loadingProgram: 'Programma wurdt laden...', loadingTopics: 'Tema’s wurde laden...', loadingLocations: 'Lokaasjes wurde laden...', show: 'Toan:', allItems: 'Alle items',
           topicsOnly: 'Allinnich tema’s', sortBy: 'Sortearje op:', date: 'Datum', likes: 'Likes', name: 'Namme', programBadge: 'Programma', topicBadge: 'Tema',
-          contributors: 'Meiwurkers:', programNoMatches: 'Gjin programma-items passe by dizze filters.', itemsNoMatches: 'Gjin programma-items of tema’s passe by dizze filters.',
+          contributors: 'Meiwurkers:', programNoMatches: 'Gjin programma-items passe by dizze filters.', itemsNoMatches: 'Gjin programma-items of tema’s passe by dizze filters.', itemsShown: '{count} items werjûn',
           dateNotSet: 'Datum net ynsteld', likeAction: '♡ Like', unlikeAction: '♥ Liked', likeTitle: 'Like dit item', unlikeTitle: 'Like fuortsmite',
           setNameFirst: 'Folje earst dyn namme yn', likesCount: '{count} likes', likedByTooltip: 'Liked troch: {names}', noLikerNames: 'Gjin nammen beskikber',
           capacity: 'Kapasiteit:', facilities: 'Foarsjennings:', programItems: 'Programma-items:', noProgramItems: 'Gjin programma-items', locationBadge: 'Lokaasje', minutes: '{count} min.', loadError: 'Programmagegevens koene net laden wurde.'
@@ -797,7 +805,7 @@
           searchPlaceholder: 'Nam, Beschreibung, Mitwirkende', details: 'Details:', full: 'Voll', compact: 'Kompakt', view: 'Ansicht:', list: 'Listn', calendar: 'Kalender',
           loadingProgram: 'Programm werd glodn...', loadingTopics: 'Themen wern glodn...', loadingLocations: 'Orte wern glodn...', show: 'Zeig:', allItems: 'Olle Einträge',
           topicsOnly: 'Bloß Themen', sortBy: 'Sortiern nach:', date: 'Datum', likes: 'Likes', name: 'Nam', programBadge: 'Programm', topicBadge: 'Thema',
-          contributors: 'Mitwirkende:', programNoMatches: 'Koane Programmeinträge passn zu dera Auswahl.', itemsNoMatches: 'Koane Programmeinträge oder Themen passn zu dera Auswahl.',
+          contributors: 'Mitwirkende:', programNoMatches: 'Koane Programmeinträge passn zu dera Auswahl.', itemsNoMatches: 'Koane Programmeinträge oder Themen passn zu dera Auswahl.', itemsShown: '{count} Einträge',
           dateNotSet: 'Koans Datum oglegt', likeAction: '♡ Gfoit ma', unlikeAction: '♥ Gfoit ma', likeTitle: 'Des gfoit ma', unlikeTitle: 'Like zrucknehma',
           setNameFirst: 'Gib erst dei Nam ei', likesCount: '{count} Likes', likedByTooltip: 'Gfoit: {names}', noLikerNames: 'Koane Namn do',
           capacity: 'Platz fia:', facilities: 'Ausstattung:', programItems: 'Programmeinträge:', noProgramItems: 'Koane Programmeinträge', locationBadge: 'Ort', minutes: '{count} Min.', loadError: 'Programmdaten ham ned glodn wern kenna.'
@@ -809,7 +817,7 @@
           searchPlaceholder: 'Nam, Beschreibung, Mitwirkende', details: 'Details:', full: 'Vollständig', compact: 'Kompakt', view: 'Ansicht:', list: 'Listn', calendar: 'Kalender',
           loadingProgram: 'Programm werd glodn...', loadingTopics: 'Themen wern glodn...', loadingLocations: 'Orte wern glodn...', show: 'Zeign:', allItems: 'Olle Einträg',
           topicsOnly: 'Bloß Themen', sortBy: 'Sortiern nach:', date: 'Datum', likes: 'Likes', name: 'Nam', programBadge: 'Programm', topicBadge: 'Thema',
-          contributors: 'Mitwirkende:', programNoMatches: 'Koane Programmeinträge passn zu dera Auswahl.', itemsNoMatches: 'Koane Programmeinträge oder Themen passn zu dera Auswahl.',
+          contributors: 'Mitwirkende:', programNoMatches: 'Koane Programmeinträge passn zu dera Auswahl.', itemsNoMatches: 'Koane Programmeinträge oder Themen passn zu dera Auswahl.', itemsShown: '{count} Einträg',
           dateNotSet: 'Koans Datum oglegt', likeAction: '♡ Gfällt mer', unlikeAction: '♥ Gfällt mer', likeTitle: 'Des gfallt mer', unlikeTitle: 'Like zrucknehma',
           setNameFirst: 'Gib erst dei Nam ei', likesCount: '{count} Likes', likedByTooltip: 'Gfällt: {names}', noLikerNames: 'Koane Namen do',
           capacity: 'Platz für:', facilities: 'Ausstattung:', programItems: 'Programmeinträge:', noProgramItems: 'Koane Programmeinträge', locationBadge: 'Ort', minutes: '{count} Min.', loadError: 'Programmdaten ham ned glodn wern kenna.'
@@ -821,7 +829,7 @@
           searchPlaceholder: 'Name, Beschreibung, Mitwirkende', details: 'Details:', full: 'Vollständig', compact: 'Kompakt', view: 'Ansicht:', list: 'Liste', calendar: 'Kalender',
           loadingProgram: 'Programm wird gelade...', loadingTopics: 'Themen werre gelade...', loadingLocations: 'Orte werre gelade...', show: 'Zeige:', allItems: 'Alle Einträge',
           topicsOnly: 'Nur Themen', sortBy: 'Sortiere nach:', date: 'Datum', likes: 'Likes', name: 'Name', programBadge: 'Programm', topicBadge: 'Thema',
-          contributors: 'Mitwirkende:', programNoMatches: 'Für die Auswahl gibt’s ka passende Programmpunkte.', itemsNoMatches: 'Für die Auswahl gibt’s ka passende Programmpunkte oder Themen.',
+          contributors: 'Mitwirkende:', programNoMatches: 'Für die Auswahl gibt’s ka passende Programmpunkte.', itemsNoMatches: 'Für die Auswahl gibt’s ka passende Programmpunkte oder Themen.', itemsShown: '{count} Einträge',
           dateNotSet: 'Kei Datum festgelegt', likeAction: '♡ Gefällt mer', unlikeAction: '♥ Gefällt mer', likeTitle: 'Des gefällt mer', unlikeTitle: 'Like zurücknehme',
           setNameFirst: 'Gib erst dei Name ei', likesCount: '{count} Likes', likedByTooltip: 'Gefällt: {names}', noLikerNames: 'Kei Name vorhanden',
           capacity: 'Platz für:', facilities: 'Ausstattung:', programItems: 'Programmpunkte:', noProgramItems: 'Kee Programmpunkte', locationBadge: 'Ort', minutes: '{count} Min.', loadError: 'Programmdaten konnte net gelade wern.'
@@ -833,7 +841,7 @@
           searchPlaceholder: 'Name, Beschrievung, Metwirkende', details: 'Details:', full: 'Voll', compact: 'Kompakt', view: 'Ansicht:', list: 'Leß', calendar: 'Kalender',
           loadingProgram: 'Programm weed jelade...', loadingTopics: 'Themen weed jelade...', loadingLocations: 'Plätz weed jelade...', show: 'Zeije:', allItems: 'All Einträge',
           topicsOnly: 'Bloß Themen', sortBy: 'Sortere noh:', date: 'Datum', likes: 'Likes', name: 'Name', programBadge: 'Programm', topicBadge: 'Thema',
-          contributors: 'Metwirkende:', programNoMatches: 'Kein Programmpunkt paß op die Filter.', itemsNoMatches: 'Kein Programmpunkt un kein Thema paß op die Filter.',
+          contributors: 'Metwirkende:', programNoMatches: 'Kein Programmpunkt paß op die Filter.', itemsNoMatches: 'Kein Programmpunkt un kein Thema paß op die Filter.', itemsShown: '{count} Einträg',
           dateNotSet: 'Kein Datum aanjejovve', likeAction: '♡ Jefällt mer', unlikeAction: '♥ Jefällt mer', likeTitle: 'Dat jefällt mer', unlikeTitle: 'Like widder funnemme',
           setNameFirst: 'Jiv erst ding Name aan', likesCount: '{count} Likes', likedByTooltip: 'Jefällt: {names}', noLikerNames: 'Kein Name do',
           capacity: 'Platz för:', facilities: 'Ussstattung:', programItems: 'Programmpunkte:', noProgramItems: 'Kein Programmpunkt do', locationBadge: 'Platz', minutes: '{count} Min.', loadError: 'Programmdate kunnte nit jelade wäde.'
@@ -845,7 +853,7 @@
           searchPlaceholder: 'الاسم، الوصف، المساهم', details: 'التفاصيل:', full: 'كامل', compact: 'مختصر', view: 'العرض:', list: 'قائمة', calendar: 'تقويم',
           loadingProgram: 'جارٍ تحميل البرنامج...', loadingTopics: 'جارٍ تحميل المواضيع...', loadingLocations: 'جارٍ تحميل المواقع...', show: 'عرض:', allItems: 'كل العناصر',
           topicsOnly: 'المواضيع فقط', sortBy: 'ترتيب حسب:', date: 'التاريخ', likes: 'الإعجابات', name: 'الاسم', programBadge: 'برنامج', topicBadge: 'موضوع',
-          contributors: 'المساهمون:', programNoMatches: 'لا توجد عناصر برنامج تطابق عوامل التصفية.', itemsNoMatches: 'لا توجد عناصر برنامج أو مواضيع تطابق عوامل التصفية.',
+          contributors: 'المساهمون:', programNoMatches: 'لا توجد عناصر برنامج تطابق عوامل التصفية.', itemsNoMatches: 'لا توجد عناصر برنامج أو مواضيع تطابق عوامل التصفية.', itemsShown: 'عرض {count} من العناصر',
           dateNotSet: 'التاريخ غير محدد', likeAction: '♡ أعجبني', unlikeAction: '♥ أعجبني', likeTitle: 'أعجبني هذا العنصر', unlikeTitle: 'إزالة الإعجاب',
           setNameFirst: 'أدخل اسمك أولاً', likesCount: '{count} إعجابات', likedByTooltip: 'أعجب به: {names}', noLikerNames: 'لا توجد أسماء متاحة',
           capacity: 'السعة:', facilities: 'التجهيزات:', programItems: 'عناصر البرنامج:', noProgramItems: 'لا توجد عناصر للبرنامج', locationBadge: 'موقع', minutes: '{count} دقيقة', loadError: 'تعذر تحميل بيانات البرنامج.'
@@ -857,7 +865,7 @@
           searchPlaceholder: 'שם, תיאור, משתתף', details: 'פרטים:', full: 'מלא', compact: 'מצומצם', view: 'תצוגה:', list: 'רשימה', calendar: 'לוח שנה',
           loadingProgram: 'התוכנית נטענת...', loadingTopics: 'הנושאים נטענים...', loadingLocations: 'המיקומים נטענים...', show: 'הצגה:', allItems: 'כל הפריטים',
           topicsOnly: 'נושאים בלבד', sortBy: 'מיון לפי:', date: 'תאריך', likes: 'לייקים', name: 'שם', programBadge: 'תוכנית', topicBadge: 'נושא',
-          contributors: 'משתתפים:', programNoMatches: 'אין פריטי תוכנית התואמים למסננים האלה.', itemsNoMatches: 'אין פריטי תוכנית או נושאים התואמים למסננים האלה.',
+          contributors: 'משתתפים:', programNoMatches: 'אין פריטי תוכנית התואמים למסננים האלה.', itemsNoMatches: 'אין פריטי תוכנית או נושאים התואמים למסננים האלה.', itemsShown: 'מוצגים {count} פריטים',
           dateNotSet: 'התאריך לא הוגדר', likeAction: '♡ אהבתי', unlikeAction: '♥ אהבתי', likeTitle: 'אהבתי את הפריט הזה', unlikeTitle: 'ביטול הלייק',
           setNameFirst: 'יש להזין שם תחילה', likesCount: '{count} לייקים', likedByTooltip: 'אהבו על ידי: {names}', noLikerNames: 'אין שמות זמינים',
           capacity: 'קיבולת:', facilities: 'מתקנים:', programItems: 'פריטי תוכנית:', noProgramItems: 'אין פריטי תוכנית', locationBadge: 'מיקום', minutes: '{count} דקות', loadError: 'לא ניתן לטעון את נתוני התוכנית.'
@@ -1553,6 +1561,10 @@
           .slice()
           .sort((a, b) => new Date(getSortDateTimeValue(a)) - new Date(getSortDateTimeValue(b)));
 
+        document.getElementById('program-item-count').textContent = translate('itemsShown', {
+          count: new Intl.NumberFormat(getPageCollationLocale()).format(filteredItems.length)
+        });
+
         root.innerHTML = filteredItems.length
           ? viewMode === 'calendar'
             ? renderProgramCalendar(filteredItems)
@@ -1629,6 +1641,10 @@
           const sortA = `${dateA}T${timeA}:00`;
           const sortB = `${dateB}T${timeB}:00`;
           return new Date(sortA) - new Date(sortB);
+        });
+
+        document.getElementById('topics-item-count').textContent = translate('itemsShown', {
+          count: new Intl.NumberFormat(getPageCollationLocale()).format(sortedItems.length)
         });
 
         root.innerHTML = sortedItems.length

@@ -34,8 +34,8 @@ The server runs up to 64 request workers and admits up to 256 additional queued 
 
 ## Features
 
-- Browse the program in list or calendar view; filter by language, likes, contributions, or search terms.
-- Browse and create topics, edit item details, and schedule a topic in the program.
+- Browse the program in list or calendar view; filter by language, likes, contributions, or search terms and see the matching item count.
+- Browse and create topics, edit item details, and schedule a topic in the program; the topic view shows the count of matching items.
 - Create and edit locations, including descriptions, capacity, and facilities. Renaming a location updates program items assigned to it.
 - Like items by entering a name. The name and selected page language are stored in browser local storage.
 - Choose from the supported page languages using the language selector.
