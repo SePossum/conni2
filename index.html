@@ -369,9 +369,22 @@
           min-width: 0;
         }
 
+        .filter-group-mobile-wide {
+          flex: 1 1 100%;
+          flex-direction: column;
+          align-items: stretch;
+          width: 100%;
+          gap: 6px;
+        }
+
+        .filter-group-mobile-wide select,
+        .filter-group-mobile-wide input {
+          width: 100%;
+        }
+
         #program-search-filter,
         #topics-search-filter {
-          width: min(260px, 60vw);
+          width: 100%;
         }
       }
 
@@ -541,13 +554,13 @@
               <option value="all" data-i18n="all">All</option>
             </select>
           </div>
-          <div class="filter-group">
-            <label for="program-liked-filter" data-i18n="likedBy">Liked by:</label>
+          <div class="filter-group filter-group-mobile-wide">
+            <label for="program-liked-filter" data-i18n="filter">Filter:</label>
             <select id="program-liked-filter">
-              <option value="all" data-i18n="allUsers">All users</option>
+              <option value="all" data-i18n="all">All</option>
             </select>
           </div>
-          <div class="filter-group">
+          <div class="filter-group filter-group-mobile-wide">
             <label for="program-search-filter" data-i18n="search">Search:</label>
             <input id="program-search-filter" type="search" placeholder="Name, description, contributor" data-i18n-placeholder="searchPlaceholder" />
           </div>
@@ -580,13 +593,13 @@
               <option value="all" data-i18n="all">All</option>
             </select>
           </div>
-          <div class="filter-group">
-            <label for="topics-liked-filter" data-i18n="likedBy">Liked by:</label>
+          <div class="filter-group filter-group-mobile-wide">
+            <label for="topics-liked-filter" data-i18n="filter">Filter:</label>
             <select id="topics-liked-filter">
-              <option value="all" data-i18n="allUsers">All users</option>
+              <option value="all" data-i18n="all">All</option>
             </select>
           </div>
-          <div class="filter-group">
+          <div class="filter-group filter-group-mobile-wide">
             <label for="topics-search-filter" data-i18n="search">Search:</label>
             <input id="topics-search-filter" type="search" placeholder="Name, description, contributor" data-i18n-placeholder="searchPlaceholder" />
           </div>
@@ -659,7 +672,7 @@
         en: {
           welcome: 'Welcome to the seminar weekend!', pageLanguage: 'Language:', yourName: 'Your name:', enterName: 'Enter your name', saved: 'Saved',
           nameStorageUnavailable: 'Name storage is unavailable', likesSaveFailed: 'Could not save likes', program: 'Program', topics: 'Topics', locations: 'Locations',
-          language: 'Language:', all: 'All', likedBy: 'Liked by:', allUsers: 'All users', myLikes: 'My likes', search: 'Search:',
+          language: 'Language:', all: 'All', filter: 'Filter:', allUsers: 'All users', myLikes: 'My likes', myContribution: 'My Contribution', myLikesAndContribution: 'My Likes + My Contribution', search: 'Search:',
           searchPlaceholder: 'Name, description, contributor', details: 'Details:', full: 'Full', compact: 'Compact', view: 'View:', list: 'List', calendar: 'Calendar',
           loadingProgram: 'Loading program...', loadingTopics: 'Loading topics...', loadingLocations: 'Loading locations...', show: 'Show:', allItems: 'All items',
           topicsOnly: 'Topics only', sortBy: 'Sort by:', date: 'Date', likes: 'Likes', name: 'Name', programBadge: 'Program', topicBadge: 'Topic',
@@ -671,7 +684,7 @@
         de: {
           welcome: 'Willkommen zum Seminarwochenende!', pageLanguage: 'Sprache:', yourName: 'Dein Name:', enterName: 'Namen eingeben', saved: 'Gespeichert',
           nameStorageUnavailable: 'Name kann nicht gespeichert werden', likesSaveFailed: 'Likes konnten nicht gespeichert werden', program: 'Programm', topics: 'Themen', locations: 'Orte',
-          language: 'Sprache:', all: 'Alle', likedBy: 'Gefällt:', allUsers: 'Alle', myLikes: 'Meine Likes', search: 'Suche:',
+          language: 'Sprache:', all: 'Alle', filter: 'Filter:', allUsers: 'Alle', myLikes: 'Meine Likes', myContribution: 'Meine Beiträge', myLikesAndContribution: 'Meine Likes + meine Beiträge', search: 'Suche:',
           searchPlaceholder: 'Name, Beschreibung, Mitwirkende', details: 'Details:', full: 'Vollständig', compact: 'Kompakt', view: 'Ansicht:', list: 'Liste', calendar: 'Kalender',
           loadingProgram: 'Programm wird geladen...', loadingTopics: 'Themen werden geladen...', loadingLocations: 'Orte werden geladen...', show: 'Anzeigen:', allItems: 'Alle Einträge',
           topicsOnly: 'Nur Themen', sortBy: 'Sortieren nach:', date: 'Datum', likes: 'Likes', name: 'Name', programBadge: 'Programm', topicBadge: 'Thema',
@@ -683,7 +696,7 @@
         fr: {
           welcome: 'Bienvenue au week-end de séminaire !', pageLanguage: 'Langue:', yourName: 'Votre nom :', enterName: 'Saisissez votre nom', saved: 'Enregistré',
           nameStorageUnavailable: 'Le nom ne peut pas être enregistré', likesSaveFailed: 'Impossible d’enregistrer les mentions J’aime', program: 'Programme', topics: 'Thèmes', locations: 'Lieux',
-          language: 'Langue :', all: 'Tout', likedBy: 'Apprécié par :', allUsers: 'Tout le monde', myLikes: 'Mes mentions J’aime', search: 'Rechercher :',
+          language: 'Langue :', all: 'Tout', filter: 'Filtre :', allUsers: 'Tout le monde', myLikes: 'Mes mentions J’aime', myContribution: 'Mes contributions', myLikesAndContribution: 'Mes mentions J’aime + mes contributions', search: 'Rechercher :',
           searchPlaceholder: 'Nom, description, contributeur', details: 'Détails :', full: 'Complet', compact: 'Compact', view: 'Vue :', list: 'Liste', calendar: 'Calendrier',
           loadingProgram: 'Chargement du programme...', loadingTopics: 'Chargement des thèmes...', loadingLocations: 'Chargement des lieux...', show: 'Afficher :', allItems: 'Tout',
           topicsOnly: 'Thèmes uniquement', sortBy: 'Trier par :', date: 'Date', likes: 'Mentions J’aime', name: 'Nom', programBadge: 'Programme', topicBadge: 'Thème',
@@ -695,7 +708,7 @@
         es: {
           welcome: '¡Te damos la bienvenida al fin de semana de seminarios!', pageLanguage: 'Idioma:', yourName: 'Tu nombre:', enterName: 'Escribe tu nombre', saved: 'Guardado',
           nameStorageUnavailable: 'No se puede guardar el nombre', likesSaveFailed: 'No se pudieron guardar los Me gusta', program: 'Programa', topics: 'Temas', locations: 'Lugares',
-          language: 'Idioma:', all: 'Todos', likedBy: 'Le gusta a:', allUsers: 'Todos', myLikes: 'Mis Me gusta', search: 'Buscar:',
+          language: 'Idioma:', all: 'Todos', filter: 'Filtro:', allUsers: 'Todos', myLikes: 'Mis Me gusta', myContribution: 'Mis contribuciones', myLikesAndContribution: 'Mis Me gusta + mis contribuciones', search: 'Buscar:',
           searchPlaceholder: 'Nombre, descripción, colaborador', details: 'Detalles:', full: 'Completo', compact: 'Compacto', view: 'Vista:', list: 'Lista', calendar: 'Calendario',
           loadingProgram: 'Cargando programa...', loadingTopics: 'Cargando temas...', loadingLocations: 'Cargando lugares...', show: 'Mostrar:', allItems: 'Todos los elementos',
           topicsOnly: 'Solo temas', sortBy: 'Ordenar por:', date: 'Fecha', likes: 'Me gusta', name: 'Nombre', programBadge: 'Programa', topicBadge: 'Tema',
@@ -707,7 +720,7 @@
         it: {
           welcome: 'Benvenuti al weekend di seminari!', pageLanguage: 'Lingua:', yourName: 'Il tuo nome:', enterName: 'Inserisci il tuo nome', saved: 'Salvato',
           nameStorageUnavailable: 'Impossibile salvare il nome', likesSaveFailed: 'Impossibile salvare i Mi piace', program: 'Programma', topics: 'Temi', locations: 'Luoghi',
-          language: 'Lingua:', all: 'Tutti', likedBy: 'Piace a:', allUsers: 'Tutti', myLikes: 'I miei Mi piace', search: 'Cerca:',
+          language: 'Lingua:', all: 'Tutti', filter: 'Filtro:', allUsers: 'Tutti', myLikes: 'I miei Mi piace', myContribution: 'I miei contributi', myLikesAndContribution: 'I miei Mi piace + i miei contributi', search: 'Cerca:',
           searchPlaceholder: 'Nome, descrizione, collaboratore', details: 'Dettagli:', full: 'Completo', compact: 'Compatto', view: 'Vista:', list: 'Elenco', calendar: 'Calendario',
           loadingProgram: 'Caricamento programma...', loadingTopics: 'Caricamento temi...', loadingLocations: 'Caricamento luoghi...', show: 'Mostra:', allItems: 'Tutti gli elementi',
           topicsOnly: 'Solo temi', sortBy: 'Ordina per:', date: 'Data', likes: 'Mi piace', name: 'Nome', programBadge: 'Programma', topicBadge: 'Tema',
@@ -719,7 +732,7 @@
         sq: {
           welcome: 'Mirë se vini në fundjavën e seminarit!', pageLanguage: 'Gjuha:', yourName: 'Emri juaj:', enterName: 'Shkruani emrin tuaj', saved: 'U ruajt',
           nameStorageUnavailable: 'Emri nuk mund të ruhet', likesSaveFailed: 'Pëlqimet nuk mund të ruhen', program: 'Programi', topics: 'Temat', locations: 'Vendndodhjet',
-          language: 'Gjuha:', all: 'Të gjitha', likedBy: 'Pëlqyer nga:', allUsers: 'Të gjithë', myLikes: 'Pëlqimet e mia', search: 'Kërko:',
+          language: 'Gjuha:', all: 'Të gjitha', filter: 'Filtro:', allUsers: 'Të gjithë', myLikes: 'Pëlqimet e mia', myContribution: 'Kontributet e mia', myLikesAndContribution: 'Pëlqimet e mia + kontributet e mia', search: 'Kërko:',
           searchPlaceholder: 'Emri, përshkrimi, kontribuesi', details: 'Detajet:', full: 'Të plota', compact: 'Të përmbledhura', view: 'Pamja:', list: 'Listë', calendar: 'Kalendar',
           loadingProgram: 'Programi po ngarkohet...', loadingTopics: 'Temat po ngarkohen...', loadingLocations: 'Vendndodhjet po ngarkohen...', show: 'Shfaq:', allItems: 'Të gjithë elementet',
           topicsOnly: 'Vetëm temat', sortBy: 'Rendit sipas:', date: 'Datës', likes: 'Pëlqimeve', name: 'Emrit', programBadge: 'Program', topicBadge: 'Temë',
@@ -731,7 +744,7 @@
         nds: {
           welcome: 'Moin un willkamen bi dat Seminarweekend!', pageLanguage: 'Spraak:', yourName: 'Dien Naam:', enterName: 'Naam ingeven', saved: 'Spiekert',
           nameStorageUnavailable: 'De Naam lett sik nich spiekern', likesSaveFailed: 'Likes kunn nich spiekert warrn', program: 'Programm', topics: 'Themen', locations: 'Öörd',
-          language: 'Spraak:', all: 'All', likedBy: 'Dat gefallt:', allUsers: 'All', myLikes: 'Mien Likes', search: 'Söken:',
+          language: 'Spraak:', all: 'All', filter: 'Filter:', allUsers: 'All', myLikes: 'Mien Likes', myContribution: 'Mien Bidrääg', myLikesAndContribution: 'Mien Likes + mien Bidrääg', search: 'Söken:',
           searchPlaceholder: 'Naam, Beschrieven, Mitwirkende', details: 'Details:', full: 'Vull', compact: 'Kort', view: 'Ansicht:', list: 'List', calendar: 'Kalender',
           loadingProgram: 'Programm warrt laadt...', loadingTopics: 'Themen warrt laadt...', loadingLocations: 'Öörd warrt laadt...', show: 'Wiesen:', allItems: 'All Indrääg',
           topicsOnly: 'Blots Themen', sortBy: 'Sorteren na:', date: 'Datum', likes: 'Likes', name: 'Naam', programBadge: 'Programm', topicBadge: 'Thema',
@@ -743,7 +756,7 @@
         fy: {
           welcome: 'Wolkom op it seminarwykein!', pageLanguage: 'Taal:', yourName: 'Dyn namme:', enterName: 'Folje dyn namme yn', saved: 'Bewarre',
           nameStorageUnavailable: 'De namme kin net bewarre wurde', likesSaveFailed: 'Likes koene net bewarre wurde', program: 'Programma', topics: 'Tema’s', locations: 'Lokaasjes',
-          language: 'Taal:', all: 'Alles', likedBy: 'Liket troch:', allUsers: 'Elkenien', myLikes: 'Myn likes', search: 'Sykje:',
+          language: 'Taal:', all: 'Alles', filter: 'Filter:', allUsers: 'Elkenien', myLikes: 'Myn likes', myContribution: 'Myn bydragen', myLikesAndContribution: 'Myn likes + myn bydragen', search: 'Sykje:',
           searchPlaceholder: 'Namme, beskriuwing, meiwurker', details: 'Details:', full: 'Folslein', compact: 'Koart', view: 'Werjefte:', list: 'List', calendar: 'Aginda',
           loadingProgram: 'Programma wurdt laden...', loadingTopics: 'Tema’s wurde laden...', loadingLocations: 'Lokaasjes wurde laden...', show: 'Toan:', allItems: 'Alle items',
           topicsOnly: 'Allinnich tema’s', sortBy: 'Sortearje op:', date: 'Datum', likes: 'Likes', name: 'Namme', programBadge: 'Programma', topicBadge: 'Tema',
@@ -755,7 +768,7 @@
         bar: {
           welcome: 'Griaß God zum Seminarwochenend!', pageLanguage: 'Sproch:', yourName: 'Dei Nam:', enterName: 'Gib dein Nam ei', saved: 'Gspeichert',
           nameStorageUnavailable: 'Da Nam ko ned gspeichert wern', likesSaveFailed: 'De Likes ham ned gspeichert wern kenna', program: 'Programm', topics: 'Themen', locations: 'Orte',
-          language: 'Sproch:', all: 'Olle', likedBy: 'Gfoit wem?', allUsers: 'Olle', myLikes: 'Mei Likes', search: 'Suacha:',
+          language: 'Sproch:', all: 'Olle', filter: 'Filter:', allUsers: 'Olle', myLikes: 'Mei Likes', myContribution: 'Mei Beiträge', myLikesAndContribution: 'Mei Likes + mei Beiträge', search: 'Suacha:',
           searchPlaceholder: 'Nam, Beschreibung, Mitwirkende', details: 'Details:', full: 'Voll', compact: 'Kompakt', view: 'Ansicht:', list: 'Listn', calendar: 'Kalender',
           loadingProgram: 'Programm werd glodn...', loadingTopics: 'Themen wern glodn...', loadingLocations: 'Orte wern glodn...', show: 'Zeig:', allItems: 'Olle Einträge',
           topicsOnly: 'Bloß Themen', sortBy: 'Sortiern nach:', date: 'Datum', likes: 'Likes', name: 'Nam', programBadge: 'Programm', topicBadge: 'Thema',
@@ -767,7 +780,7 @@
         frk: {
           welcome: 'Grüß Gott zum Seminarwochenend!', pageLanguage: 'Sproch:', yourName: 'Dei Nam:', enterName: 'Nam ei gebn', saved: 'Gspeichert',
           nameStorageUnavailable: 'Nam kon ned gspeichert wern', likesSaveFailed: 'Likes ham ned gspeichert wern kenna', program: 'Programm', topics: 'Themen', locations: 'Orte',
-          language: 'Sproch:', all: 'Olle', likedBy: 'Gfällt wem?', allUsers: 'Olle', myLikes: 'Mei Likes', search: 'Suachn:',
+          language: 'Sproch:', all: 'Olle', filter: 'Filter:', allUsers: 'Olle', myLikes: 'Mei Likes', myContribution: 'Mei Beiträge', myLikesAndContribution: 'Mei Likes + mei Beiträge', search: 'Suachn:',
           searchPlaceholder: 'Nam, Beschreibung, Mitwirkende', details: 'Details:', full: 'Vollständig', compact: 'Kompakt', view: 'Ansicht:', list: 'Listn', calendar: 'Kalender',
           loadingProgram: 'Programm werd glodn...', loadingTopics: 'Themen wern glodn...', loadingLocations: 'Orte wern glodn...', show: 'Zeign:', allItems: 'Olle Einträg',
           topicsOnly: 'Bloß Themen', sortBy: 'Sortiern nach:', date: 'Datum', likes: 'Likes', name: 'Nam', programBadge: 'Programm', topicBadge: 'Thema',
@@ -779,7 +792,7 @@
         hes: {
           welcome: 'Ei Gude zum Seminarwochenende!', pageLanguage: 'Sprooch:', yourName: 'Dein Name:', enterName: 'Name eingebe', saved: 'Gespeichert',
           nameStorageUnavailable: 'Name kann net gespeichert wern', likesSaveFailed: 'Likes konnte net gespeichert wern', program: 'Programm', topics: 'Themen', locations: 'Orte',
-          language: 'Sprooch:', all: 'Alle', likedBy: 'Gefällt wem?', allUsers: 'Alle', myLikes: 'Mei Likes', search: 'Suche:',
+          language: 'Sprooch:', all: 'Alle', filter: 'Filter:', allUsers: 'Alle', myLikes: 'Mei Likes', myContribution: 'Mei Beiträge', myLikesAndContribution: 'Mei Likes + mei Beiträge', search: 'Suche:',
           searchPlaceholder: 'Name, Beschreibung, Mitwirkende', details: 'Details:', full: 'Vollständig', compact: 'Kompakt', view: 'Ansicht:', list: 'Liste', calendar: 'Kalender',
           loadingProgram: 'Programm wird gelade...', loadingTopics: 'Themen werre gelade...', loadingLocations: 'Orte werre gelade...', show: 'Zeige:', allItems: 'Alle Einträge',
           topicsOnly: 'Nur Themen', sortBy: 'Sortiere nach:', date: 'Datum', likes: 'Likes', name: 'Name', programBadge: 'Programm', topicBadge: 'Thema',
@@ -791,7 +804,7 @@
         ksh: {
           welcome: 'Jode Daach un willkumme beim Seminarwochenend!', pageLanguage: 'Sproch:', yourName: 'Ding Name:', enterName: 'Ding Name aanjävve', saved: 'Jespeschert',
           nameStorageUnavailable: 'Dä Name kunnt nit jeseschert wäde', likesSaveFailed: 'Ding Likes kunnte nit jeseschert wäde', program: 'Programm', topics: 'Themen', locations: 'Plätz',
-          language: 'Sproch:', all: 'Alles', likedBy: 'Jefällt wem?', allUsers: 'All Minsche', myLikes: 'Ming Likes', search: 'Söke:',
+          language: 'Sproch:', all: 'Alles', filter: 'Filter:', allUsers: 'All Minsche', myLikes: 'Ming Likes', myContribution: 'Ming Beiträge', myLikesAndContribution: 'Ming Likes + ming Beiträge', search: 'Söke:',
           searchPlaceholder: 'Name, Beschrievung, Metwirkende', details: 'Details:', full: 'Voll', compact: 'Kompakt', view: 'Ansicht:', list: 'Leß', calendar: 'Kalender',
           loadingProgram: 'Programm weed jelade...', loadingTopics: 'Themen weed jelade...', loadingLocations: 'Plätz weed jelade...', show: 'Zeije:', allItems: 'All Einträge',
           topicsOnly: 'Bloß Themen', sortBy: 'Sortere noh:', date: 'Datum', likes: 'Likes', name: 'Name', programBadge: 'Programm', topicBadge: 'Thema',
@@ -803,7 +816,7 @@
         ar: {
           welcome: 'مرحبًا بكم في عطلة نهاية الأسبوع للندوة!', pageLanguage: 'لغة الصفحة:', yourName: 'اسمك:', enterName: 'أدخل اسمك', saved: 'تم الحفظ',
           nameStorageUnavailable: 'تعذر حفظ الاسم', likesSaveFailed: 'تعذر حفظ الإعجابات', program: 'البرنامج', topics: 'المواضيع', locations: 'المواقع',
-          language: 'اللغة:', all: 'الكل', likedBy: 'أُعجب به:', allUsers: 'كل المستخدمين', myLikes: 'إعجاباتي', search: 'بحث:',
+          language: 'اللغة:', all: 'الكل', filter: 'تصفية:', allUsers: 'كل المستخدمين', myLikes: 'إعجاباتي', myContribution: 'مساهماتي', myLikesAndContribution: 'إعجاباتي + مساهماتي', search: 'بحث:',
           searchPlaceholder: 'الاسم، الوصف، المساهم', details: 'التفاصيل:', full: 'كامل', compact: 'مختصر', view: 'العرض:', list: 'قائمة', calendar: 'تقويم',
           loadingProgram: 'جارٍ تحميل البرنامج...', loadingTopics: 'جارٍ تحميل المواضيع...', loadingLocations: 'جارٍ تحميل المواقع...', show: 'عرض:', allItems: 'كل العناصر',
           topicsOnly: 'المواضيع فقط', sortBy: 'ترتيب حسب:', date: 'التاريخ', likes: 'الإعجابات', name: 'الاسم', programBadge: 'برنامج', topicBadge: 'موضوع',
@@ -815,7 +828,7 @@
         he: {
           welcome: 'ברוכים הבאים לסוף השבוע של הסמינר!', pageLanguage: 'שפת האתר:', yourName: 'השם שלך:', enterName: 'הזן את שמך', saved: 'נשמר',
           nameStorageUnavailable: 'לא ניתן לשמור את השם', likesSaveFailed: 'לא ניתן לשמור את הלייקים', program: 'תוכנית', topics: 'נושאים', locations: 'מיקומים',
-          language: 'שפה:', all: 'הכול', likedBy: 'אהבתי על ידי:', allUsers: 'כולם', myLikes: 'הלייקים שלי', search: 'חיפוש:',
+          language: 'שפה:', all: 'הכול', filter: 'סינון:', allUsers: 'כולם', myLikes: 'הלייקים שלי', myContribution: 'התרומות שלי', myLikesAndContribution: 'הלייקים שלי + התרומות שלי', search: 'חיפוש:',
           searchPlaceholder: 'שם, תיאור, משתתף', details: 'פרטים:', full: 'מלא', compact: 'מצומצם', view: 'תצוגה:', list: 'רשימה', calendar: 'לוח שנה',
           loadingProgram: 'התוכנית נטענת...', loadingTopics: 'הנושאים נטענים...', loadingLocations: 'המיקומים נטענים...', show: 'הצגה:', allItems: 'כל הפריטים',
           topicsOnly: 'נושאים בלבד', sortBy: 'מיון לפי:', date: 'תאריך', likes: 'לייקים', name: 'שם', programBadge: 'תוכנית', topicBadge: 'נושא',
@@ -1334,8 +1347,13 @@
       }
 
       function populateLikerFilters() {
-        const likerOptions = [`<option value="all">${translate('allUsers')}</option>`]
-          .concat(`<option value="my-likes" ${currentUserName ? '' : 'disabled'}>${translate('myLikes')}</option>`)
+        const personalizedOptionState = currentUserName ? '' : 'disabled';
+        const likerOptions = [
+          `<option value="my-likes-and-contribution" ${personalizedOptionState}>${translate('myLikesAndContribution')}</option>`,
+          `<option value="my-likes" ${personalizedOptionState}>${translate('myLikes')}</option>`,
+          `<option value="my-contribution" ${personalizedOptionState}>${translate('myContribution')}</option>`,
+          `<option value="all">${translate('all')}</option>`
+        ]
           .join('');
 
         const programLikedFilter = document.getElementById('program-liked-filter');
@@ -1400,13 +1418,17 @@
 
       function matchesLikedBy(item, likedBy, itemType) {
         if (likedBy === 'all') return true;
-        if (likedBy === 'my-likes') {
-          return !!currentUserName && getItemLikeState(item, itemType).liked;
-        }
-        const selectedName = likedBy === 'my-likes' ? currentUserName : likedBy;
-        return !!selectedName && (item.likers || []).some(liker =>
-          liker.toLocaleLowerCase() === selectedName.toLocaleLowerCase()
+        if (!currentUserName) return false;
+
+        const userKey = currentUserKey();
+        const liked = getItemLikeState(item, itemType).liked;
+        if (likedBy === 'my-likes') return liked;
+
+        const contributed = (item.contributers || []).some(contributor =>
+          contributor.trim().toLocaleLowerCase() === userKey
         );
+        if (likedBy === 'my-contribution') return contributed;
+        return likedBy === 'my-likes-and-contribution' && (liked || contributed);
       }
 
       function escapeAttributeValue(value) {
