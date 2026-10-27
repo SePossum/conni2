@@ -1,30 +1,974 @@
 {
     "program": [
         {
-            "name": "Name of a workshop 1",
-            "desc": "Description of the workshop 1",
+            "name": "Creative Coding Lab",
+            "desc": "An interactive hands-on workshop about playful prototyping and visual experimentation.",
             "contributers": [
-                "name 1",
-                "name 2",
-                "name 3"
+                "A. Meyer",
+                "S. Klein",
+                "J. Weber"
             ],
-            "date": "8.8.2026",
-            "start": "9:00",
-            "end": "10:30",
+            "location": "Main Hall",
+            "languages": [
+                "English",
+                "German"
+            ],
+            "likers": [
+                "user 1",
+                "user 7",
+                "user 12",
+                "user 18"
+            ],
+            "likeCount": 4,
+            "date": "2026-08-08",
+            "start": "11:00",
+            "end": "12:30",
             "duration": 90
         },
         {
-            "name": "Name of a workshop 2",
-            "desc": "Description of the workshop 2",
+            "name": "Sustainable Design Studio",
+            "desc": "Exploring low-waste strategies and practical circular thinking for future products.",
             "contributers": [
-                "name 1",
-                "name 2",
-                "name 3"
+                "L. Fischer",
+                "M. Hill",
+                "N. Rossi"
             ],
-            "date": "9.8.2026",
-            "start": "10:30",
-            "end": "11:30",
+            "location": "Workshop Room A",
+            "languages": [
+                "English",
+                "French"
+            ],
+            "likers": [
+                "user 2",
+                "user 4",
+                "user 9",
+                "user 14"
+            ],
+            "likeCount": 4,
+            "date": "2026-08-08",
+            "start": "13:00",
+            "end": "14:00",
             "duration": 60
+        },
+        {
+            "name": "AI for Everyday Tools",
+            "desc": "A practical session on using AI assistants in daily creative and professional workflows.",
+            "contributers": [
+                "K. Hoffmann",
+                "P. Silva",
+                "D. Brown"
+            ],
+            "location": "Main Hall",
+            "languages": [
+                "English",
+                "Spanish"
+            ],
+            "likers": [
+                "user 3",
+                "user 11",
+                "user 19"
+            ],
+            "likeCount": 3,
+            "date": "2026-08-08",
+            "start": "14:30",
+            "end": "16:00",
+            "duration": 90
+        },
+        {
+            "name": "Community Storytelling Circle",
+            "desc": "Collective storytelling workshops designed to surface local memories and community narratives.",
+            "contributers": [
+                "T. Winter",
+                "E. Gomez",
+                "R. Boehm"
+            ],
+            "location": "Workshop Room A",
+            "languages": [
+                "German",
+                "Spanish"
+            ],
+            "likers": [
+                "user 6",
+                "user 8",
+                "user 13",
+                "user 20"
+            ],
+            "likeCount": 4,
+            "date": "2026-08-09",
+            "start": "9:30",
+            "end": "10:45",
+            "duration": 75
+        },
+        {
+            "name": "Photography Walk & Critique",
+            "desc": "An outdoor critique on visual storytelling, framing, and composition techniques.",
+            "contributers": [
+                "B. Schneider",
+                "I. Dobrev",
+                "V. Nguyen"
+            ],
+            "location": "Workshop Room A",
+            "languages": [
+                "English",
+                "German"
+            ],
+            "likers": [
+                "user 7",
+                "user 9",
+                "user 16",
+                "user 17"
+            ],
+            "likeCount": 4,
+            "date": "2026-08-09",
+            "start": "13:15",
+            "end": "14:30",
+            "duration": 75
+        },
+        {
+            "name": "Urban Gardening Lab",
+            "desc": "An applied workshop on growing food in small urban spaces and shared communities.",
+            "contributers": [
+                "M. Keller",
+                "R. Ali",
+                "F. Da Silva"
+            ],
+            "location": "Main Hall",
+            "languages": [
+                "German",
+                "French"
+            ],
+            "likers": [
+                "user 1",
+                "user 4",
+                "user 12",
+                "user 18"
+            ],
+            "likeCount": 4,
+            "date": "2026-08-09",
+            "start": "15:00",
+            "end": "16:30",
+            "duration": 90
+        },
+        {
+            "name": "Wellbeing Through Movement",
+            "desc": "Combining mindful techniques and simple movement drills to restore creative energy.",
+            "contributers": [
+                "S. Bailey",
+                "J. Petrov",
+                "A. Lopez"
+            ],
+            "location": "Main Hall",
+            "languages": [
+                "English",
+                "German"
+            ],
+            "likers": [
+                "user 6",
+                "user 13",
+                "user 19",
+                "user 20"
+            ],
+            "likeCount": 4,
+            "date": "2026-08-10",
+            "start": "11:00",
+            "end": "12:15",
+            "duration": 75
+        },
+        {
+            "name": "Ethics in Data Practice",
+            "desc": "Discussing principles, fairness, and responsibility in data-led decision making.",
+            "contributers": [
+                "L. Martin",
+                "C. Theis",
+                "R. Rojas"
+            ],
+            "location": "Workshop Room A",
+            "languages": [
+                "English",
+                "French"
+            ],
+            "likers": [
+                "user 3",
+                "user 8",
+                "user 12"
+            ],
+            "likeCount": 3,
+            "date": "2026-08-10",
+            "start": "13:00",
+            "end": "14:30",
+            "duration": 90
+        },
+        {
+            "name": "Open Source Toolkit Jam",
+            "desc": "A collaborative lab for testing open tools, interfaces, and workflows in a shared setting.",
+            "contributers": [
+                "D. Iversen",
+                "E. Kowalski",
+                "M. Costa"
+            ],
+            "location": "Main Hall",
+            "languages": [
+                "English",
+                "Italian"
+            ],
+            "likers": [
+                "user 5",
+                "user 10",
+                "user 14",
+                "user 16"
+            ],
+            "likeCount": 4,
+            "date": "2026-08-10",
+            "start": "15:00",
+            "end": "16:30",
+            "duration": 90
+        },
+        {
+            "name": "Prototype to Pitch",
+            "desc": "Turning rough prototypes into short pitch stories for stakeholder conversations.",
+            "contributers": [
+                "R. Evans",
+                "I. Solberg",
+                "T. Moreau"
+            ],
+            "location": "Workshop Room A",
+            "languages": [
+                "English",
+                "German"
+            ],
+            "likers": [
+                "user 9",
+                "user 17",
+                "user 18"
+            ],
+            "likeCount": 3,
+            "date": "2026-08-11",
+            "start": "9:30",
+            "end": "11:00",
+            "duration": 90
+        },
+        {
+            "name": "Makerspace Safety Basics",
+            "desc": "Fundamental knowledge for safer fabrication and machine-driven making environments.",
+            "contributers": [
+                "G. Brooks",
+                "A. Kaur",
+                "T. Ribeiro"
+            ],
+            "location": "Main Hall",
+            "languages": [
+                "German",
+                "English"
+            ],
+            "likers": [
+                "user 2",
+                "user 7",
+                "user 11",
+                "user 14"
+            ],
+            "likeCount": 4,
+            "date": "2026-08-11",
+            "start": "11:45",
+            "end": "13:00",
+            "duration": 75
+        },
+        {
+            "name": "Cultural Memory Archive",
+            "desc": "A workshop on documenting local heritage, objects, and oral history with care.",
+            "contributers": [
+                "S. Bianchi",
+                "V. Okafor",
+                "H. Neumann"
+            ],
+            "location": "Workshop Room A",
+            "languages": [
+                "German",
+                "Italian"
+            ],
+            "likers": [
+                "user 4",
+                "user 10",
+                "user 19"
+            ],
+            "likeCount": 3,
+            "date": "2026-08-11",
+            "start": "13:30",
+            "end": "15:00",
+            "duration": 90
+        },
+        {
+            "name": "Digital Storyboarding",
+            "desc": "Designing narrative sequences for films, games, and interactive media with structure and clarity.",
+            "contributers": [
+                "J. Marquez",
+                "N. Osei",
+                "I. Horn"
+            ],
+            "location": "Main Hall",
+            "languages": [
+                "English",
+                "Spanish"
+            ],
+            "likers": [
+                "user 1",
+                "user 6",
+                "user 15",
+                "user 20"
+            ],
+            "likeCount": 4,
+            "date": "2026-08-11",
+            "start": "15:30",
+            "end": "16:45",
+            "duration": 75
+        },
+        {
+            "name": "Responsible AI Design",
+            "desc": "A session on balancing innovation with transparency, trust, and ethical constraints.",
+            "contributers": [
+                "M. Singh",
+                "D. Schafer",
+                "F. Lemaire"
+            ],
+            "location": "Workshop Room A",
+            "languages": [
+                "English",
+                "French"
+            ],
+            "likers": [
+                "user 8",
+                "user 9",
+                "user 13",
+                "user 17",
+                "B. Mattern"
+            ],
+            "likeCount": 5,
+            "date": "2026-08-12",
+            "start": "9:00",
+            "end": "10:15",
+            "duration": 75
+        },
+        {
+            "name": "Textile Futures Lab",
+            "desc": "Exploring textile craft, digital tools, and new material experimentation through practice.",
+            "contributers": [
+                "H. Decker",
+                "A. Ramos",
+                "V. Petrenko"
+            ],
+            "location": "Main Hall",
+            "languages": [
+                "German",
+                "Spanish"
+            ],
+            "likers": [
+                "user 3",
+                "user 5",
+                "user 18"
+            ],
+            "likeCount": 3,
+            "date": "2026-08-12",
+            "start": "11:00",
+            "end": "12:30",
+            "duration": 90
+        },
+        {
+            "name": "Podcast Production Sprint",
+            "desc": "A short production sprint focusing on scripting, recording, and editing engaging interviews.",
+            "contributers": [
+                "C. Burke",
+                "J. Rivera",
+                "M. Hartmann"
+            ],
+            "location": "Workshop Room A",
+            "languages": [
+                "English",
+                "German"
+            ],
+            "likers": [
+                "user 2",
+                "user 7",
+                "user 12",
+                "user 16"
+            ],
+            "likeCount": 4,
+            "date": "2026-08-12",
+            "start": "13:00",
+            "end": "14:30",
+            "duration": 90
+        },
+        {
+            "name": "Creative Data Visualization",
+            "desc": "Translating data stories into visual compositions that communicate clearly and emotionally.",
+            "contributers": [
+                "A. Flores",
+                "S. Muller",
+                "O. Ahmed"
+            ],
+            "location": "Main Hall",
+            "languages": [
+                "English",
+                "French"
+            ],
+            "likers": [
+                "user 6",
+                "user 11",
+                "user 15"
+            ],
+            "likeCount": 3,
+            "date": "2026-08-12",
+            "start": "15:00",
+            "end": "16:15",
+            "duration": 75
+        },
+        {
+            "name": "Facilitation for Teams",
+            "desc": "Methods for guiding collaborative conversations and making group processes more productive.",
+            "contributers": [
+                "P. Young",
+                "L. Dominguez",
+                "N. Weller"
+            ],
+            "location": "Workshop Room A",
+            "languages": [
+                "English",
+                "German"
+            ],
+            "likers": [
+                "user 1",
+                "user 5",
+                "user 10",
+                "user 13",
+                "B. Mattern"
+            ],
+            "likeCount": 5,
+            "date": "2026-08-13",
+            "start": "9:15",
+            "end": "10:45",
+            "duration": 90
+        },
+        {
+            "name": "Speculative Futures Lab",
+            "desc": "Imagining future scenarios and building small speculative prototypes for discussion.",
+            "contributers": [
+                "R. Palma",
+                "K. O'Brien",
+                "M. Choi"
+            ],
+            "location": "Main Hall",
+            "languages": [
+                "English",
+                "Spanish"
+            ],
+            "likers": [
+                "user 4",
+                "user 9",
+                "user 14",
+                "user 20"
+            ],
+            "likeCount": 4,
+            "date": "2026-08-13",
+            "start": "11:30",
+            "end": "13:00",
+            "duration": 90
+        },
+        {
+            "name": "Human-Centered Research Lab",
+            "desc": "Running small research exercises that combine interviews, observations, and synthesis.",
+            "contributers": [
+                "S. Mendez",
+                "L. Forster",
+                "D. Arslan"
+            ],
+            "location": "Workshop Room A",
+            "languages": [
+                "German",
+                "English"
+            ],
+            "likers": [
+                "user 6",
+                "user 8",
+                "user 16"
+            ],
+            "likeCount": 3,
+            "date": "2026-08-13",
+            "start": "13:30",
+            "end": "15:00",
+            "duration": 90
+        },
+        {
+            "name": "Sustainable Futures",
+            "desc": "Long-term thinking about ecology, resource use, and resilient local systems.",
+            "contributers": [
+                "C. Hall",
+                "K. Meyer",
+                "P. Costa"
+            ],
+            "languages": [
+                "English",
+                "French"
+            ],
+            "likers": [
+                "user 3",
+                "user 8",
+                "user 17",
+                "B. Mattern"
+            ],
+            "likeCount": 4,
+            "location": "Studio B",
+            "date": "2026-10-21",
+            "start": "17:49",
+            "end": "20:46",
+            "duration": 177
+        },
+        {
+            "name": "Digital Literacy",
+            "desc": "Making technology more accessible, understandable, and useful for everyday participants.",
+            "contributers": [
+                "O. Brown",
+                "H. Ali",
+                "M. Walsh"
+            ],
+            "languages": [
+                "German",
+                "Spanish"
+            ],
+            "likers": [
+                "user 1",
+                "user 9",
+                "user 14",
+                "user 18",
+                "H. Green"
+            ],
+            "likeCount": 5,
+            "location": "Raum A",
+            "date": "2026-10-27",
+            "start": "16:28",
+            "end": "18:28",
+            "duration": 120
+        }
+    ],
+    "topics": [
+        {
+            "name": "Civic Design",
+            "desc": "Designing services and systems around the needs of communities and local institutions.",
+            "contributers": [
+                "A. Gomez",
+                "L. Singh",
+                "T. Weiss"
+            ],
+            "languages": [
+                "English",
+                "German"
+            ],
+            "likers": [
+                "user 2",
+                "user 6",
+                "user 11",
+                "user 16"
+            ],
+            "likeCount": 4
+        },
+        {
+            "name": "Ethical AI",
+            "desc": "Exploring fairness, transparency, and accountability in automated decision-making.",
+            "contributers": [
+                "R. Nunez",
+                "I. Becker",
+                "A. Shaw"
+            ],
+            "languages": [
+                "English",
+                "Italian"
+            ],
+            "likers": [
+                "user 5",
+                "user 10",
+                "user 20"
+            ],
+            "likeCount": 3
+        },
+        {
+            "name": "Creative Economies",
+            "desc": "How art, culture, and local economies interact through collaborative making and exchange.",
+            "contributers": [
+                "N. Park",
+                "T. Rossi",
+                "L. Nguyen"
+            ],
+            "languages": [
+                "English",
+                "French"
+            ],
+            "likers": [
+                "user 4",
+                "user 7",
+                "user 12",
+                "user 19"
+            ],
+            "likeCount": 4
+        },
+        {
+            "name": "Sound and Memory",
+            "desc": "Using audio, recording, and listening practices to preserve and reinterpret lived experience.",
+            "contributers": [
+                "E. Morales",
+                "P. Koch",
+                "V. Davis"
+            ],
+            "languages": [
+                "Spanish",
+                "German"
+            ],
+            "likers": [
+                "user 2",
+                "user 13",
+                "user 15"
+            ],
+            "likeCount": 3
+        },
+        {
+            "name": "Participation Design",
+            "desc": "Approaches to inclusive engagement, facilitation, and collaborative decision-making.",
+            "contributers": [
+                "F. Keller",
+                "A. Ibarra",
+                "S. Chan"
+            ],
+            "languages": [
+                "English",
+                "German"
+            ],
+            "likers": [
+                "user 2",
+                "user 8",
+                "user 12",
+                "user 18"
+            ],
+            "likeCount": 4
+        },
+        {
+            "name": "Urban Futures",
+            "desc": "Imagining cities through the lens of mobility, space, and public wellbeing.",
+            "contributers": [
+                "J. Hart",
+                "K. Alami",
+                "L. Witte"
+            ],
+            "languages": [
+                "English",
+                "French"
+            ],
+            "likers": [
+                "user 5",
+                "user 9",
+                "user 14"
+            ],
+            "likeCount": 3
+        },
+        {
+            "name": "Open Culture",
+            "desc": "The role of sharing, commons, and collaborative practices in cultural production.",
+            "contributers": [
+                "R. Torres",
+                "B. Ebert",
+                "Y. Chen"
+            ],
+            "languages": [
+                "English",
+                "Spanish"
+            ],
+            "likers": [
+                "user 7",
+                "user 10",
+                "user 15",
+                "user 19"
+            ],
+            "likeCount": 4
+        },
+        {
+            "name": "Media Ecology",
+            "desc": "How media systems and technologies shape communication, culture, and attention.",
+            "contributers": [
+                "S. Olsen",
+                "I. Rossi",
+                "N. Haddad"
+            ],
+            "languages": [
+                "German",
+                "Italian"
+            ],
+            "likers": [
+                "user 3",
+                "user 11",
+                "user 13"
+            ],
+            "likeCount": 3
+        },
+        {
+            "name": "Design for Care",
+            "desc": "Creating services and experiences that center dignity, trust, and everyday needs.",
+            "contributers": [
+                "T. Walsh",
+                "C. Gomez",
+                "E. Novak"
+            ],
+            "languages": [
+                "English",
+                "German"
+            ],
+            "likers": [
+                "user 1",
+                "user 5",
+                "user 17",
+                "user 20"
+            ],
+            "likeCount": 4
+        },
+        {
+            "name": "Community Archives",
+            "desc": "Methods for collecting, organizing, and sharing collective memory responsibly.",
+            "contributers": [
+                "M. Ivers",
+                "P. Duran",
+                "O. Fischer"
+            ],
+            "languages": [
+                "Spanish",
+                "German"
+            ],
+            "likers": [
+                "user 4",
+                "user 8",
+                "user 14"
+            ],
+            "likeCount": 3
+        },
+        {
+            "name": "Games for Learning",
+            "desc": "Creative strategies for building playful and purposeful learning experiences.",
+            "contributers": [
+                "I. Hsu",
+                "R. Rahman",
+                "M. Donnelly"
+            ],
+            "languages": [
+                "English",
+                "French"
+            ],
+            "likers": [
+                "user 6",
+                "user 10",
+                "user 15",
+                "user 19"
+            ],
+            "likeCount": 4
+        },
+        {
+            "name": "Collective Intelligence",
+            "desc": "How group knowledge, facilitation, and networked collaboration can lead to better outcomes.",
+            "contributers": [
+                "L. Chen",
+                "V. Targov",
+                "D. Shah"
+            ],
+            "languages": [
+                "English",
+                "Italian"
+            ],
+            "likers": [
+                "user 7",
+                "user 11",
+                "user 13"
+            ],
+            "likeCount": 3
+        },
+        {
+            "name": "Citizen Data",
+            "desc": "Empowering communities to interpret and act on data in meaningful ways.",
+            "contributers": [
+                "N. Haddad",
+                "J. Diaz",
+                "F. Bender"
+            ],
+            "languages": [
+                "Spanish",
+                "German"
+            ],
+            "likers": [
+                "user 2",
+                "user 9",
+                "user 18",
+                "user 20"
+            ],
+            "likeCount": 4
+        },
+        {
+            "name": "Art and Advocacy",
+            "desc": "Using artistic practice to highlight social issues and encourage dialogue.",
+            "contributers": [
+                "E. Kline",
+                "M. Lutz",
+                "R. Del Toro"
+            ],
+            "languages": [
+                "English",
+                "Spanish"
+            ],
+            "likers": [
+                "user 3",
+                "user 6",
+                "user 12"
+            ],
+            "likeCount": 3
+        },
+        {
+            "name": "Learning by Making",
+            "desc": "Hands-on research and experimentation as a pathway toward understanding and innovation.",
+            "contributers": [
+                "T. Boyd",
+                "A. Roman",
+                "P. Mendez"
+            ],
+            "languages": [
+                "English",
+                "German"
+            ],
+            "likers": [
+                "user 5",
+                "user 8",
+                "user 13",
+                "user 17"
+            ],
+            "likeCount": 4
+        },
+        {
+            "name": "Future of Work",
+            "desc": "Critical conversations on labor, technology, and creative practices in changing institutions.",
+            "contributers": [
+                "C. Voss",
+                "H. Ocampo",
+                "L. Ibrahim"
+            ],
+            "languages": [
+                "English",
+                "French"
+            ],
+            "likers": [
+                "user 4",
+                "user 7",
+                "user 16"
+            ],
+            "likeCount": 3
+        },
+        {
+            "name": "Storytelling with Data",
+            "desc": "Turning quantitative evidence into engaging narratives with strong human context.",
+            "contributers": [
+                "J. Keller",
+                "S. Weber",
+                "A. Noor"
+            ],
+            "languages": [
+                "English",
+                "German"
+            ],
+            "likers": [
+                "user 1",
+                "user 10",
+                "user 14",
+                "user 18"
+            ],
+            "likeCount": 4
+        },
+        {
+            "name": "Designing Trust",
+            "desc": "Understanding how systems build confidence, safety, and legitimacy over time.",
+            "contributers": [
+                "M. Novak",
+                "E. Stein",
+                "P. Dorsey"
+            ],
+            "languages": [
+                "German",
+                "English"
+            ],
+            "likers": [
+                "user 2",
+                "user 5",
+                "user 11"
+            ],
+            "likeCount": 3
+        }
+    ],
+    "locations": [
+        {
+            "name": "Main Hall",
+            "desc": "Description of the main hall",
+            "capacity": 200,
+            "facilities": [
+                "Projector",
+                "Sound System",
+                "Stage Lighting"
+            ]
+        },
+        {
+            "name": "Workshop Room A",
+            "desc": "Description of workshop room A",
+            "capacity": 50,
+            "facilities": [
+                "Whiteboard",
+                "Computers"
+            ]
+        },
+        {
+            "name": "Studio B",
+            "desc": "A flexible studio for small-group workshops and creative sessions.",
+            "capacity": 30,
+            "facilities": [
+                "Whiteboard",
+                "Computers"
+            ]
+        },
+        {
+            "name": "Garden Pavilion",
+            "desc": "A covered outdoor space for community activities and informal gatherings.",
+            "capacity": 100,
+            "facilities": [
+                "Outdoor Seating",
+                "Grass Area"
+            ]
+        },
+        {
+            "name": "Media Lab",
+            "desc": "A workspace equipped for digital media, sound, and hands-on technology sessions.",
+            "capacity": 25,
+            "facilities": [
+                "Sound System"
+            ]
+        },
+        {
+            "name": "Riverside Terrace",
+            "desc": "An open-air terrace suited to relaxed discussions and outdoor activities.",
+            "capacity": 150,
+            "facilities": [
+                "Outdoor Seating"
+            ]
+        },
+        {
+            "name": "Community Lounge",
+            "desc": "A comfortable shared space for conversation, breaks, and informal meetups.",
+            "capacity": 40,
+            "facilities": [
+                "Comfortable Seating"
+            ]
+        },
+        {
+            "name": "Raum A",
+            "desc": "Kleiner Seminarraum",
+            "facilities": [
+                "10 Stühle"
+            ],
+            "capacity": 10
         }
     ]
 }

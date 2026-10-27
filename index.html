@@ -1,0 +1,1893 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Conni 2</title>
+    <style>
+      :root {
+        --bg: #f4f7fb;
+        --panel: #ffffff;
+        --primary: #2d6cdf;
+        --primary-soft: #eaf1ff;
+        --text: #1e293b;
+        --muted: #64748b;
+        --border: #dfe7f3;
+        --success: #16a34a;
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        font-family: Arial, Helvetica, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+      }
+
+      .container {
+        max-width: 1100px;
+        margin: 40px auto;
+        padding: 0 20px 40px;
+      }
+
+      h1 {
+        font-size: 2.2rem;
+        margin-bottom: 8px;
+      }
+
+      .subtitle {
+        color: var(--muted);
+        margin-bottom: 30px;
+      }
+
+      .tab-bar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin: 24px 0 28px;
+      }
+
+      .tab {
+        border: 1px solid var(--border);
+        background: #fff;
+        color: var(--text);
+        border-radius: 999px;
+        padding: 10px 18px;
+        cursor: pointer;
+        font-weight: 700;
+        transition: all 0.2s ease;
+      }
+
+      .tab.active {
+        background: var(--primary);
+        color: #fff;
+        border-color: var(--primary);
+      }
+
+      .section {
+        display: none;
+        margin-bottom: 40px;
+      }
+
+      .section.active {
+        display: block;
+      }
+
+      .section h2 {
+        font-size: 1.5rem;
+        margin-bottom: 18px;
+      }
+
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 20px;
+      }
+
+      .card {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 20px;
+        box-shadow: 0 3px 12px rgba(15, 23, 42, 0.04);
+      }
+
+      .badge {
+        display: inline-block;
+        background: var(--primary-soft);
+        color: var(--primary);
+        border-radius: 999px;
+        padding: 6px 10px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        margin-bottom: 12px;
+      }
+
+      .card h3 {
+        margin: 0 0 10px;
+        font-size: 1.2rem;
+      }
+
+      .card p {
+        margin: 8px 0;
+        color: var(--muted);
+        line-height: 1.5;
+      }
+
+      .filter-bar {
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .filter-group {
+        display: flex;
+        align-items: center;
+        flex-wrap: nowrap;
+        flex: 0 0 auto;
+        gap: 10px;
+      }
+
+      .filter-bar label {
+        font-weight: 700;
+        white-space: nowrap;
+      }
+
+      .filter-bar select,
+      .filter-bar input {
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 8px 12px;
+        background: white;
+        color: var(--text);
+        min-width: 150px;
+        font: inherit;
+      }
+
+      #program-search-filter,
+      #topics-search-filter {
+        width: 320px;
+      }
+
+      .save-status {
+        color: var(--muted);
+        font-size: 0.875rem;
+      }
+
+      .sort-bar {
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .sort-bar label {
+        font-weight: 700;
+        white-space: nowrap;
+      }
+
+      .sort-bar select {
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 8px 12px;
+        background: white;
+        color: var(--text);
+        min-width: 180px;
+      }
+
+      .topic-create {
+        margin-bottom: 20px;
+      }
+
+      .topic-create summary {
+        color: var(--primary);
+        cursor: pointer;
+        font-weight: 700;
+        padding: 8px 0;
+      }
+
+      .topic-create form {
+        border-top: 1px solid var(--border);
+        padding-top: 16px;
+      }
+
+      .topic-create-fields {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 14px;
+        margin-bottom: 14px;
+      }
+
+      .topic-create-field {
+        display: grid;
+        gap: 6px;
+        min-width: 0;
+      }
+
+      .topic-create-field label {
+        font-weight: 700;
+      }
+
+      .topic-create-field input,
+      .topic-create-field textarea {
+        width: 100%;
+        min-width: 0;
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 9px 10px;
+        background: white;
+        color: var(--text);
+        font: inherit;
+      }
+
+      .topic-create-field textarea {
+        resize: vertical;
+      }
+
+      .topic-create-description {
+        grid-column: 1 / -1;
+      }
+
+      .topic-create button {
+        border: 1px solid var(--primary);
+        border-radius: 6px;
+        padding: 9px 14px;
+        background: var(--primary);
+        color: white;
+        font: inherit;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      .topic-create button:disabled {
+        cursor: wait;
+        opacity: 0.65;
+      }
+
+      .topic-create-status {
+        min-height: 1.2em;
+        margin: 4px 0 0;
+        color: var(--muted);
+      }
+
+      .delete-item {
+        border: 1px solid #b91c1c;
+        border-radius: 6px;
+        padding: 6px 10px;
+        background: white;
+        color: #b91c1c;
+        font: inherit;
+        cursor: pointer;
+      }
+
+      .delete-item:disabled {
+        cursor: wait;
+        opacity: 0.6;
+      }
+
+      .item-editor {
+        margin-top: 14px;
+      }
+
+      .item-editor summary {
+        color: var(--primary);
+        cursor: pointer;
+        font-weight: 700;
+      }
+
+      .item-editor-form {
+        display: grid;
+        gap: 12px;
+        padding-top: 12px;
+      }
+
+      .item-editor-fields {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+        gap: 12px;
+      }
+
+      .item-editor-field {
+        display: grid;
+        gap: 6px;
+        min-width: 0;
+      }
+
+      .item-editor-field label,
+      .item-editor-move {
+        font-weight: 700;
+      }
+
+      .item-editor-field input,
+      .item-editor-field textarea,
+      .item-editor-field select {
+        width: 100%;
+        min-width: 0;
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 9px 10px;
+        background: white;
+        color: var(--text);
+        font: inherit;
+      }
+
+      .item-editor-field textarea {
+        resize: vertical;
+      }
+
+      .item-editor-description {
+        grid-column: 1 / -1;
+      }
+
+      .item-editor-schedule {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 12px;
+      }
+
+      .item-editor-schedule[hidden] {
+        display: none;
+      }
+
+      .item-editor-form .save-item {
+        justify-self: start;
+        border: 1px solid var(--primary);
+        border-radius: 6px;
+        padding: 9px 14px;
+        background: var(--primary);
+        color: white;
+        font: inherit;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      .item-editor-form .save-item:disabled {
+        cursor: wait;
+        opacity: 0.65;
+      }
+
+      .item-editor-status {
+        min-height: 1.2em;
+        margin: 0;
+        color: var(--muted);
+      }
+
+      @media (max-width: 480px) {
+        .container {
+          padding-right: 12px;
+          padding-left: 12px;
+        }
+
+        .filter-bar select,
+        .filter-bar input,
+        .sort-bar select {
+          width: min(145px, 40vw);
+          min-width: 0;
+        }
+
+        .filter-group-mobile-wide {
+          flex: 1 1 100%;
+          flex-direction: column;
+          align-items: stretch;
+          width: 100%;
+          gap: 6px;
+        }
+
+        .filter-group-mobile-wide select,
+        .filter-group-mobile-wide input {
+          width: 100%;
+        }
+
+        #program-search-filter,
+        #topics-search-filter {
+          width: 100%;
+        }
+      }
+
+      .meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 14px;
+      }
+
+      .chip {
+        background: #f8fafc;
+        border: 1px solid var(--border);
+        color: var(--text);
+        border-radius: 999px;
+        padding: 6px 10px;
+        font-size: 0.8rem;
+      }
+
+      .chip-link {
+        display: inline-block;
+        text-decoration: none;
+        color: var(--primary);
+        cursor: pointer;
+      }
+
+      .chip-link:hover {
+        text-decoration: underline;
+      }
+
+      .likes {
+        color: var(--success);
+        font-weight: 700;
+      }
+
+      .like-actions {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-top: 14px;
+      }
+
+      .like-toggle {
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 6px 10px;
+        background: #fff;
+        color: var(--text);
+        font: inherit;
+        cursor: pointer;
+      }
+
+      .like-toggle[aria-pressed="true"] {
+        color: var(--success);
+        border-color: var(--success);
+      }
+
+      .like-toggle:disabled {
+        cursor: not-allowed;
+        opacity: 0.6;
+      }
+
+      .like-actions .likes {
+        margin: 0;
+      }
+
+      ul {
+        margin: 10px 0 0;
+        padding-left: 18px;
+        color: var(--text);
+      }
+
+      li {
+        margin: 4px 0;
+      }
+
+      .loading {
+        color: var(--muted);
+        font-size: 1rem;
+      }
+
+      .program-calendar {
+        display: grid;
+        grid-column: 1 / -1;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 16px;
+        align-items: start;
+      }
+
+      .calendar-day {
+        min-width: 0;
+        padding: 16px;
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+      }
+
+      .calendar-day h3 {
+        margin: 0 0 14px;
+        font-size: 1rem;
+      }
+
+      .calendar-events {
+        display: grid;
+        gap: 10px;
+      }
+
+      .calendar-event {
+        display: grid;
+        gap: 5px;
+        padding: 10px;
+        border-left: 3px solid var(--primary);
+        background: var(--primary-soft);
+        border-radius: 4px;
+      }
+
+      .calendar-time {
+        color: var(--muted);
+        font-size: 0.85rem;
+        font-weight: 700;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>SemWo 2027</h1>
+      <p class="subtitle" data-i18n="welcome">Welcome to the seminar weekend!</p>
+      <div class="filter-bar">
+        <div class="filter-group">
+          <label for="current-user-name" data-i18n="yourName">Your name:</label>
+          <input id="current-user-name" type="text" autocomplete="name" placeholder="Enter your name" data-i18n-placeholder="enterName" />
+        </div>
+        <div class="filter-group">
+          <label for="page-language-filter" data-i18n="pageLanguage">Your language:</label>
+          <select id="page-language-filter">
+            <option value="en">English</option>
+            <option value="de">Deutsch</option>
+            <option value="fr">Français</option>
+            <option value="es">Español</option>
+            <option value="it">Italiano</option>
+            <option value="sq">Shqip</option>
+            <option value="nds">Plattdüütsch</option>
+            <option value="fy">Frysk</option>
+            <option value="bar">Boarisch</option>
+            <option value="frk">Fränkisch</option>
+            <option value="hes">Hessisch</option>
+            <option value="ksh">Kölsch</option>
+            <option value="ar">العربية</option>
+            <option value="he">עברית</option>
+          </select>
+        </div>
+        <span id="user-name-status" class="save-status" role="status" aria-live="polite"></span>
+      </div>
+
+      <div class="tab-bar">
+        <button class="tab active" data-tab="program" data-i18n="program">Program</button>
+        <button class="tab" data-tab="topics" data-i18n="topics">Topics</button>
+        <button class="tab" data-tab="locations" data-i18n="locations">Locations</button>
+      </div>
+
+      <section id="program-section" class="section active">
+        <h2 data-i18n="program">Program</h2>
+        <div class="filter-bar">
+          <div class="filter-group">
+            <label for="program-language-filter" data-i18n="language">Language:</label>
+            <select id="program-language-filter">
+              <option value="all" data-i18n="all">All</option>
+            </select>
+          </div>
+          <div class="filter-group filter-group-mobile-wide">
+            <label for="program-liked-filter" data-i18n="filter">Filter:</label>
+            <select id="program-liked-filter">
+              <option value="all" data-i18n="all">All</option>
+            </select>
+          </div>
+          <div class="filter-group filter-group-mobile-wide">
+            <label for="program-search-filter" data-i18n="search">Search:</label>
+            <input id="program-search-filter" type="search" placeholder="Name, description, contributor" data-i18n-placeholder="searchPlaceholder" />
+          </div>
+          <div class="filter-group">
+            <label for="program-detail-filter" data-i18n="details">Details:</label>
+            <select id="program-detail-filter">
+              <option value="full" data-i18n="full">Full</option>
+              <option value="compact" data-i18n="compact">Compact</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label for="program-view-filter" data-i18n="view">View:</label>
+            <select id="program-view-filter">
+              <option value="list" data-i18n="list">List</option>
+              <option value="calendar" data-i18n="calendar">Calendar</option>
+            </select>
+          </div>
+        </div>
+        <div id="program-cards" class="cards">
+          <div class="loading" data-i18n="loadingProgram">Loading program...</div>
+        </div>
+      </section>
+
+      <section id="topics-section" class="section">
+        <h2 data-i18n="topics">Topics</h2>
+        <div class="filter-bar">
+          <div class="filter-group">
+            <label for="topics-language-filter" data-i18n="language">Language:</label>
+            <select id="topics-language-filter">
+              <option value="all" data-i18n="all">All</option>
+            </select>
+          </div>
+          <div class="filter-group filter-group-mobile-wide">
+            <label for="topics-liked-filter" data-i18n="filter">Filter:</label>
+            <select id="topics-liked-filter">
+              <option value="all" data-i18n="all">All</option>
+            </select>
+          </div>
+          <div class="filter-group filter-group-mobile-wide">
+            <label for="topics-search-filter" data-i18n="search">Search:</label>
+            <input id="topics-search-filter" type="search" placeholder="Name, description, contributor" data-i18n-placeholder="searchPlaceholder" />
+          </div>
+          <div class="filter-group">
+            <label for="topics-detail-filter" data-i18n="details">Details:</label>
+            <select id="topics-detail-filter">
+              <option value="full" data-i18n="full">Full</option>
+              <option value="compact" data-i18n="compact">Compact</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label for="topics-type-filter" data-i18n="show">Show:</label>
+            <select id="topics-type-filter">
+              <option value="all" data-i18n="allItems">All items</option>
+              <option value="topics-only" data-i18n="topicsOnly">Topics only</option>
+            </select>
+          </div>
+        </div>
+        <div class="sort-bar">
+          <div class="filter-group">
+            <label for="topics-sort-select" data-i18n="sortBy">Sort by:</label>
+            <select id="topics-sort-select">
+              <option value="date" data-i18n="date">Date</option>
+              <option value="likes" data-i18n="likes">Likes</option>
+              <option value="name" data-i18n="name">Name</option>
+            </select>
+          </div>
+        </div>
+        <details class="topic-create">
+          <summary data-i18n="createTopic">Create a topic</summary>
+          <form id="create-topic-form">
+            <div class="topic-create-fields">
+              <div class="topic-create-field">
+                <label for="new-topic-name" data-i18n="name">Name</label>
+                <input id="new-topic-name" name="name" type="text" maxlength="160" required />
+              </div>
+              <div class="topic-create-field topic-create-description">
+                <label for="new-topic-description" data-i18n="topicDescription">Description:</label>
+                <textarea id="new-topic-description" name="description" rows="3" maxlength="4000" required></textarea>
+              </div>
+              <div class="topic-create-field">
+                <label for="new-topic-contributors" data-i18n="contributors">Contributors:</label>
+                <input id="new-topic-contributors" name="contributors" type="text" />
+              </div>
+              <div class="topic-create-field">
+                <label for="new-topic-languages" data-i18n="language">Language:</label>
+                <input id="new-topic-languages" name="languages" type="text" />
+              </div>
+            </div>
+            <button type="submit" data-i18n="addTopic">Add topic</button>
+          </form>
+        </details>
+        <p id="topic-create-status" class="topic-create-status" role="status" aria-live="polite"></p>
+        <div id="topics-cards" class="cards">
+          <div class="loading" data-i18n="loadingTopics">Loading topics...</div>
+        </div>
+      </section>
+
+      <section id="locations-section" class="section">
+        <h2 data-i18n="locations">Locations</h2>
+        <details class="topic-create">
+          <summary data-i18n="createLocation">Create a location</summary>
+          <form id="create-location-form">
+            <div class="topic-create-fields">
+              <div class="topic-create-field">
+                <label for="new-location-name" data-i18n="name">Name</label>
+                <input id="new-location-name" name="name" type="text" maxlength="160" required />
+              </div>
+              <div class="topic-create-field">
+                <label for="new-location-capacity" data-i18n="capacity">Capacity:</label>
+                <input id="new-location-capacity" name="capacity" type="number" min="1" max="100000" step="1" />
+              </div>
+              <div class="topic-create-field topic-create-description">
+                <label for="new-location-description" data-i18n="topicDescription">Description:</label>
+                <textarea id="new-location-description" name="description" rows="3" maxlength="4000" required></textarea>
+              </div>
+              <div class="topic-create-field topic-create-description">
+                <label for="new-location-facilities" data-i18n="facilities">Facilities:</label>
+                <input id="new-location-facilities" name="facilities" type="text" />
+              </div>
+            </div>
+            <button type="submit" data-i18n="addLocation">Add location</button>
+          </form>
+        </details>
+        <p id="location-create-status" class="topic-create-status" role="status" aria-live="polite"></p>
+        <div id="locations-cards" class="cards">
+          <div class="loading" data-i18n="loadingLocations">Loading locations...</div>
+        </div>
+      </section>
+    </div>
+
+    <script>
+      const pageLanguageStorageKey = 'conni2-page-language';
+      const pageTranslations = {
+        en: {
+          welcome: 'Welcome to the seminar weekend!', pageLanguage: 'Language:', yourName: 'Your name:', enterName: 'Enter your name', saved: 'Saved',
+          nameStorageUnavailable: 'Name storage is unavailable', likesSaveFailed: 'Could not save likes', program: 'Program', topics: 'Topics', locations: 'Locations',
+          language: 'Language:', all: 'All', filter: 'Filter:', allUsers: 'All users', myLikes: 'My likes', myContribution: 'My Contribution', myLikesAndContribution: 'My Likes + My Contribution', search: 'Search:',
+          searchPlaceholder: 'Name, description, contributor', details: 'Details:', full: 'Full', compact: 'Compact', view: 'View:', list: 'List', calendar: 'Calendar',
+          loadingProgram: 'Loading program...', loadingTopics: 'Loading topics...', loadingLocations: 'Loading locations...', show: 'Show:', allItems: 'All items',
+          topicsOnly: 'Topics only', sortBy: 'Sort by:', date: 'Date', likes: 'Likes', name: 'Name', programBadge: 'Program', topicBadge: 'Topic',
+          contributors: 'Contributors:', programNoMatches: 'No program items match these filters.', itemsNoMatches: 'No program items or topics match these filters.',
+          dateNotSet: 'Date not set', likeAction: '♡ Like', unlikeAction: '♥ Liked', likeTitle: 'Like this item', unlikeTitle: 'Unlike this item',
+          setNameFirst: 'Set your name first', likesCount: '{count} likes', likedByTooltip: 'Liked by: {names}', noLikerNames: 'No liker names available',
+          capacity: 'Capacity:', facilities: 'Facilities:', programItems: 'Program items:', noProgramItems: 'No program items', locationBadge: 'Location', minutes: '{count} min', loadError: 'Could not load program data.'
+        },
+        de: {
+          welcome: 'Willkommen zum Seminarwochenende!', pageLanguage: 'Sprache:', yourName: 'Dein Name:', enterName: 'Namen eingeben', saved: 'Gespeichert',
+          nameStorageUnavailable: 'Name kann nicht gespeichert werden', likesSaveFailed: 'Likes konnten nicht gespeichert werden', program: 'Programm', topics: 'Themen', locations: 'Orte',
+          language: 'Sprache:', all: 'Alle', filter: 'Filter:', allUsers: 'Alle', myLikes: 'Meine Likes', myContribution: 'Meine Beiträge', myLikesAndContribution: 'Meine Likes + meine Beiträge', search: 'Suche:',
+          searchPlaceholder: 'Name, Beschreibung, Mitwirkende', details: 'Details:', full: 'Vollständig', compact: 'Kompakt', view: 'Ansicht:', list: 'Liste', calendar: 'Kalender',
+          loadingProgram: 'Programm wird geladen...', loadingTopics: 'Themen werden geladen...', loadingLocations: 'Orte werden geladen...', show: 'Anzeigen:', allItems: 'Alle Einträge',
+          topicsOnly: 'Nur Themen', sortBy: 'Sortieren nach:', date: 'Datum', likes: 'Likes', name: 'Name', programBadge: 'Programm', topicBadge: 'Thema',
+          contributors: 'Mitwirkende:', programNoMatches: 'Keine Programmpunkte entsprechen diesen Filtern.', itemsNoMatches: 'Keine Programmpunkte oder Themen entsprechen diesen Filtern.',
+          dateNotSet: 'Kein Datum festgelegt', likeAction: '♡ Gefällt mir', unlikeAction: '♥ Gefällt mir', likeTitle: 'Eintrag liken', unlikeTitle: 'Like entfernen',
+          setNameFirst: 'Gib zuerst deinen Namen ein', likesCount: '{count} Likes', likedByTooltip: 'Gefällt: {names}', noLikerNames: 'Keine Namen verfügbar',
+          capacity: 'Kapazität:', facilities: 'Ausstattung:', programItems: 'Programmpunkte:', noProgramItems: 'Keine Programmpunkte', locationBadge: 'Ort', minutes: '{count} Min.', loadError: 'Programmdaten konnten nicht geladen werden.'
+        },
+        fr: {
+          welcome: 'Bienvenue au week-end de séminaire !', pageLanguage: 'Langue:', yourName: 'Votre nom :', enterName: 'Saisissez votre nom', saved: 'Enregistré',
+          nameStorageUnavailable: 'Le nom ne peut pas être enregistré', likesSaveFailed: 'Impossible d’enregistrer les mentions J’aime', program: 'Programme', topics: 'Thèmes', locations: 'Lieux',
+          language: 'Langue :', all: 'Tout', filter: 'Filtre :', allUsers: 'Tout le monde', myLikes: 'Mes mentions J’aime', myContribution: 'Mes contributions', myLikesAndContribution: 'Mes mentions J’aime + mes contributions', search: 'Rechercher :',
+          searchPlaceholder: 'Nom, description, contributeur', details: 'Détails :', full: 'Complet', compact: 'Compact', view: 'Vue :', list: 'Liste', calendar: 'Calendrier',
+          loadingProgram: 'Chargement du programme...', loadingTopics: 'Chargement des thèmes...', loadingLocations: 'Chargement des lieux...', show: 'Afficher :', allItems: 'Tout',
+          topicsOnly: 'Thèmes uniquement', sortBy: 'Trier par :', date: 'Date', likes: 'Mentions J’aime', name: 'Nom', programBadge: 'Programme', topicBadge: 'Thème',
+          contributors: 'Contributeurs :', programNoMatches: 'Aucun élément du programme ne correspond à ces filtres.', itemsNoMatches: 'Aucun élément du programme ou thème ne correspond à ces filtres.',
+          dateNotSet: 'Date non définie', likeAction: '♡ J’aime', unlikeAction: '♥ Aimé', likeTitle: 'Aimer cet élément', unlikeTitle: 'Retirer la mention J’aime',
+          setNameFirst: 'Saisissez d’abord votre nom', likesCount: '{count} mentions J’aime', likedByTooltip: 'Aimé par : {names}', noLikerNames: 'Aucun nom disponible',
+          capacity: 'Capacité :', facilities: 'Équipements :', programItems: 'Éléments du programme :', noProgramItems: 'Aucun élément du programme', locationBadge: 'Lieu', minutes: '{count} min', loadError: 'Impossible de charger les données du programme.'
+        },
+        es: {
+          welcome: '¡Te damos la bienvenida al fin de semana de seminarios!', pageLanguage: 'Idioma:', yourName: 'Tu nombre:', enterName: 'Escribe tu nombre', saved: 'Guardado',
+          nameStorageUnavailable: 'No se puede guardar el nombre', likesSaveFailed: 'No se pudieron guardar los Me gusta', program: 'Programa', topics: 'Temas', locations: 'Lugares',
+          language: 'Idioma:', all: 'Todos', filter: 'Filtro:', allUsers: 'Todos', myLikes: 'Mis Me gusta', myContribution: 'Mis contribuciones', myLikesAndContribution: 'Mis Me gusta + mis contribuciones', search: 'Buscar:',
+          searchPlaceholder: 'Nombre, descripción, colaborador', details: 'Detalles:', full: 'Completo', compact: 'Compacto', view: 'Vista:', list: 'Lista', calendar: 'Calendario',
+          loadingProgram: 'Cargando programa...', loadingTopics: 'Cargando temas...', loadingLocations: 'Cargando lugares...', show: 'Mostrar:', allItems: 'Todos los elementos',
+          topicsOnly: 'Solo temas', sortBy: 'Ordenar por:', date: 'Fecha', likes: 'Me gusta', name: 'Nombre', programBadge: 'Programa', topicBadge: 'Tema',
+          contributors: 'Colaboradores:', programNoMatches: 'Ningún elemento del programa coincide con estos filtros.', itemsNoMatches: 'Ningún elemento del programa o tema coincide con estos filtros.',
+          dateNotSet: 'Fecha no establecida', likeAction: '♡ Me gusta', unlikeAction: '♥ Me gusta', likeTitle: 'Me gusta este elemento', unlikeTitle: 'Quitar Me gusta',
+          setNameFirst: 'Primero escribe tu nombre', likesCount: '{count} Me gusta', likedByTooltip: 'Les gusta a: {names}', noLikerNames: 'No hay nombres disponibles',
+          capacity: 'Capacidad:', facilities: 'Instalaciones:', programItems: 'Elementos del programa:', noProgramItems: 'No hay elementos del programa', locationBadge: 'Lugar', minutes: '{count} min', loadError: 'No se pudieron cargar los datos del programa.'
+        },
+        it: {
+          welcome: 'Benvenuti al weekend di seminari!', pageLanguage: 'Lingua:', yourName: 'Il tuo nome:', enterName: 'Inserisci il tuo nome', saved: 'Salvato',
+          nameStorageUnavailable: 'Impossibile salvare il nome', likesSaveFailed: 'Impossibile salvare i Mi piace', program: 'Programma', topics: 'Temi', locations: 'Luoghi',
+          language: 'Lingua:', all: 'Tutti', filter: 'Filtro:', allUsers: 'Tutti', myLikes: 'I miei Mi piace', myContribution: 'I miei contributi', myLikesAndContribution: 'I miei Mi piace + i miei contributi', search: 'Cerca:',
+          searchPlaceholder: 'Nome, descrizione, collaboratore', details: 'Dettagli:', full: 'Completo', compact: 'Compatto', view: 'Vista:', list: 'Elenco', calendar: 'Calendario',
+          loadingProgram: 'Caricamento programma...', loadingTopics: 'Caricamento temi...', loadingLocations: 'Caricamento luoghi...', show: 'Mostra:', allItems: 'Tutti gli elementi',
+          topicsOnly: 'Solo temi', sortBy: 'Ordina per:', date: 'Data', likes: 'Mi piace', name: 'Nome', programBadge: 'Programma', topicBadge: 'Tema',
+          contributors: 'Collaboratori:', programNoMatches: 'Nessun elemento del programma corrisponde a questi filtri.', itemsNoMatches: 'Nessun elemento del programma o tema corrisponde a questi filtri.',
+          dateNotSet: 'Data non impostata', likeAction: '♡ Mi piace', unlikeAction: '♥ Ti piace', likeTitle: 'Metti Mi piace', unlikeTitle: 'Rimuovi Mi piace',
+          setNameFirst: 'Inserisci prima il tuo nome', likesCount: '{count} Mi piace', likedByTooltip: 'Piace a: {names}', noLikerNames: 'Nessun nome disponibile',
+          capacity: 'Capienza:', facilities: 'Servizi:', programItems: 'Elementi del programma:', noProgramItems: 'Nessun elemento del programma', locationBadge: 'Luogo', minutes: '{count} min', loadError: 'Impossibile caricare i dati del programma.'
+        },
+        sq: {
+          welcome: 'Mirë se vini në fundjavën e seminarit!', pageLanguage: 'Gjuha:', yourName: 'Emri juaj:', enterName: 'Shkruani emrin tuaj', saved: 'U ruajt',
+          nameStorageUnavailable: 'Emri nuk mund të ruhet', likesSaveFailed: 'Pëlqimet nuk mund të ruhen', program: 'Programi', topics: 'Temat', locations: 'Vendndodhjet',
+          language: 'Gjuha:', all: 'Të gjitha', filter: 'Filtro:', allUsers: 'Të gjithë', myLikes: 'Pëlqimet e mia', myContribution: 'Kontributet e mia', myLikesAndContribution: 'Pëlqimet e mia + kontributet e mia', search: 'Kërko:',
+          searchPlaceholder: 'Emri, përshkrimi, kontribuesi', details: 'Detajet:', full: 'Të plota', compact: 'Të përmbledhura', view: 'Pamja:', list: 'Listë', calendar: 'Kalendar',
+          loadingProgram: 'Programi po ngarkohet...', loadingTopics: 'Temat po ngarkohen...', loadingLocations: 'Vendndodhjet po ngarkohen...', show: 'Shfaq:', allItems: 'Të gjithë elementet',
+          topicsOnly: 'Vetëm temat', sortBy: 'Rendit sipas:', date: 'Datës', likes: 'Pëlqimeve', name: 'Emrit', programBadge: 'Program', topicBadge: 'Temë',
+          contributors: 'Kontribuesit:', programNoMatches: 'Asnjë element i programit nuk përputhet me filtrat.', itemsNoMatches: 'Asnjë element i programit apo temë nuk përputhet me filtrat.',
+          dateNotSet: 'Data nuk është caktuar', likeAction: '♡ Pëlqeje', unlikeAction: '♥ E pëlqyer', likeTitle: 'Pëlqeje këtë element', unlikeTitle: 'Hiq pëlqimin',
+          setNameFirst: 'Shkruani fillimisht emrin tuaj', likesCount: '{count} pëlqime', likedByTooltip: 'Pëlqyer nga: {names}', noLikerNames: 'Nuk ka emra të disponueshëm',
+          capacity: 'Kapaciteti:', facilities: 'Pajisjet:', programItems: 'Elementet e programit:', noProgramItems: 'Nuk ka elemente programi', locationBadge: 'Vendndodhje', minutes: '{count} min', loadError: 'Të dhënat e programit nuk mund të ngarkohen.'
+        },
+        nds: {
+          welcome: 'Moin un willkamen bi dat Seminarweekend!', pageLanguage: 'Spraak:', yourName: 'Dien Naam:', enterName: 'Naam ingeven', saved: 'Spiekert',
+          nameStorageUnavailable: 'De Naam lett sik nich spiekern', likesSaveFailed: 'Likes kunn nich spiekert warrn', program: 'Programm', topics: 'Themen', locations: 'Öörd',
+          language: 'Spraak:', all: 'All', filter: 'Filter:', allUsers: 'All', myLikes: 'Mien Likes', myContribution: 'Mien Bidrääg', myLikesAndContribution: 'Mien Likes + mien Bidrääg', search: 'Söken:',
+          searchPlaceholder: 'Naam, Beschrieven, Mitwirkende', details: 'Details:', full: 'Vull', compact: 'Kort', view: 'Ansicht:', list: 'List', calendar: 'Kalender',
+          loadingProgram: 'Programm warrt laadt...', loadingTopics: 'Themen warrt laadt...', loadingLocations: 'Öörd warrt laadt...', show: 'Wiesen:', allItems: 'All Indrääg',
+          topicsOnly: 'Blots Themen', sortBy: 'Sorteren na:', date: 'Datum', likes: 'Likes', name: 'Naam', programBadge: 'Programm', topicBadge: 'Thema',
+          contributors: 'Mitwirkende:', programNoMatches: 'Keen Programmelement passt to disse Filter.', itemsNoMatches: 'Keen Programmelement un keen Thema passt to disse Filter.',
+          dateNotSet: 'Datum nich fastleggt', likeAction: '♡ Gefallt mi', unlikeAction: '♥ Gefallt mi', likeTitle: 'Dit Element gefallt mi', unlikeTitle: 'Like torüchnemen',
+          setNameFirst: 'Giff eerst Dien Naam in', likesCount: '{count} Likes', likedByTooltip: 'Gefallt: {names}', noLikerNames: 'Keen Naam verföögbor',
+          capacity: 'Platz för:', facilities: 'Utstafferen:', programItems: 'Programmelemente:', noProgramItems: 'Keen Programmelemente', locationBadge: 'Steed', minutes: '{count} Min.', loadError: 'Programmdaten kunn nich laadt warrn.'
+        },
+        fy: {
+          welcome: 'Wolkom op it seminarwykein!', pageLanguage: 'Taal:', yourName: 'Dyn namme:', enterName: 'Folje dyn namme yn', saved: 'Bewarre',
+          nameStorageUnavailable: 'De namme kin net bewarre wurde', likesSaveFailed: 'Likes koene net bewarre wurde', program: 'Programma', topics: 'Tema’s', locations: 'Lokaasjes',
+          language: 'Taal:', all: 'Alles', filter: 'Filter:', allUsers: 'Elkenien', myLikes: 'Myn likes', myContribution: 'Myn bydragen', myLikesAndContribution: 'Myn likes + myn bydragen', search: 'Sykje:',
+          searchPlaceholder: 'Namme, beskriuwing, meiwurker', details: 'Details:', full: 'Folslein', compact: 'Koart', view: 'Werjefte:', list: 'List', calendar: 'Aginda',
+          loadingProgram: 'Programma wurdt laden...', loadingTopics: 'Tema’s wurde laden...', loadingLocations: 'Lokaasjes wurde laden...', show: 'Toan:', allItems: 'Alle items',
+          topicsOnly: 'Allinnich tema’s', sortBy: 'Sortearje op:', date: 'Datum', likes: 'Likes', name: 'Namme', programBadge: 'Programma', topicBadge: 'Tema',
+          contributors: 'Meiwurkers:', programNoMatches: 'Gjin programma-items passe by dizze filters.', itemsNoMatches: 'Gjin programma-items of tema’s passe by dizze filters.',
+          dateNotSet: 'Datum net ynsteld', likeAction: '♡ Like', unlikeAction: '♥ Liked', likeTitle: 'Like dit item', unlikeTitle: 'Like fuortsmite',
+          setNameFirst: 'Folje earst dyn namme yn', likesCount: '{count} likes', likedByTooltip: 'Liked troch: {names}', noLikerNames: 'Gjin nammen beskikber',
+          capacity: 'Kapasiteit:', facilities: 'Foarsjennings:', programItems: 'Programma-items:', noProgramItems: 'Gjin programma-items', locationBadge: 'Lokaasje', minutes: '{count} min.', loadError: 'Programmagegevens koene net laden wurde.'
+        },
+        bar: {
+          welcome: 'Griaß God zum Seminarwochenend!', pageLanguage: 'Sproch:', yourName: 'Dei Nam:', enterName: 'Gib dein Nam ei', saved: 'Gspeichert',
+          nameStorageUnavailable: 'Da Nam ko ned gspeichert wern', likesSaveFailed: 'De Likes ham ned gspeichert wern kenna', program: 'Programm', topics: 'Themen', locations: 'Orte',
+          language: 'Sproch:', all: 'Olle', filter: 'Filter:', allUsers: 'Olle', myLikes: 'Mei Likes', myContribution: 'Mei Beiträge', myLikesAndContribution: 'Mei Likes + mei Beiträge', search: 'Suacha:',
+          searchPlaceholder: 'Nam, Beschreibung, Mitwirkende', details: 'Details:', full: 'Voll', compact: 'Kompakt', view: 'Ansicht:', list: 'Listn', calendar: 'Kalender',
+          loadingProgram: 'Programm werd glodn...', loadingTopics: 'Themen wern glodn...', loadingLocations: 'Orte wern glodn...', show: 'Zeig:', allItems: 'Olle Einträge',
+          topicsOnly: 'Bloß Themen', sortBy: 'Sortiern nach:', date: 'Datum', likes: 'Likes', name: 'Nam', programBadge: 'Programm', topicBadge: 'Thema',
+          contributors: 'Mitwirkende:', programNoMatches: 'Koane Programmeinträge passn zu dera Auswahl.', itemsNoMatches: 'Koane Programmeinträge oder Themen passn zu dera Auswahl.',
+          dateNotSet: 'Koans Datum oglegt', likeAction: '♡ Gfoit ma', unlikeAction: '♥ Gfoit ma', likeTitle: 'Des gfoit ma', unlikeTitle: 'Like zrucknehma',
+          setNameFirst: 'Gib erst dei Nam ei', likesCount: '{count} Likes', likedByTooltip: 'Gfoit: {names}', noLikerNames: 'Koane Namn do',
+          capacity: 'Platz fia:', facilities: 'Ausstattung:', programItems: 'Programmeinträge:', noProgramItems: 'Koane Programmeinträge', locationBadge: 'Ort', minutes: '{count} Min.', loadError: 'Programmdaten ham ned glodn wern kenna.'
+        },
+        frk: {
+          welcome: 'Grüß Gott zum Seminarwochenend!', pageLanguage: 'Sproch:', yourName: 'Dei Nam:', enterName: 'Nam ei gebn', saved: 'Gspeichert',
+          nameStorageUnavailable: 'Nam kon ned gspeichert wern', likesSaveFailed: 'Likes ham ned gspeichert wern kenna', program: 'Programm', topics: 'Themen', locations: 'Orte',
+          language: 'Sproch:', all: 'Olle', filter: 'Filter:', allUsers: 'Olle', myLikes: 'Mei Likes', myContribution: 'Mei Beiträge', myLikesAndContribution: 'Mei Likes + mei Beiträge', search: 'Suachn:',
+          searchPlaceholder: 'Nam, Beschreibung, Mitwirkende', details: 'Details:', full: 'Vollständig', compact: 'Kompakt', view: 'Ansicht:', list: 'Listn', calendar: 'Kalender',
+          loadingProgram: 'Programm werd glodn...', loadingTopics: 'Themen wern glodn...', loadingLocations: 'Orte wern glodn...', show: 'Zeign:', allItems: 'Olle Einträg',
+          topicsOnly: 'Bloß Themen', sortBy: 'Sortiern nach:', date: 'Datum', likes: 'Likes', name: 'Nam', programBadge: 'Programm', topicBadge: 'Thema',
+          contributors: 'Mitwirkende:', programNoMatches: 'Koane Programmeinträge passn zu dera Auswahl.', itemsNoMatches: 'Koane Programmeinträge oder Themen passn zu dera Auswahl.',
+          dateNotSet: 'Koans Datum oglegt', likeAction: '♡ Gfällt mer', unlikeAction: '♥ Gfällt mer', likeTitle: 'Des gfallt mer', unlikeTitle: 'Like zrucknehma',
+          setNameFirst: 'Gib erst dei Nam ei', likesCount: '{count} Likes', likedByTooltip: 'Gfällt: {names}', noLikerNames: 'Koane Namen do',
+          capacity: 'Platz für:', facilities: 'Ausstattung:', programItems: 'Programmeinträge:', noProgramItems: 'Koane Programmeinträge', locationBadge: 'Ort', minutes: '{count} Min.', loadError: 'Programmdaten ham ned glodn wern kenna.'
+        },
+        hes: {
+          welcome: 'Ei Gude zum Seminarwochenende!', pageLanguage: 'Sprooch:', yourName: 'Dein Name:', enterName: 'Name eingebe', saved: 'Gespeichert',
+          nameStorageUnavailable: 'Name kann net gespeichert wern', likesSaveFailed: 'Likes konnte net gespeichert wern', program: 'Programm', topics: 'Themen', locations: 'Orte',
+          language: 'Sprooch:', all: 'Alle', filter: 'Filter:', allUsers: 'Alle', myLikes: 'Mei Likes', myContribution: 'Mei Beiträge', myLikesAndContribution: 'Mei Likes + mei Beiträge', search: 'Suche:',
+          searchPlaceholder: 'Name, Beschreibung, Mitwirkende', details: 'Details:', full: 'Vollständig', compact: 'Kompakt', view: 'Ansicht:', list: 'Liste', calendar: 'Kalender',
+          loadingProgram: 'Programm wird gelade...', loadingTopics: 'Themen werre gelade...', loadingLocations: 'Orte werre gelade...', show: 'Zeige:', allItems: 'Alle Einträge',
+          topicsOnly: 'Nur Themen', sortBy: 'Sortiere nach:', date: 'Datum', likes: 'Likes', name: 'Name', programBadge: 'Programm', topicBadge: 'Thema',
+          contributors: 'Mitwirkende:', programNoMatches: 'Für die Auswahl gibt’s ka passende Programmpunkte.', itemsNoMatches: 'Für die Auswahl gibt’s ka passende Programmpunkte oder Themen.',
+          dateNotSet: 'Kei Datum festgelegt', likeAction: '♡ Gefällt mer', unlikeAction: '♥ Gefällt mer', likeTitle: 'Des gefällt mer', unlikeTitle: 'Like zurücknehme',
+          setNameFirst: 'Gib erst dei Name ei', likesCount: '{count} Likes', likedByTooltip: 'Gefällt: {names}', noLikerNames: 'Kei Name vorhanden',
+          capacity: 'Platz für:', facilities: 'Ausstattung:', programItems: 'Programmpunkte:', noProgramItems: 'Kee Programmpunkte', locationBadge: 'Ort', minutes: '{count} Min.', loadError: 'Programmdaten konnte net gelade wern.'
+        },
+        ksh: {
+          welcome: 'Jode Daach un willkumme beim Seminarwochenend!', pageLanguage: 'Sproch:', yourName: 'Ding Name:', enterName: 'Ding Name aanjävve', saved: 'Jespeschert',
+          nameStorageUnavailable: 'Dä Name kunnt nit jeseschert wäde', likesSaveFailed: 'Ding Likes kunnte nit jeseschert wäde', program: 'Programm', topics: 'Themen', locations: 'Plätz',
+          language: 'Sproch:', all: 'Alles', filter: 'Filter:', allUsers: 'All Minsche', myLikes: 'Ming Likes', myContribution: 'Ming Beiträge', myLikesAndContribution: 'Ming Likes + ming Beiträge', search: 'Söke:',
+          searchPlaceholder: 'Name, Beschrievung, Metwirkende', details: 'Details:', full: 'Voll', compact: 'Kompakt', view: 'Ansicht:', list: 'Leß', calendar: 'Kalender',
+          loadingProgram: 'Programm weed jelade...', loadingTopics: 'Themen weed jelade...', loadingLocations: 'Plätz weed jelade...', show: 'Zeije:', allItems: 'All Einträge',
+          topicsOnly: 'Bloß Themen', sortBy: 'Sortere noh:', date: 'Datum', likes: 'Likes', name: 'Name', programBadge: 'Programm', topicBadge: 'Thema',
+          contributors: 'Metwirkende:', programNoMatches: 'Kein Programmpunkt paß op die Filter.', itemsNoMatches: 'Kein Programmpunkt un kein Thema paß op die Filter.',
+          dateNotSet: 'Kein Datum aanjejovve', likeAction: '♡ Jefällt mer', unlikeAction: '♥ Jefällt mer', likeTitle: 'Dat jefällt mer', unlikeTitle: 'Like widder funnemme',
+          setNameFirst: 'Jiv erst ding Name aan', likesCount: '{count} Likes', likedByTooltip: 'Jefällt: {names}', noLikerNames: 'Kein Name do',
+          capacity: 'Platz för:', facilities: 'Ussstattung:', programItems: 'Programmpunkte:', noProgramItems: 'Kein Programmpunkt do', locationBadge: 'Platz', minutes: '{count} Min.', loadError: 'Programmdate kunnte nit jelade wäde.'
+        },
+        ar: {
+          welcome: 'مرحبًا بكم في عطلة نهاية الأسبوع للندوة!', pageLanguage: 'لغة الصفحة:', yourName: 'اسمك:', enterName: 'أدخل اسمك', saved: 'تم الحفظ',
+          nameStorageUnavailable: 'تعذر حفظ الاسم', likesSaveFailed: 'تعذر حفظ الإعجابات', program: 'البرنامج', topics: 'المواضيع', locations: 'المواقع',
+          language: 'اللغة:', all: 'الكل', filter: 'تصفية:', allUsers: 'كل المستخدمين', myLikes: 'إعجاباتي', myContribution: 'مساهماتي', myLikesAndContribution: 'إعجاباتي + مساهماتي', search: 'بحث:',
+          searchPlaceholder: 'الاسم، الوصف، المساهم', details: 'التفاصيل:', full: 'كامل', compact: 'مختصر', view: 'العرض:', list: 'قائمة', calendar: 'تقويم',
+          loadingProgram: 'جارٍ تحميل البرنامج...', loadingTopics: 'جارٍ تحميل المواضيع...', loadingLocations: 'جارٍ تحميل المواقع...', show: 'عرض:', allItems: 'كل العناصر',
+          topicsOnly: 'المواضيع فقط', sortBy: 'ترتيب حسب:', date: 'التاريخ', likes: 'الإعجابات', name: 'الاسم', programBadge: 'برنامج', topicBadge: 'موضوع',
+          contributors: 'المساهمون:', programNoMatches: 'لا توجد عناصر برنامج تطابق عوامل التصفية.', itemsNoMatches: 'لا توجد عناصر برنامج أو مواضيع تطابق عوامل التصفية.',
+          dateNotSet: 'التاريخ غير محدد', likeAction: '♡ أعجبني', unlikeAction: '♥ أعجبني', likeTitle: 'أعجبني هذا العنصر', unlikeTitle: 'إزالة الإعجاب',
+          setNameFirst: 'أدخل اسمك أولاً', likesCount: '{count} إعجابات', likedByTooltip: 'أعجب به: {names}', noLikerNames: 'لا توجد أسماء متاحة',
+          capacity: 'السعة:', facilities: 'التجهيزات:', programItems: 'عناصر البرنامج:', noProgramItems: 'لا توجد عناصر للبرنامج', locationBadge: 'موقع', minutes: '{count} دقيقة', loadError: 'تعذر تحميل بيانات البرنامج.'
+        },
+        he: {
+          welcome: 'ברוכים הבאים לסוף השבוע של הסמינר!', pageLanguage: 'שפת האתר:', yourName: 'השם שלך:', enterName: 'הזן את שמך', saved: 'נשמר',
+          nameStorageUnavailable: 'לא ניתן לשמור את השם', likesSaveFailed: 'לא ניתן לשמור את הלייקים', program: 'תוכנית', topics: 'נושאים', locations: 'מיקומים',
+          language: 'שפה:', all: 'הכול', filter: 'סינון:', allUsers: 'כולם', myLikes: 'הלייקים שלי', myContribution: 'התרומות שלי', myLikesAndContribution: 'הלייקים שלי + התרומות שלי', search: 'חיפוש:',
+          searchPlaceholder: 'שם, תיאור, משתתף', details: 'פרטים:', full: 'מלא', compact: 'מצומצם', view: 'תצוגה:', list: 'רשימה', calendar: 'לוח שנה',
+          loadingProgram: 'התוכנית נטענת...', loadingTopics: 'הנושאים נטענים...', loadingLocations: 'המיקומים נטענים...', show: 'הצגה:', allItems: 'כל הפריטים',
+          topicsOnly: 'נושאים בלבד', sortBy: 'מיון לפי:', date: 'תאריך', likes: 'לייקים', name: 'שם', programBadge: 'תוכנית', topicBadge: 'נושא',
+          contributors: 'משתתפים:', programNoMatches: 'אין פריטי תוכנית התואמים למסננים האלה.', itemsNoMatches: 'אין פריטי תוכנית או נושאים התואמים למסננים האלה.',
+          dateNotSet: 'התאריך לא הוגדר', likeAction: '♡ אהבתי', unlikeAction: '♥ אהבתי', likeTitle: 'אהבתי את הפריט הזה', unlikeTitle: 'ביטול הלייק',
+          setNameFirst: 'יש להזין שם תחילה', likesCount: '{count} לייקים', likedByTooltip: 'אהבו על ידי: {names}', noLikerNames: 'אין שמות זמינים',
+          capacity: 'קיבולת:', facilities: 'מתקנים:', programItems: 'פריטי תוכנית:', noProgramItems: 'אין פריטי תוכנית', locationBadge: 'מיקום', minutes: '{count} דקות', loadError: 'לא ניתן לטעון את נתוני התוכנית.'
+        }
+      };
+
+      const topicFormTranslations = {
+        en: { topicDescription: 'Description:', createTopic: 'Create a topic', addTopic: 'Add topic', topicSaved: 'Topic created.', topicCreateError: 'Could not create the topic.', deleteItem: 'Delete', deleteConfirm: 'Delete "{name}" permanently?', itemDeleted: 'Item deleted.', deleteFailed: 'Could not delete the item.', editItem: 'Edit', saveItem: 'Save changes', itemSaved: 'Changes saved.', itemSaveFailed: 'Could not save changes.', moveToProgram: 'Schedule in program', location: 'Location', startTime: 'Start time', endTime: 'End time' },
+        de: { topicDescription: 'Beschreibung:', createTopic: 'Thema erstellen', addTopic: 'Thema hinzufügen', topicSaved: 'Thema erstellt.', topicCreateError: 'Thema konnte nicht erstellt werden.', deleteItem: 'Löschen', editItem: 'Bearbeiten', deleteConfirm: '„{name}“ dauerhaft löschen?', itemDeleted: 'Eintrag gelöscht.', deleteFailed: 'Eintrag konnte nicht gelöscht werden.' },
+        fr: { topicDescription: 'Description :', createTopic: 'Créer un thème', addTopic: 'Ajouter le thème', topicSaved: 'Thème créé.', topicCreateError: 'Impossible de créer le thème.', deleteItem: 'Supprimer', editItem: 'Modifier', deleteConfirm: 'Supprimer définitivement « {name} » ?', itemDeleted: 'Élément supprimé.', deleteFailed: 'Impossible de supprimer cet élément.' },
+        es: { topicDescription: 'Descripción:', createTopic: 'Crear un tema', addTopic: 'Añadir tema', topicSaved: 'Tema creado.', topicCreateError: 'No se pudo crear el tema.', deleteItem: 'Eliminar', editItem: 'Editar', deleteConfirm: '¿Eliminar «{name}» permanentemente?', itemDeleted: 'Elemento eliminado.', deleteFailed: 'No se pudo eliminar el elemento.' },
+        it: { topicDescription: 'Descrizione:', createTopic: 'Crea un tema', addTopic: 'Aggiungi tema', topicSaved: 'Tema creato.', topicCreateError: 'Impossibile creare il tema.', deleteItem: 'Elimina', editItem: 'Modifica', deleteConfirm: 'Eliminare definitivamente «{name}»?', itemDeleted: 'Elemento eliminato.', deleteFailed: 'Impossibile eliminare l’elemento.' },
+        sq: { topicDescription: 'Përshkrimi:', createTopic: 'Krijo temë', addTopic: 'Shto temën', topicSaved: 'Tema u krijua.', topicCreateError: 'Tema nuk mund të krijohej.', deleteItem: 'Fshi', editItem: 'Redakto', deleteConfirm: 'Ta fshij përgjithmonë “{name}”?', itemDeleted: 'Elementi u fshi.', deleteFailed: 'Elementi nuk mund të fshihej.' },
+        nds: { topicDescription: 'Beschrieven:', createTopic: 'Thema opstellen', addTopic: 'Thema tofögen', topicSaved: 'Thema is opstellt.', topicCreateError: 'Thema kunn nich opstellt warrn.', deleteItem: 'Wegdoon', editItem: 'Ännern', deleteConfirm: '„{name}“ för immer wegdoon?', itemDeleted: 'Indrag is wegdaan.', deleteFailed: 'Indrag kunn nich wegdaan warrn.' },
+        fy: { topicDescription: 'Beskriuwing:', createTopic: 'Tema oanmeitsje', addTopic: 'Tema tafoegje', topicSaved: 'Tema oanmakke.', topicCreateError: 'De tema koe net oanmakke wurde.', deleteItem: 'Fuortsmite', editItem: 'Bewurkje', deleteConfirm: '“{name}” permanint fuortsmite?', itemDeleted: 'Item fuorthelle.', deleteFailed: 'It item koe net fuorthelle wurde.' },
+        bar: { topicDescription: 'Beschreibung:', createTopic: 'Thema erstoin', addTopic: 'Thema dazua doa', topicSaved: 'Thema is erstoid.', topicCreateError: 'Des Thema hod ned erstoid wean kenna.', deleteItem: 'Löschen', editItem: 'Bearbeiten', deleteConfirm: '„{name}“ endgültig löschen?', itemDeleted: 'Eintrag is glöscht.', deleteFailed: 'Eintrag hod ned glöscht wern kenna.' },
+        frk: { topicDescription: 'Beschreibung:', createTopic: 'Thema erstella', addTopic: 'Thema dazua doa', topicSaved: 'Thema is erstellt.', topicCreateError: 'Thema kon ned erstellt wern.', deleteItem: 'Löschen', editItem: 'Bearbeite', deleteConfirm: '„{name}“ endgültig löschen?', itemDeleted: 'Eintrag is gelöscht.', deleteFailed: 'Eintrag kon ned gelöscht wern.' },
+        hes: { topicDescription: 'Beschreibung:', createTopic: 'Thema erstelle', addTopic: 'Thema dazu', topicSaved: 'Thema is erstellt.', topicCreateError: 'Thema kon net erstellt wern.', deleteItem: 'Löschen', editItem: 'Bearbeite', deleteConfirm: '„{name}“ endgültig lösche?', itemDeleted: 'Eintrag is gelöscht.', deleteFailed: 'Eintrag kon net gelöscht wern.' },
+        ksh: { topicDescription: 'Beschrievung:', createTopic: 'En Thema aanlääje', addTopic: 'Thema dobei donn', topicSaved: 'Thema es aanjelääsch.', topicCreateError: 'Dat Thema kunnt nit aanjelääsch wäde.', deleteItem: 'Weg damit', editItem: 'Ändere', deleteConfirm: '„{name}“ för immer fottschmieße?', itemDeleted: 'Dä Entraach es fott.', deleteFailed: 'Dä Entraach kunnt nit fottjemaht wäde.' },
+        ar: { topicDescription: 'الوصف:', createTopic: 'إنشاء موضوع', addTopic: 'إضافة موضوع', topicSaved: 'تم إنشاء الموضوع.', topicCreateError: 'تعذر إنشاء الموضوع.', deleteItem: 'حذف', editItem: 'تعديل', deleteConfirm: 'هل تريد حذف «{name}» نهائيًا؟', itemDeleted: 'تم حذف العنصر.', deleteFailed: 'تعذر حذف العنصر.' },
+        he: { topicDescription: 'תיאור:', createTopic: 'יצירת נושא', addTopic: 'הוספת נושא', topicSaved: 'הנושא נוצר.', topicCreateError: 'לא ניתן ליצור את הנושא.', deleteItem: 'מחיקה', editItem: 'עריכה', deleteConfirm: 'למחוק את „{name}” לצמיתות?', itemDeleted: 'הפריט נמחק.', deleteFailed: 'לא ניתן למחוק את הפריט.' }
+      };
+
+      const locationFormTranslations = {
+        en: { createLocation: 'Create a location', addLocation: 'Add location', saveLocation: 'Save location', locationSaved: 'Location saved.', locationSaveFailed: 'Could not save the location.' },
+        de: { createLocation: 'Ort erstellen', addLocation: 'Ort hinzufügen', saveLocation: 'Ort speichern', locationSaved: 'Ort gespeichert.', locationSaveFailed: 'Ort konnte nicht gespeichert werden.' },
+        fr: { createLocation: 'Créer un lieu', addLocation: 'Ajouter le lieu', saveLocation: 'Enregistrer le lieu', locationSaved: 'Lieu enregistré.', locationSaveFailed: 'Impossible d’enregistrer le lieu.' },
+        es: { createLocation: 'Crear una ubicación', addLocation: 'Añadir ubicación', saveLocation: 'Guardar ubicación', locationSaved: 'Ubicación guardada.', locationSaveFailed: 'No se pudo guardar la ubicación.' },
+        it: { createLocation: 'Crea un luogo', addLocation: 'Aggiungi luogo', saveLocation: 'Salva luogo', locationSaved: 'Luogo salvato.', locationSaveFailed: 'Impossibile salvare il luogo.' },
+        sq: { createLocation: 'Krijo vendndodhje', addLocation: 'Shto vendndodhjen', saveLocation: 'Ruaj vendndodhjen', locationSaved: 'Vendndodhja u ruajt.', locationSaveFailed: 'Vendndodhja nuk mund të ruhej.' },
+        nds: { createLocation: 'Steed opstellen', addLocation: 'Steed tofögen', saveLocation: 'Steed spiekern', locationSaved: 'Steed is spiekert.', locationSaveFailed: 'Steed kunn nich spiekert warrn.' },
+        fy: { createLocation: 'Lokaasje oanmeitsje', addLocation: 'Lokaasje tafoegje', saveLocation: 'Lokaasje bewarje', locationSaved: 'Lokaasje bewarre.', locationSaveFailed: 'De lokaasje koe net bewarre wurde.' },
+        bar: { createLocation: 'Ort erstellen', addLocation: 'Ort hinzufügen', saveLocation: 'Ort speichern', locationSaved: 'Ort gespeichert.', locationSaveFailed: 'Ort konnte ned gspeichert wern.' },
+        frk: { createLocation: 'Ort erstella', addLocation: 'Ort dazua doa', saveLocation: 'Ort speichere', locationSaved: 'Ort is gespeichert.', locationSaveFailed: 'Ort kon ned gespeichert wern.' },
+        hes: { createLocation: 'Ort erstelle', addLocation: 'Ort dazu', saveLocation: 'Ort speichere', locationSaved: 'Ort is gespeichert.', locationSaveFailed: 'Ort kon net gespeichert wern.' },
+        ksh: { createLocation: 'En Platz aanlääje', addLocation: 'Platz dobei donn', saveLocation: 'Platz aanlääje', locationSaved: 'Dä Platz es jeseschert.', locationSaveFailed: 'Dä Platz kunnt nit jeseschert wäde.' },
+        ar: { createLocation: 'إنشاء موقع', addLocation: 'إضافة موقع', saveLocation: 'حفظ الموقع', locationSaved: 'تم حفظ الموقع.', locationSaveFailed: 'تعذر حفظ الموقع.' },
+        he: { createLocation: 'יצירת מיקום', addLocation: 'הוספת מיקום', saveLocation: 'שמירת מיקום', locationSaved: 'המיקום נשמר.', locationSaveFailed: 'לא ניתן לשמור את המיקום.' }
+      };
+
+      let currentPageLanguage = 'en';
+      const userNameStorageKey = 'conni2-user-name';
+      let currentUserName = '';
+
+      function translate(key, values = {}) {
+        const pageText = (pageTranslations[currentPageLanguage] || pageTranslations.en)[key];
+        const topicText = topicFormTranslations[currentPageLanguage]?.[key] || topicFormTranslations.en[key];
+        const locationText = locationFormTranslations[currentPageLanguage]?.[key] || locationFormTranslations.en[key];
+        let text = pageText || topicText || locationText || pageTranslations.en[key] || key;
+        Object.entries(values).forEach(([name, value]) => {
+          text = text.replaceAll(`{${name}}`, value);
+        });
+        return text;
+      }
+
+      function getPageCollationLocale() {
+        if (['bar', 'frk', 'hes', 'ksh', 'nds'].includes(currentPageLanguage)) return 'de-DE';
+        if (currentPageLanguage === 'fy') return 'nl-NL';
+        return currentPageLanguage;
+      }
+
+      function sortPageLanguageOptions() {
+        const selector = document.getElementById('page-language-filter');
+        const selectedLanguage = selector.value;
+        const collator = new Intl.Collator(getPageCollationLocale(), { sensitivity: 'base' });
+        const options = Array.from(selector.options).sort((a, b) => collator.compare(a.textContent, b.textContent));
+        options.forEach(option => selector.append(option));
+        selector.value = selectedLanguage;
+      }
+
+      function applyPageTranslations() {
+        document.documentElement.lang = currentPageLanguage;
+        document.documentElement.dir = ['ar', 'he'].includes(currentPageLanguage) ? 'rtl' : 'ltr';
+        sortPageLanguageOptions();
+        document.querySelectorAll('[data-i18n]').forEach(element => {
+          element.textContent = translate(element.dataset.i18n);
+        });
+        document.querySelectorAll('[data-i18n-placeholder]').forEach(element => {
+          element.placeholder = translate(element.dataset.i18nPlaceholder);
+        });
+
+        ['program-language-filter', 'topics-language-filter'].forEach(id => {
+          const allOption = document.getElementById(id).querySelector('option[value="all"]');
+          if (allOption) allOption.textContent = translate('all');
+        });
+
+        const programLikedFilter = document.getElementById('program-liked-filter');
+        const topicsLikedFilter = document.getElementById('topics-liked-filter');
+        const selectedProgramLikes = programLikedFilter.value;
+        const selectedTopicLikes = topicsLikedFilter.value;
+        populateLikerFilters();
+        if (Array.from(programLikedFilter.options).some(option => option.value === selectedProgramLikes)) {
+          programLikedFilter.value = selectedProgramLikes;
+        }
+        if (Array.from(topicsLikedFilter.options).some(option => option.value === selectedTopicLikes)) {
+          topicsLikedFilter.value = selectedTopicLikes;
+        }
+
+        document.getElementById('user-name-status').textContent = currentUserName ? translate('saved') : '';
+
+        if (window.allProgramItems) {
+          renderCurrentViews();
+          renderLocations(window.allLocations || []);
+        }
+      }
+
+      function initializePageLanguage() {
+        const selector = document.getElementById('page-language-filter');
+        try {
+          const savedLanguage = localStorage.getItem(pageLanguageStorageKey);
+          if (pageTranslations[savedLanguage]) currentPageLanguage = savedLanguage;
+        } catch {
+          currentPageLanguage = 'en';
+        }
+        selector.value = currentPageLanguage;
+        selector.addEventListener('change', () => {
+          currentPageLanguage = selector.value;
+          try {
+            localStorage.setItem(pageLanguageStorageKey, currentPageLanguage);
+          } catch {}
+          applyPageTranslations();
+        });
+        applyPageTranslations();
+      }
+
+      function currentUserKey() {
+        return currentUserName.trim().toLocaleLowerCase();
+      }
+
+      function renderCurrentViews() {
+        if (!window.allProgramItems) return;
+
+        renderProgram(
+          window.allProgramItems,
+          document.getElementById('program-language-filter').value,
+          document.getElementById('program-detail-filter').value,
+          document.getElementById('program-search-filter').value,
+          document.getElementById('program-liked-filter').value
+        );
+        renderTopics(
+          window.allTopics || [],
+          document.getElementById('topics-language-filter').value,
+          document.getElementById('topics-sort-select').value,
+          document.getElementById('topics-type-filter').value === 'topics-only',
+          document.getElementById('topics-detail-filter').value,
+          document.getElementById('topics-search-filter').value,
+          document.getElementById('topics-liked-filter').value
+        );
+      }
+
+      function getItemLikeState(item, itemType) {
+        const nameKey = currentUserKey();
+        const likers = item.likers || [];
+        const likeCount = Number(item.likeCount);
+        const liked = !!nameKey && likers.some(liker => liker.toLocaleLowerCase() === nameKey);
+        return { liked, likeCount: Number.isFinite(likeCount) ? likeCount : likers.length, likers };
+      }
+
+      function renderLikeControl(item, itemType) {
+        const state = getItemLikeState(item, itemType);
+        const likerNames = state.likers.join(', ') || translate('noLikerNames');
+        const tooltip = escapeAttributeValue(translate('likedByTooltip', { names: likerNames }));
+        const buttonTitle = currentUserName
+          ? translate(state.liked ? 'unlikeTitle' : 'likeTitle')
+          : translate('setNameFirst');
+
+        return `
+          <div class="like-actions">
+            <button
+              class="like-toggle"
+              type="button"
+              data-like-type="${itemType}"
+              data-like-name="${escapeAttributeValue(item.name)}"
+              aria-pressed="${state.liked}"
+              title="${escapeAttributeValue(buttonTitle)}"
+              ${currentUserName ? '' : 'disabled'}
+            >${translate(state.liked ? 'unlikeAction' : 'likeAction')}</button>
+            <p class="likes" title="${tooltip}">♥ ${translate('likesCount', { count: state.likeCount })}</p>
+          </div>
+        `;
+      }
+
+      function renderDeleteControl(item, itemType) {
+        const label = translate('deleteItem');
+        return `
+          <button
+            class="delete-item"
+            type="button"
+            data-delete-type="${itemType}"
+            data-delete-name="${escapeAttributeValue(item.name)}"
+            aria-label="${escapeAttributeValue(label)}: ${escapeAttributeValue(item.name)}"
+            title="${escapeAttributeValue(label)}"
+          >${label}</button>
+        `;
+      }
+
+      function renderItemEditor(item, itemType) {
+        const isProgram = itemType === 'program';
+        const locations = (window.allLocations || []).map(location => `
+          <option value="${escapeAttributeValue(location.name)}" ${item.location === location.name ? 'selected' : ''}>${escapeAttributeValue(location.name)}</option>
+        `).join('');
+        return `
+          <details class="item-editor">
+            <summary>${translate('editItem')}</summary>
+            <form class="item-editor-form" data-edit-type="${itemType}" data-edit-name="${escapeAttributeValue(item.name)}">
+              <div class="item-editor-fields">
+                <div class="item-editor-field">
+                  <label>${translate('name')}</label>
+                  <input name="name" type="text" maxlength="160" value="${escapeAttributeValue(item.name)}" required />
+                </div>
+                <div class="item-editor-field">
+                  <label>${translate('contributors')}</label>
+                  <input name="contributors" type="text" value="${escapeAttributeValue((item.contributers || []).join(', '))}" />
+                </div>
+                <div class="item-editor-field">
+                  <label>${translate('language')}</label>
+                  <input name="languages" type="text" value="${escapeAttributeValue((item.languages || []).join(', '))}" />
+                </div>
+                <div class="item-editor-field item-editor-description">
+                  <label>${translate('topicDescription')}</label>
+                  <textarea name="description" rows="3" maxlength="4000">${escapeAttributeValue(item.desc || '')}</textarea>
+                </div>
+              </div>
+              ${isProgram ? '' : `
+                <label class="item-editor-move">
+                  <input type="checkbox" name="moveToProgram" /> ${translate('moveToProgram')}
+                </label>
+              `}
+              <div class="item-editor-schedule" ${isProgram ? '' : 'hidden'}>
+                <div class="item-editor-field">
+                  <label>${translate('location')}</label>
+                  <select name="location" ${isProgram ? 'required' : ''}>
+                    <option value=""></option>${locations}
+                  </select>
+                </div>
+                <div class="item-editor-field">
+                  <label>${translate('date')}</label>
+                  <input name="date" type="date" value="${escapeAttributeValue(item.date || '')}" ${isProgram ? 'required' : ''} />
+                </div>
+                <div class="item-editor-field">
+                  <label>${translate('startTime')}</label>
+                  <input name="start" type="time" value="${escapeAttributeValue(item.start || '')}" ${isProgram ? 'required' : ''} />
+                </div>
+                <div class="item-editor-field">
+                  <label>${translate('endTime')}</label>
+                  <input name="end" type="time" value="${escapeAttributeValue(item.end || '')}" ${isProgram ? 'required' : ''} />
+                </div>
+              </div>
+              <button class="save-item" type="submit">${translate('saveItem')}</button>
+              <p class="item-editor-status" role="status" aria-live="polite"></p>
+            </form>
+          </details>
+        `;
+      }
+
+      async function saveItem(form) {
+        const sourceType = form.dataset.editType;
+        const itemName = form.dataset.editName;
+        const formData = new FormData(form);
+        const splitValues = value => value.split(',').map(part => part.trim()).filter(Boolean);
+        const moveToProgram = formData.get('moveToProgram') === 'on';
+        const targetType = sourceType === 'topics' && !moveToProgram ? 'topics' : 'program';
+        const status = form.querySelector('.item-editor-status');
+        const saveButton = form.querySelector('.save-item');
+        saveButton.disabled = true;
+        status.textContent = '';
+
+        try {
+          const response = await fetch('/api/items', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              itemType: sourceType,
+              targetType,
+              itemName,
+              name: formData.get('name'),
+              description: formData.get('description'),
+              contributors: splitValues(formData.get('contributors')),
+              languages: splitValues(formData.get('languages')),
+              location: formData.get('location'),
+              date: formData.get('date'),
+              start: formData.get('start'),
+              end: formData.get('end')
+            })
+          });
+          const result = await response.json();
+          if (!response.ok) throw new Error(result.error || translate('itemSaveFailed'));
+
+          const sourceItems = sourceType === 'program' ? window.allProgramItems : window.allTopics;
+          const targetItems = targetType === 'program' ? window.allProgramItems : window.allTopics;
+          const remainingItems = sourceItems.filter(item => item.name !== itemName);
+          if (sourceType === targetType) {
+            const index = sourceItems.findIndex(item => item.name === itemName);
+            sourceItems[index] = result.item;
+          } else {
+            window[sourceType === 'program' ? 'allProgramItems' : 'allTopics'] = remainingItems;
+            targetItems.push(result.item);
+          }
+
+          populateLanguageFilters(window.allProgramItems || [], window.allTopics || []);
+          renderCurrentViews();
+          renderLocations(window.allLocations || []);
+          document.getElementById('user-name-status').textContent = translate('itemSaved');
+        } catch (error) {
+          status.textContent = error.message || translate('itemSaveFailed');
+        } finally {
+          if (saveButton.isConnected) saveButton.disabled = false;
+        }
+      }
+
+      function attachItemEditorHandlers(root) {
+        root.querySelectorAll('.item-editor-form').forEach(form => {
+          const moveToggle = form.querySelector('[name="moveToProgram"]');
+          const scheduleFields = form.querySelector('.item-editor-schedule');
+          if (moveToggle) {
+            moveToggle.addEventListener('change', () => {
+              scheduleFields.hidden = !moveToggle.checked;
+              scheduleFields.querySelectorAll('input, select').forEach(field => {
+                field.required = moveToggle.checked;
+              });
+            });
+          }
+          form.addEventListener('submit', event => {
+            event.preventDefault();
+            saveItem(form);
+          });
+        });
+      }
+
+      async function deleteItem(itemType, itemName) {
+        try {
+          const response = await fetch('/api/items', {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ itemType, itemName })
+          });
+          if (!response.ok) throw new Error('Delete failed');
+
+          const result = await response.json();
+          const programLanguage = document.getElementById('program-language-filter').value;
+          const programLikedBy = document.getElementById('program-liked-filter').value;
+          const topicsLanguage = document.getElementById('topics-language-filter').value;
+          const topicsLikedBy = document.getElementById('topics-liked-filter').value;
+
+          if (result.itemType === 'program') {
+            window.allProgramItems = (window.allProgramItems || []).filter(item => item.name !== result.item.name);
+          } else {
+            window.allTopics = (window.allTopics || []).filter(item => item.name !== result.item.name);
+          }
+
+          populateLanguageFilters(window.allProgramItems || [], window.allTopics || []);
+          const restoreSelection = (id, value) => {
+            const select = document.getElementById(id);
+            if (Array.from(select.options).some(option => option.value === value)) select.value = value;
+          };
+          restoreSelection('program-language-filter', programLanguage);
+          restoreSelection('program-liked-filter', programLikedBy);
+          restoreSelection('topics-language-filter', topicsLanguage);
+          restoreSelection('topics-liked-filter', topicsLikedBy);
+          renderCurrentViews();
+          if (result.itemType === 'program') renderLocations(window.allLocations || []);
+          document.getElementById('user-name-status').textContent = translate('itemDeleted');
+          return true;
+        } catch {
+          document.getElementById('user-name-status').textContent = translate('deleteFailed');
+          return false;
+        }
+      }
+
+      function attachDeleteHandlers(root) {
+        root.querySelectorAll('.delete-item').forEach(button => {
+          button.addEventListener('click', async () => {
+            const itemName = button.dataset.deleteName;
+            if (!window.confirm(translate('deleteConfirm', { name: itemName }))) return;
+
+            button.disabled = true;
+            await deleteItem(button.dataset.deleteType, itemName);
+            if (button.isConnected) button.disabled = false;
+          });
+        });
+      }
+
+      async function toggleItemLike(itemType, itemName) {
+        if (!currentUserName) return;
+        const items = itemType === 'program' ? window.allProgramItems || [] : window.allTopics || [];
+        const item = items.find(candidate => candidate.name === itemName);
+        if (!item) return;
+
+        try {
+          const response = await fetch('/api/like', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              itemType,
+              itemName,
+              userName: currentUserName,
+              liked: !getItemLikeState(item, itemType).liked
+            })
+          });
+          if (!response.ok) throw new Error('Could not save like');
+
+          const result = await response.json();
+          const updatedItems = result.itemType === 'program' ? window.allProgramItems : window.allTopics;
+          const updatedItem = updatedItems.find(candidate => candidate.name === result.item.name);
+          if (updatedItem) Object.assign(updatedItem, result.item);
+
+          document.getElementById('user-name-status').textContent = translate('saved');
+          renderCurrentViews();
+        } catch {
+          document.getElementById('user-name-status').textContent = translate('likesSaveFailed');
+        }
+      }
+
+      function attachLikeHandlers(root) {
+        root.querySelectorAll('.like-toggle').forEach(button => {
+          button.addEventListener('click', async () => {
+            button.disabled = true;
+            await toggleItemLike(button.dataset.likeType, button.dataset.likeName);
+            if (button.isConnected) button.disabled = !currentUserName;
+          });
+        });
+      }
+
+      function initializeUserName() {
+        const nameInput = document.getElementById('current-user-name');
+        const status = document.getElementById('user-name-status');
+        try {
+          currentUserName = localStorage.getItem(userNameStorageKey) || '';
+          status.textContent = currentUserName ? translate('saved') : '';
+        } catch {
+          status.textContent = translate('nameStorageUnavailable');
+        }
+        nameInput.value = currentUserName;
+
+        nameInput.addEventListener('input', () => {
+          currentUserName = nameInput.value.trim();
+          try {
+            if (currentUserName) {
+              localStorage.setItem(userNameStorageKey, currentUserName);
+              status.textContent = translate('saved');
+            } else {
+              localStorage.removeItem(userNameStorageKey);
+              status.textContent = '';
+            }
+          } catch {
+            status.textContent = translate('nameStorageUnavailable');
+          }
+
+          if (!window.allProgramItems) return;
+
+          populateLikerFilters();
+          renderCurrentViews();
+        });
+      }
+
+      function initializeTopicCreation() {
+        const form = document.getElementById('create-topic-form');
+        const submitButton = form.querySelector('button[type="submit"]');
+        const status = document.getElementById('topic-create-status');
+
+        form.addEventListener('submit', async event => {
+          event.preventDefault();
+          submitButton.disabled = true;
+          status.textContent = '';
+
+          const previousProgramLanguage = document.getElementById('program-language-filter').value;
+          const previousProgramLikedBy = document.getElementById('program-liked-filter').value;
+          const formData = new FormData(form);
+          const splitValues = value => value.split(',').map(part => part.trim()).filter(Boolean);
+
+          try {
+            const response = await fetch('/api/topics', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                name: formData.get('name'),
+                description: formData.get('description'),
+                contributors: splitValues(formData.get('contributors')),
+                languages: splitValues(formData.get('languages'))
+              })
+            });
+            if (!response.ok) throw new Error('Topic creation failed');
+
+            const result = await response.json();
+            window.allTopics.push(result.topic);
+            populateLanguageFilters(window.allProgramItems || [], window.allTopics);
+
+            const programLanguageFilter = document.getElementById('program-language-filter');
+            if (Array.from(programLanguageFilter.options).some(option => option.value === previousProgramLanguage)) {
+              programLanguageFilter.value = previousProgramLanguage;
+            }
+            document.getElementById('program-liked-filter').value = previousProgramLikedBy;
+            document.getElementById('topics-language-filter').value = 'all';
+            document.getElementById('topics-liked-filter').value = 'all';
+            document.getElementById('topics-search-filter').value = '';
+            document.getElementById('topics-type-filter').value = 'topics-only';
+
+            form.reset();
+            renderCurrentViews();
+            status.textContent = translate('topicSaved');
+            form.closest('details').open = false;
+          } catch {
+            status.textContent = translate('topicCreateError');
+          } finally {
+            submitButton.disabled = false;
+          }
+        });
+      }
+
+      async function loadData() {
+        try {
+          const response = await fetch('program.json');
+          if (!response.ok) {
+            throw new Error('Could not load program.json');
+          }
+
+          const data = await response.json();
+          window.allProgramItems = data.program || [];
+          window.allTopics = data.topics || [];
+          window.allLocations = data.locations || [];
+          populateLanguageFilters(window.allProgramItems, window.allTopics);
+          renderProgram(window.allProgramItems);
+          renderTopics(window.allTopics);
+          renderLocations(window.allLocations);
+        } catch (error) {
+          document.getElementById('program-cards').innerHTML = `<p class="loading">${translate('loadError')}</p>`;
+          document.getElementById('topics-cards').innerHTML = `<p class="loading">${translate('loadError')}</p>`;
+          document.getElementById('locations-cards').innerHTML = `<p class="loading">${translate('loadError')}</p>`;
+        }
+      }
+
+      function populateLikerFilters() {
+        const personalizedOptionState = currentUserName ? '' : 'disabled';
+        const likerOptions = [
+          `<option value="my-likes-and-contribution" ${personalizedOptionState}>${translate('myLikesAndContribution')}</option>`,
+          `<option value="my-likes" ${personalizedOptionState}>${translate('myLikes')}</option>`,
+          `<option value="my-contribution" ${personalizedOptionState}>${translate('myContribution')}</option>`,
+          `<option value="all">${translate('all')}</option>`
+        ]
+          .join('');
+
+        const programLikedFilter = document.getElementById('program-liked-filter');
+        const topicsLikedFilter = document.getElementById('topics-liked-filter');
+        programLikedFilter.innerHTML = likerOptions;
+        topicsLikedFilter.innerHTML = likerOptions;
+        programLikedFilter.value = currentUserName ? 'my-likes' : 'all';
+        topicsLikedFilter.value = currentUserName ? 'my-likes' : 'all';
+      }
+
+      function populateLanguageFilters(programItems, topicItems) {
+        const allLanguages = new Set();
+        [...programItems, ...topicItems].forEach(item => {
+          (item.languages || []).forEach(language => allLanguages.add(language));
+        });
+
+        const programSelect = document.getElementById('program-language-filter');
+        const programLikedFilter = document.getElementById('program-liked-filter');
+        const programSearch = document.getElementById('program-search-filter');
+        const programDetailFilter = document.getElementById('program-detail-filter');
+        const programViewFilter = document.getElementById('program-view-filter');
+        const topicSelect = document.getElementById('topics-language-filter');
+        const topicsLikedFilter = document.getElementById('topics-liked-filter');
+        const topicsSearch = document.getElementById('topics-search-filter');
+        const topicsDetailFilter = document.getElementById('topics-detail-filter');
+        const topicsTypeFilter = document.getElementById('topics-type-filter');
+        const topicsSortSelect = document.getElementById('topics-sort-select');
+
+        const collator = new Intl.Collator(getPageCollationLocale(), { sensitivity: 'base' });
+        const languages = Array.from(allLanguages).sort((a, b) => collator.compare(a, b));
+        const options = [`<option value="all">${translate('all')}</option>`]
+          .concat(languages.map(language => `<option value="${escapeAttributeValue(language)}">${escapeAttributeValue(language)}</option>`))
+          .join('');
+
+        programSelect.innerHTML = options;
+        topicSelect.innerHTML = options;
+        populateLikerFilters();
+
+        programSelect.onchange = () => renderProgram(programItems, programSelect.value, programDetailFilter.value, programSearch.value, programLikedFilter.value);
+        programLikedFilter.onchange = () => renderProgram(programItems, programSelect.value, programDetailFilter.value, programSearch.value, programLikedFilter.value);
+        programSearch.oninput = () => renderProgram(programItems, programSelect.value, programDetailFilter.value, programSearch.value, programLikedFilter.value);
+        programDetailFilter.onchange = () => renderProgram(programItems, programSelect.value, programDetailFilter.value, programSearch.value, programLikedFilter.value);
+        programViewFilter.onchange = () => renderProgram(programItems, programSelect.value, programDetailFilter.value, programSearch.value, programLikedFilter.value);
+        topicSelect.onchange = () => renderTopics(topicItems, topicSelect.value, topicsSortSelect.value, topicsTypeFilter.value === 'topics-only', topicsDetailFilter.value, topicsSearch.value, topicsLikedFilter.value);
+        topicsLikedFilter.onchange = () => renderTopics(topicItems, topicSelect.value, topicsSortSelect.value, topicsTypeFilter.value === 'topics-only', topicsDetailFilter.value, topicsSearch.value, topicsLikedFilter.value);
+        topicsSearch.oninput = () => renderTopics(topicItems, topicSelect.value, topicsSortSelect.value, topicsTypeFilter.value === 'topics-only', topicsDetailFilter.value, topicsSearch.value, topicsLikedFilter.value);
+        topicsDetailFilter.onchange = () => renderTopics(topicItems, topicSelect.value, topicsSortSelect.value, topicsTypeFilter.value === 'topics-only', topicsDetailFilter.value, topicsSearch.value, topicsLikedFilter.value);
+        topicsTypeFilter.onchange = () => renderTopics(topicItems, topicSelect.value, topicsSortSelect.value, topicsTypeFilter.value === 'topics-only', topicsDetailFilter.value, topicsSearch.value, topicsLikedFilter.value);
+        topicsSortSelect.onchange = () => renderTopics(topicItems, topicSelect.value, topicsSortSelect.value, topicsTypeFilter.value === 'topics-only', topicsDetailFilter.value, topicsSearch.value, topicsLikedFilter.value);
+      }
+
+      function matchesSearch(item, query) {
+        const normalizedQuery = query.trim().toLocaleLowerCase();
+        if (!normalizedQuery) return true;
+
+        const searchableText = [item.name, item.desc, ...(item.contributers || [])]
+          .filter(Boolean)
+          .join(' ')
+          .toLocaleLowerCase();
+        return searchableText.includes(normalizedQuery);
+      }
+
+      function matchesLikedBy(item, likedBy, itemType) {
+        if (likedBy === 'all') return true;
+        if (!currentUserName) return false;
+
+        const userKey = currentUserKey();
+        const liked = getItemLikeState(item, itemType).liked;
+        if (likedBy === 'my-likes') return liked;
+
+        const contributed = (item.contributers || []).some(contributor =>
+          contributor.trim().toLocaleLowerCase() === userKey
+        );
+        if (likedBy === 'my-contribution') return contributed;
+        return likedBy === 'my-likes-and-contribution' && (liked || contributed);
+      }
+
+      function escapeAttributeValue(value) {
+        return String(value).replace(/[&<>"']/g, character => ({
+          '&': '&amp;',
+          '<': '&lt;',
+          '>': '&gt;',
+          '"': '&quot;',
+          "'": '&#39;'
+        })[character]);
+      }
+
+      function getSortDateTimeValue(item) {
+        const date = item.date || '0000-00-00';
+        const time = item.start || '00:00';
+        const normalizedDate = date.split('.').reverse().join('-');
+        const [hour = '00', minute = '00'] = time.split(':');
+        return `${normalizedDate}T${hour.padStart(2, '0')}:${minute.padStart(2, '0')}:00`;
+      }
+
+      function formatProgramDate(dateValue) {
+        const [year, month, day] = (dateValue || '').split('-').map(Number);
+        if (!year || !month || !day) return dateValue || 'Date not set';
+
+        const germanDialects = ['bar', 'frk', 'hes', 'ksh', 'nds'];
+        const fallbackLocale = currentPageLanguage === 'fy' ? 'nl-NL' : 'de-DE';
+        const dateLocale = germanDialects.includes(currentPageLanguage)
+          ? 'de-DE'
+          : Intl.DateTimeFormat.supportedLocalesOf([currentPageLanguage]).length
+            ? currentPageLanguage
+            : fallbackLocale;
+        return new Intl.DateTimeFormat(dateLocale, {
+          weekday: 'long',
+          month: 'long',
+          day: 'numeric',
+          year: 'numeric'
+        }).format(new Date(year, month - 1, day));
+      }
+
+      function renderProgramCalendar(items) {
+        const days = new Map();
+        items.forEach(item => {
+          const date = item.date || translate('dateNotSet');
+          if (!days.has(date)) days.set(date, []);
+          days.get(date).push(item);
+        });
+
+        return `
+          <div class="program-calendar">
+            ${Array.from(days, ([date, dayItems]) => `
+              <section class="calendar-day">
+                <h3>${formatProgramDate(date)}</h3>
+                <div class="calendar-events">
+                  ${dayItems.map(item => `
+                    <article class="calendar-event" data-program-name="${escapeAttributeValue(item.name)}">
+                      <span class="calendar-time">${escapeAttributeValue(item.start || '')}${item.end ? ` - ${escapeAttributeValue(item.end)}` : ''}</span>
+                      <strong>${escapeAttributeValue(item.name)}</strong>
+                      ${item.location ? `<a href="#" class="chip-link" data-location="${escapeAttributeValue(item.location)}">${escapeAttributeValue(item.location)}</a>` : ''}
+                      ${renderLikeControl(item, 'program')}
+                      ${renderItemEditor(item, 'program')}
+                      ${renderDeleteControl(item, 'program')}
+                    </article>
+                  `).join('')}
+                </div>
+              </section>
+            `).join('')}
+          </div>
+        `;
+      }
+
+      function renderProgram(items, selectedLanguage = 'all', detailMode = 'full', searchText = '', likedBy = 'all') {
+        const root = document.getElementById('program-cards');
+        const viewMode = document.getElementById('program-view-filter').value;
+        const filteredItems = (selectedLanguage === 'all'
+          ? items
+          : items.filter(item => (item.languages || []).includes(selectedLanguage)))
+          .filter(item => matchesSearch(item, searchText))
+          .filter(item => matchesLikedBy(item, likedBy, 'program'))
+          .slice()
+          .sort((a, b) => new Date(getSortDateTimeValue(a)) - new Date(getSortDateTimeValue(b)));
+
+        root.innerHTML = filteredItems.length
+          ? viewMode === 'calendar'
+            ? renderProgramCalendar(filteredItems)
+            : filteredItems.map(item => `
+              <article class="card" data-program-name="${escapeAttributeValue(item.name)}">
+                <span class="badge">${translate('programBadge')}</span>
+                <h3>${escapeAttributeValue(item.name)}</h3>
+                ${detailMode === 'full' ? `<p>${escapeAttributeValue(item.desc || '')}</p>` : ''}
+                <div class="meta">
+                  <a href="#" class="chip chip-link" data-location="${escapeAttributeValue(item.location || '')}">${escapeAttributeValue(item.location || '')}</a>
+                  <span class="chip">${formatProgramDate(item.date)}</span>
+                  <span class="chip">${item.start} - ${item.end}</span>
+                  <span class="chip">${translate('minutes', { count: item.duration })}</span>
+                </div>
+                ${detailMode === 'full' ? `
+                  <div class="meta">
+                    ${(item.languages || []).map(lang => `<span class="chip">${escapeAttributeValue(lang)}</span>`).join('')}
+                  </div>
+                  <p><strong>${translate('contributors')}</strong></p>
+                  <ul>${(item.contributers || []).map(name => `<li>${escapeAttributeValue(name)}</li>`).join('')}</ul>
+                ` : ''}
+                ${renderLikeControl(item, 'program')}
+                ${renderItemEditor(item, 'program')}
+                ${renderDeleteControl(item, 'program')}
+              </article>
+            `).join('')
+          : `<p class="loading">${translate('programNoMatches')}</p>`;
+
+        attachLikeHandlers(root);
+        attachItemEditorHandlers(root);
+        attachDeleteHandlers(root);
+        document.querySelectorAll('[data-location]').forEach(link => {
+          link.addEventListener('click', (event) => {
+            event.preventDefault();
+            const name = event.currentTarget.dataset.location;
+            openLocationTab(name);
+          });
+        });
+      }
+
+      function renderTopics(items, selectedLanguage = 'all', sortMode = 'date', showOnlyTopics = false, detailMode = 'full', searchText = '', likedBy = 'all') {
+        const root = document.getElementById('topics-cards');
+        const topicItems = (selectedLanguage === 'all'
+          ? items
+          : items.filter(item => (item.languages || []).includes(selectedLanguage)))
+          .filter(item => matchesSearch(item, searchText))
+          .filter(item => matchesLikedBy(item, likedBy, 'topics'))
+          .slice();
+
+        const programItems = (selectedLanguage === 'all'
+          ? window.allProgramItems || []
+          : (window.allProgramItems || []).filter(item => (item.languages || []).includes(selectedLanguage)))
+          .filter(item => matchesSearch(item, searchText))
+          .filter(item => matchesLikedBy(item, likedBy, 'program'))
+          .slice();
+
+        const mergedItems = showOnlyTopics ? topicItems : [...programItems, ...topicItems];
+
+        const sortedItems = mergedItems.slice().sort((a, b) => {
+          if (sortMode === 'likes') {
+            const typeA = a.date ? 'program' : 'topics';
+            const typeB = b.date ? 'program' : 'topics';
+            return getItemLikeState(b, typeB).likeCount - getItemLikeState(a, typeA).likeCount || a.name.localeCompare(b.name);
+          }
+
+          if (sortMode === 'name') {
+            return a.name.localeCompare(b.name);
+          }
+
+          const dateA = a.date || '0000-00-00';
+          const dateB = b.date || '0000-00-00';
+          const timeA = a.start || '00:00';
+          const timeB = b.start || '00:00';
+          const sortA = `${dateA}T${timeA}:00`;
+          const sortB = `${dateB}T${timeB}:00`;
+          return new Date(sortA) - new Date(sortB);
+        });
+
+        root.innerHTML = sortedItems.length
+          ? sortedItems.map(item => {
+              const isProgram = !!item.date;
+              return `
+                <article class="card">
+                  <span class="badge">${translate(isProgram ? 'programBadge' : 'topicBadge')}</span>
+                  <h3>${escapeAttributeValue(item.name)}</h3>
+                  ${detailMode === 'full' ? `<p>${escapeAttributeValue(item.desc || '')}</p>` : ''}
+                  ${isProgram ? `
+                    <div class="meta">
+                      <a href="#" class="chip chip-link" data-location="${escapeAttributeValue(item.location || '')}">${escapeAttributeValue(item.location || '')}</a>
+                      <span class="chip">${formatProgramDate(item.date)}</span>
+                      <span class="chip">${item.start} - ${item.end}</span>
+                      <span class="chip">${translate('minutes', { count: item.duration })}</span>
+                    </div>
+                  ` : ''}
+                  ${detailMode === 'full' ? `
+                    <div class="meta">
+                      ${(item.languages || []).map(lang => `<span class="chip">${escapeAttributeValue(lang)}</span>`).join('')}
+                    </div>
+                    <p><strong>${translate('contributors')}</strong></p>
+                    <ul>${(item.contributers || []).map(name => `<li>${escapeAttributeValue(name)}</li>`).join('')}</ul>
+                  ` : ''}
+                  ${renderLikeControl(item, isProgram ? 'program' : 'topics')}
+                  ${renderItemEditor(item, isProgram ? 'program' : 'topics')}
+                  ${renderDeleteControl(item, isProgram ? 'program' : 'topics')}
+                </article>
+              `;
+            }).join('')
+          : `<p class="loading">${translate('itemsNoMatches')}</p>`;
+
+        attachLikeHandlers(root);
+        attachItemEditorHandlers(root);
+        attachDeleteHandlers(root);
+        document.querySelectorAll('[data-location]').forEach(link => {
+          link.addEventListener('click', (event) => {
+            event.preventDefault();
+            const name = event.currentTarget.dataset.location;
+            openLocationTab(name);
+          });
+        });
+      }
+
+      function renderLocationEditor(location) {
+        return `
+          <details class="item-editor">
+            <summary>${translate('editItem')}</summary>
+            <form class="item-editor-form location-editor-form" data-location-name="${escapeAttributeValue(location.name)}">
+              <div class="item-editor-fields">
+                <div class="item-editor-field">
+                  <label>${translate('name')}</label>
+                  <input name="name" type="text" maxlength="160" value="${escapeAttributeValue(location.name)}" required />
+                </div>
+                <div class="item-editor-field">
+                  <label>${translate('capacity')}</label>
+                  <input name="capacity" type="number" min="1" max="100000" step="1" value="${location.capacity ?? ''}" />
+                </div>
+                <div class="item-editor-field item-editor-description">
+                  <label>${translate('topicDescription')}</label>
+                  <textarea name="description" rows="3" maxlength="4000" required>${escapeAttributeValue(location.desc || '')}</textarea>
+                </div>
+                <div class="item-editor-field item-editor-description">
+                  <label>${translate('facilities')}</label>
+                  <input name="facilities" type="text" value="${escapeAttributeValue((location.facilities || []).join(', '))}" />
+                </div>
+              </div>
+              <button class="save-item" type="submit">${translate('saveLocation')}</button>
+              <p class="item-editor-status" role="status" aria-live="polite"></p>
+            </form>
+          </details>
+        `;
+      }
+
+      async function saveLocation(form) {
+        const formData = new FormData(form);
+        const status = form.querySelector('.item-editor-status');
+        const saveButton = form.querySelector('.save-item');
+        const splitValues = value => value.split(',').map(part => part.trim()).filter(Boolean);
+        saveButton.disabled = true;
+        status.textContent = '';
+
+        try {
+          const response = await fetch('/api/locations', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              itemName: form.dataset.locationName,
+              name: formData.get('name'),
+              description: formData.get('description'),
+              capacity: formData.get('capacity') ? Number(formData.get('capacity')) : null,
+              facilities: splitValues(formData.get('facilities'))
+            })
+          });
+          const result = await response.json();
+          if (!response.ok) throw new Error(result.error || translate('locationSaveFailed'));
+
+          window.allLocations = (window.allLocations || []).map(location =>
+            location.name === result.previousName ? result.location : location
+          );
+          window.allProgramItems = (window.allProgramItems || []).map(item =>
+            item.location === result.previousName
+              ? { ...item, location: result.location.name }
+              : item
+          );
+          renderCurrentViews();
+          renderLocations(window.allLocations);
+          document.getElementById('user-name-status').textContent = translate('locationSaved');
+        } catch (error) {
+          status.textContent = error.message || translate('locationSaveFailed');
+        } finally {
+          if (saveButton.isConnected) saveButton.disabled = false;
+        }
+      }
+
+      function initializeLocationCreation() {
+        const form = document.getElementById('create-location-form');
+        const submitButton = form.querySelector('button[type="submit"]');
+        const status = document.getElementById('location-create-status');
+
+        form.addEventListener('submit', async event => {
+          event.preventDefault();
+          submitButton.disabled = true;
+          status.textContent = '';
+          const formData = new FormData(form);
+          const splitValues = value => value.split(',').map(part => part.trim()).filter(Boolean);
+
+          try {
+            const response = await fetch('/api/locations', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                name: formData.get('name'),
+                description: formData.get('description'),
+                capacity: formData.get('capacity') ? Number(formData.get('capacity')) : null,
+                facilities: splitValues(formData.get('facilities'))
+              })
+            });
+            const result = await response.json();
+            if (!response.ok) throw new Error(result.error || translate('locationSaveFailed'));
+
+            window.allLocations.push(result.location);
+            renderLocations(window.allLocations);
+            form.reset();
+            status.textContent = translate('locationSaved');
+            form.closest('details').open = false;
+          } catch (error) {
+            status.textContent = error.message || translate('locationSaveFailed');
+          } finally {
+            submitButton.disabled = false;
+          }
+        });
+      }
+
+      function attachLocationEditorHandlers(root) {
+        root.querySelectorAll('.location-editor-form').forEach(form => {
+          form.addEventListener('submit', event => {
+            event.preventDefault();
+            saveLocation(form);
+          });
+        });
+      }
+
+      function renderLocations(items) {
+        const root = document.getElementById('locations-cards');
+        const programItems = window.allProgramItems || [];
+        root.innerHTML = items.map(location => {
+          const matchingItems = programItems.filter(programItem => programItem.location === location.name);
+          const programNames = matchingItems.length
+            ? matchingItems.map(programItem => `
+                <li>
+                  <a href="#" class="program-item-link" data-program-item="${escapeAttributeValue(programItem.name)}">${escapeAttributeValue(programItem.name)}</a><br>
+                  ${escapeAttributeValue(programItem.date || '')} • ${escapeAttributeValue(programItem.start || '')} - ${escapeAttributeValue(programItem.end || '')}
+                </li>
+              `).join('')
+            : `<li>${translate('noProgramItems')}</li>`;
+
+          return `
+            <article id="location-${escapeAttributeValue(location.name)}" class="card">
+              <span class="badge">${translate('locationBadge')}</span>
+              <h3>${escapeAttributeValue(location.name)}</h3>
+              <p>${escapeAttributeValue(location.desc || '')}</p>
+              ${location.capacity != null ? `<p><strong>${translate('capacity')}</strong> ${location.capacity}</p>` : ''}
+              ${(location.facilities || []).length ? `
+                <p><strong>${translate('facilities')}</strong></p>
+                <div class="meta">
+                  ${location.facilities.map(facility => `<span class="chip">${escapeAttributeValue(facility)}</span>`).join('')}
+                </div>
+              ` : ''}
+              ${renderLocationEditor(location)}
+              <p><strong>${translate('programItems')}</strong></p>
+              <ul>${programNames}</ul>
+            </article>
+          `;
+        }).join('');
+
+        attachLocationEditorHandlers(root);
+        root.onclick = event => {
+          const link = event.target.closest('[data-program-item]');
+          if (!link) return;
+
+          event.preventDefault();
+          openProgramItem(link.dataset.programItem);
+        };
+      }
+
+      function openLocationTab(locationName) {
+        const tabs = document.querySelectorAll('.tab');
+        const sections = document.querySelectorAll('.section');
+
+        tabs.forEach(tab => tab.classList.toggle('active', tab.dataset.tab === 'locations'));
+        sections.forEach(section => {
+          section.classList.toggle('active', section.id === 'locations-section');
+        });
+
+        const target = document.getElementById(`location-${locationName}`);
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
+
+      function openProgramItem(programName) {
+        const programLanguageFilter = document.getElementById('program-language-filter');
+        const programLikedFilter = document.getElementById('program-liked-filter');
+        const programSearch = document.getElementById('program-search-filter');
+        programLanguageFilter.value = 'all';
+        programLikedFilter.value = 'all';
+        programSearch.value = '';
+        renderProgram(window.allProgramItems || [], 'all', document.getElementById('program-detail-filter').value, '', 'all');
+
+        document.querySelectorAll('.tab').forEach(tab => tab.classList.toggle('active', tab.dataset.tab === 'program'));
+        document.querySelectorAll('.section').forEach(section => {
+          section.classList.toggle('active', section.id === 'program-section');
+        });
+
+        const target = Array.from(document.querySelectorAll('[data-program-name]'))
+          .find(card => card.dataset.programName === programName);
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }
+
+      document.querySelectorAll('.tab').forEach(button => {
+        button.addEventListener('click', () => {
+          const selectedTab = button.dataset.tab;
+
+          document.querySelectorAll('.tab').forEach(tab => tab.classList.toggle('active', tab === button));
+          document.querySelectorAll('.section').forEach(section => {
+            section.classList.toggle('active', section.id === `${selectedTab}-section`);
+          });
+        });
+      });
+
+      initializePageLanguage();
+      initializeUserName();
+      initializeTopicCreation();
+      initializeLocationCreation();
+      loadData();
+    </script>
+  </body>
+</html>
