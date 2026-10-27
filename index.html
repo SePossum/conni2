@@ -136,6 +136,27 @@
         min-width: 150px;
       }
 
+      .sort-bar {
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .sort-bar label {
+        font-weight: 700;
+      }
+
+      .sort-bar select {
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 8px 12px;
+        background: white;
+        color: var(--text);
+        min-width: 180px;
+      }
+
       .meta {
         display: flex;
         flex-wrap: wrap;
@@ -215,6 +236,19 @@
           <select id="topics-language-filter">
             <option value="all">All</option>
           </select>
+          <label for="topics-type-filter">Show:</label>
+          <select id="topics-type-filter">
+            <option value="all">All items</option>
+            <option value="topics-only">Topics only</option>
+          </select>
+        </div>
+        <div class="sort-bar">
+          <label for="topics-sort-select">Sort by:</label>
+          <select id="topics-sort-select">
+            <option value="date">Date</option>
+            <option value="likes">Likes</option>
+            <option value="name">Name</option>
+          </select>
         </div>
         <div id="topics-cards" class="cards">
           <div class="loading">Loading topics...</div>
@@ -239,9 +273,10 @@
 
           const data = await response.json();
           window.allProgramItems = data.program || [];
-          populateLanguageFilters(window.allProgramItems, data.topics || []);
+          window.allTopics = data.topics || [];
+          populateLanguageFilters(window.allProgramItems, window.allTopics);
           renderProgram(window.allProgramItems);
-          renderTopics(data.topics || []);
+          renderTopics(window.allTopics);
           renderLocations(data.locations || []);
         } catch (error) {
           document.getElementById('program-cards').innerHTML = `<p class="loading">${error.message}</p>`;
@@ -258,6 +293,8 @@
 
         const programSelect = document.getElementById('program-language-filter');
         const topicSelect = document.getElementById('topics-language-filter');
+        const topicsTypeFilter = document.getElementById('topics-type-filter');
+        const topicsSortSelect = document.getElementById('topics-sort-select');
 
         const languages = Array.from(allLanguages).sort();
         const options = ['<option value="all">All</option>']
@@ -268,14 +305,25 @@
         topicSelect.innerHTML = options;
 
         programSelect.onchange = () => renderProgram(programItems, programSelect.value);
-        topicSelect.onchange = () => renderTopics(topicItems, topicSelect.value);
+        topicSelect.onchange = () => renderTopics(topicItems, topicSelect.value, topicsSortSelect.value, topicsTypeFilter.value === 'topics-only');
+        topicsTypeFilter.onchange = () => renderTopics(topicItems, topicSelect.value, topicsSortSelect.value, topicsTypeFilter.value === 'topics-only');
+        topicsSortSelect.onchange = () => renderTopics(topicItems, topicSelect.value, topicsSortSelect.value, topicsTypeFilter.value === 'topics-only');
+      }
+
+      function getSortDateTimeValue(item) {
+        const date = item.date || '0000-00-00';
+        const time = item.start || '00:00';
+        const normalizedDate = date.split('.').reverse().join('-');
+        return `${normalizedDate}T${time}:00`;
       }
 
       function renderProgram(items, selectedLanguage = 'all') {
         const root = document.getElementById('program-cards');
-        const filteredItems = selectedLanguage === 'all'
+        const filteredItems = (selectedLanguage === 'all'
           ? items
-          : items.filter(item => (item.languages || []).includes(selectedLanguage));
+          : items.filter(item => (item.languages || []).includes(selectedLanguage)))
+          .slice()
+          .sort((a, b) => new Date(getSortDateTimeValue(a)) - new Date(getSortDateTimeValue(b)));
 
         root.innerHTML = filteredItems.length
           ? filteredItems.map(item => `
@@ -308,20 +356,40 @@
         });
       }
 
-      function renderTopics(items, selectedLanguage = 'all') {
+      function renderTopics(items, selectedLanguage = 'all', sortMode = 'date', showOnlyTopics = false) {
         const root = document.getElementById('topics-cards');
-        const topicItems = selectedLanguage === 'all'
+        const topicItems = (selectedLanguage === 'all'
           ? items
-          : items.filter(item => (item.languages || []).includes(selectedLanguage));
+          : items.filter(item => (item.languages || []).includes(selectedLanguage)))
+          .slice();
 
-        const programItems = selectedLanguage === 'all'
+        const programItems = (selectedLanguage === 'all'
           ? window.allProgramItems || []
-          : (window.allProgramItems || []).filter(item => (item.languages || []).includes(selectedLanguage));
+          : (window.allProgramItems || []).filter(item => (item.languages || []).includes(selectedLanguage)))
+          .slice();
 
-        const mergedItems = [...programItems, ...topicItems];
+        const mergedItems = showOnlyTopics ? topicItems : [...programItems, ...topicItems];
 
-        root.innerHTML = mergedItems.length
-          ? mergedItems.map(item => {
+        const sortedItems = mergedItems.slice().sort((a, b) => {
+          if (sortMode === 'likes') {
+            return (b.likeCount || 0) - (a.likeCount || 0) || a.name.localeCompare(b.name);
+          }
+
+          if (sortMode === 'name') {
+            return a.name.localeCompare(b.name);
+          }
+
+          const dateA = a.date || '0000-00-00';
+          const dateB = b.date || '0000-00-00';
+          const timeA = a.start || '00:00';
+          const timeB = b.start || '00:00';
+          const sortA = `${dateA}T${timeA}:00`;
+          const sortB = `${dateB}T${timeB}:00`;
+          return new Date(sortA) - new Date(sortB);
+        });
+
+        root.innerHTML = sortedItems.length
+          ? sortedItems.map(item => {
               const isProgram = !!item.date;
               return `
                 <article class="card">
