@@ -196,6 +196,37 @@
         font-weight: 700;
       }
 
+      .like-actions {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-top: 14px;
+      }
+
+      .like-toggle {
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 6px 10px;
+        background: #fff;
+        color: var(--text);
+        font: inherit;
+        cursor: pointer;
+      }
+
+      .like-toggle[aria-pressed="true"] {
+        color: var(--success);
+        border-color: var(--success);
+      }
+
+      .like-toggle:disabled {
+        cursor: not-allowed;
+        opacity: 0.6;
+      }
+
+      .like-actions .likes {
+        margin: 0;
+      }
+
       ul {
         margin: 10px 0 0;
         padding-left: 18px;
@@ -345,7 +376,128 @@
 
     <script>
       const userNameStorageKey = 'conni2-user-name';
+      const userLikesStorageKey = 'conni2-user-likes';
       let currentUserName = '';
+      let currentUserLikes = { program: {}, topics: {} };
+
+      function currentUserKey() {
+        return currentUserName.trim().toLocaleLowerCase();
+      }
+
+      function loadCurrentUserLikes() {
+        try {
+          const allLikes = JSON.parse(localStorage.getItem(userLikesStorageKey) || '{}');
+          const savedLikes = allLikes[currentUserKey()] || {};
+          currentUserLikes = {
+            program: savedLikes.program || {},
+            topics: savedLikes.topics || {}
+          };
+        } catch {
+          currentUserLikes = { program: {}, topics: {} };
+        }
+      }
+
+      function saveCurrentUserLikes() {
+        try {
+          const allLikes = JSON.parse(localStorage.getItem(userLikesStorageKey) || '{}');
+          allLikes[currentUserKey()] = currentUserLikes;
+          localStorage.setItem(userLikesStorageKey, JSON.stringify(allLikes));
+          return true;
+        } catch {
+          return false;
+        }
+      }
+
+      function renderCurrentViews() {
+        if (!window.allProgramItems) return;
+
+        renderProgram(
+          window.allProgramItems,
+          document.getElementById('program-language-filter').value,
+          document.getElementById('program-detail-filter').value,
+          document.getElementById('program-search-filter').value,
+          document.getElementById('program-liked-filter').value
+        );
+        renderTopics(
+          window.allTopics || [],
+          document.getElementById('topics-language-filter').value,
+          document.getElementById('topics-sort-select').value,
+          document.getElementById('topics-type-filter').value === 'topics-only',
+          document.getElementById('topics-detail-filter').value,
+          document.getElementById('topics-search-filter').value,
+          document.getElementById('topics-liked-filter').value
+        );
+      }
+
+      function getItemLikeState(item, itemType) {
+        const nameKey = currentUserKey();
+        const baseLikers = item.likers || [];
+        const baseLiked = !!nameKey && baseLikers.some(liker => liker.toLocaleLowerCase() === nameKey);
+        const overrides = currentUserLikes[itemType] || {};
+        const hasOverride = !!nameKey && Object.prototype.hasOwnProperty.call(overrides, item.name);
+        const liked = hasOverride ? overrides[item.name] : baseLiked;
+        const likers = hasOverride
+          ? baseLikers.filter(liker => liker.toLocaleLowerCase() !== nameKey)
+          : [...baseLikers];
+
+        if (liked && currentUserName && !likers.some(liker => liker.toLocaleLowerCase() === nameKey)) {
+          likers.push(currentUserName);
+        }
+
+        const likeCount = Math.max(0, (Number(item.likeCount) || 0) + Number(liked && !baseLiked) - Number(!liked && baseLiked));
+        return { liked, likeCount, likers };
+      }
+
+      function renderLikeControl(item, itemType) {
+        const state = getItemLikeState(item, itemType);
+        const tooltip = escapeAttributeValue(state.likers.join(', '));
+        const buttonTitle = currentUserName
+          ? (state.liked ? 'Unlike this item' : 'Like this item')
+          : 'Set your name first';
+
+        return `
+          <div class="like-actions">
+            <button
+              class="like-toggle"
+              type="button"
+              data-like-type="${itemType}"
+              data-like-name="${escapeAttributeValue(item.name)}"
+              aria-pressed="${state.liked}"
+              title="${buttonTitle}"
+              ${currentUserName ? '' : 'disabled'}
+            >${state.liked ? '♥ Liked' : '♡ Like'}</button>
+            <p class="likes" title="Liked by: ${tooltip}">♥ ${state.likeCount} likes</p>
+          </div>
+        `;
+      }
+
+      function toggleItemLike(itemType, itemName) {
+        if (!currentUserName) return;
+        const items = itemType === 'program' ? window.allProgramItems || [] : window.allTopics || [];
+        const item = items.find(candidate => candidate.name === itemName);
+        if (!item) return;
+
+        const wasOverridden = Object.prototype.hasOwnProperty.call(currentUserLikes[itemType], item.name);
+        const previousValue = currentUserLikes[itemType][item.name];
+        currentUserLikes[itemType][item.name] = !getItemLikeState(item, itemType).liked;
+
+        if (!saveCurrentUserLikes()) {
+          if (wasOverridden) currentUserLikes[itemType][item.name] = previousValue;
+          else delete currentUserLikes[itemType][item.name];
+          document.getElementById('user-name-status').textContent = 'Could not save likes';
+          return;
+        }
+
+        renderCurrentViews();
+      }
+
+      function attachLikeHandlers(root) {
+        root.querySelectorAll('.like-toggle').forEach(button => {
+          button.addEventListener('click', () => {
+            toggleItemLike(button.dataset.likeType, button.dataset.likeName);
+          });
+        });
+      }
 
       function initializeUserName() {
         const nameInput = document.getElementById('current-user-name');
@@ -357,6 +509,7 @@
           status.textContent = 'Name storage is unavailable';
         }
         nameInput.value = currentUserName;
+        loadCurrentUserLikes();
 
         nameInput.addEventListener('input', () => {
           currentUserName = nameInput.value.trim();
@@ -374,27 +527,9 @@
 
           if (!window.allProgramItems) return;
 
+          loadCurrentUserLikes();
           populateLikerFilters();
-          const programLikedFilter = document.getElementById('program-liked-filter');
-          const topicsLikedFilter = document.getElementById('topics-liked-filter');
-          programLikedFilter.value = currentUserName ? 'my-likes' : 'all';
-          topicsLikedFilter.value = currentUserName ? 'my-likes' : 'all';
-          renderProgram(
-            window.allProgramItems,
-            document.getElementById('program-language-filter').value,
-            document.getElementById('program-detail-filter').value,
-            document.getElementById('program-search-filter').value,
-            programLikedFilter.value
-          );
-          renderTopics(
-            window.allTopics || [],
-            document.getElementById('topics-language-filter').value,
-            document.getElementById('topics-sort-select').value,
-            document.getElementById('topics-type-filter').value === 'topics-only',
-            document.getElementById('topics-detail-filter').value,
-            document.getElementById('topics-search-filter').value,
-            topicsLikedFilter.value
-          );
+          renderCurrentViews();
         });
       }
 
@@ -483,12 +618,25 @@
         return searchableText.includes(normalizedQuery);
       }
 
-      function matchesLikedBy(item, likedBy) {
+      function matchesLikedBy(item, likedBy, itemType) {
         if (likedBy === 'all') return true;
+        if (likedBy === 'my-likes') {
+          return !!currentUserName && getItemLikeState(item, itemType).liked;
+        }
         const selectedName = likedBy === 'my-likes' ? currentUserName : likedBy;
         return !!selectedName && (item.likers || []).some(liker =>
           liker.toLocaleLowerCase() === selectedName.toLocaleLowerCase()
         );
+      }
+
+      function escapeAttributeValue(value) {
+        return String(value).replace(/[&<>"']/g, character => ({
+          '&': '&amp;',
+          '<': '&lt;',
+          '>': '&gt;',
+          '"': '&quot;',
+          "'": '&#39;'
+        })[character]);
       }
 
       function getSortDateTimeValue(item) {
@@ -530,6 +678,7 @@
                       <span class="calendar-time">${item.start || ''}${item.end ? ` - ${item.end}` : ''}</span>
                       <strong>${item.name}</strong>
                       ${item.location ? `<a href="#" class="chip-link" data-location="${item.location}">${item.location}</a>` : ''}
+                      ${renderLikeControl(item, 'program')}
                     </article>
                   `).join('')}
                 </div>
@@ -546,7 +695,7 @@
           ? items
           : items.filter(item => (item.languages || []).includes(selectedLanguage)))
           .filter(item => matchesSearch(item, searchText))
-          .filter(item => matchesLikedBy(item, likedBy))
+          .filter(item => matchesLikedBy(item, likedBy, 'program'))
           .slice()
           .sort((a, b) => new Date(getSortDateTimeValue(a)) - new Date(getSortDateTimeValue(b)));
 
@@ -571,11 +720,12 @@
                   <p><strong>Contributors:</strong></p>
                   <ul>${(item.contributers || []).map(name => `<li>${name}</li>`).join('')}</ul>
                 ` : ''}
-                <p class="likes" title="Liked by: ${(item.likers || []).join(', ')}">♥ ${item.likeCount || 0} likes</p>
+                ${renderLikeControl(item, 'program')}
               </article>
             `).join('')
           : '<p class="loading">No program items match these filters.</p>';
 
+        attachLikeHandlers(root);
         document.querySelectorAll('[data-location]').forEach(link => {
           link.addEventListener('click', (event) => {
             event.preventDefault();
@@ -591,21 +741,23 @@
           ? items
           : items.filter(item => (item.languages || []).includes(selectedLanguage)))
           .filter(item => matchesSearch(item, searchText))
-          .filter(item => matchesLikedBy(item, likedBy))
+          .filter(item => matchesLikedBy(item, likedBy, 'topics'))
           .slice();
 
         const programItems = (selectedLanguage === 'all'
           ? window.allProgramItems || []
           : (window.allProgramItems || []).filter(item => (item.languages || []).includes(selectedLanguage)))
           .filter(item => matchesSearch(item, searchText))
-          .filter(item => matchesLikedBy(item, likedBy))
+          .filter(item => matchesLikedBy(item, likedBy, 'program'))
           .slice();
 
         const mergedItems = showOnlyTopics ? topicItems : [...programItems, ...topicItems];
 
         const sortedItems = mergedItems.slice().sort((a, b) => {
           if (sortMode === 'likes') {
-            return (b.likeCount || 0) - (a.likeCount || 0) || a.name.localeCompare(b.name);
+            const typeA = a.date ? 'program' : 'topics';
+            const typeB = b.date ? 'program' : 'topics';
+            return getItemLikeState(b, typeB).likeCount - getItemLikeState(a, typeA).likeCount || a.name.localeCompare(b.name);
           }
 
           if (sortMode === 'name') {
@@ -644,12 +796,13 @@
                     <p><strong>Contributors:</strong></p>
                     <ul>${(item.contributers || []).map(name => `<li>${name}</li>`).join('')}</ul>
                   ` : ''}
-                  <p class="likes" title="Liked by: ${(item.likers || []).join(', ')}">♥ ${item.likeCount || 0} likes</p>
+                  ${renderLikeControl(item, isProgram ? 'program' : 'topics')}
                 </article>
               `;
             }).join('')
           : '<p class="loading">No program items or topics match these filters.</p>';
 
+        attachLikeHandlers(root);
         document.querySelectorAll('[data-location]').forEach(link => {
           link.addEventListener('click', (event) => {
             event.preventDefault();
