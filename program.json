@@ -100,31 +100,6 @@
             "duration": 75
         },
         {
-            "name": "Sound Design Basics",
-            "desc": "Hands-on exploration of recording, layering, and processing sound for small media projects.",
-            "contributers": [
-                "Y. Patel",
-                "C. Novak",
-                "O. Mara"
-            ],
-            "location": "Main Hall",
-            "languages": [
-                "English",
-                "Italian"
-            ],
-            "likers": [
-                "user 5",
-                "user 10",
-                "user 15",
-                "B. Mattern"
-            ],
-            "likeCount": 4,
-            "date": "2026-08-09",
-            "start": "11:15",
-            "end": "12:30",
-            "duration": 75
-        },
-        {
             "name": "Photography Walk & Critique",
             "desc": "An outdoor critique on visual storytelling, framing, and composition techniques.",
             "contributers": [
@@ -172,31 +147,6 @@
             "date": "2026-08-09",
             "start": "15:00",
             "end": "16:30",
-            "duration": 90
-        },
-        {
-            "name": "Motion Graphics Bootcamp",
-            "desc": "A fast-paced introduction to creating kinetic typography and short animated assets.",
-            "contributers": [
-                "H. Green",
-                "N. Calvo",
-                "L. Adler"
-            ],
-            "location": "Workshop Room A",
-            "languages": [
-                "English",
-                "Spanish"
-            ],
-            "likers": [
-                "user 2",
-                "user 11",
-                "user 15",
-                "B. Mattern"
-            ],
-            "likeCount": 4,
-            "date": "2026-08-10",
-            "start": "9:00",
-            "end": "10:30",
             "duration": 90
         },
         {
@@ -564,11 +514,37 @@
                 "B. Mattern"
             ],
             "likeCount": 4,
-            "location": "Media Lab",
+            "location": "Studio B",
             "date": "2026-10-21",
             "start": "17:49",
             "end": "20:46",
             "duration": 177
+        },
+        {
+            "name": "Digital Literacy",
+            "desc": "Making technology more accessible, understandable, and useful for everyday participants.",
+            "contributers": [
+                "O. Brown",
+                "H. Ali",
+                "M. Walsh"
+            ],
+            "languages": [
+                "German",
+                "Spanish"
+            ],
+            "likers": [
+                "user 1",
+                "user 9",
+                "user 14",
+                "user 18",
+                "H. Green"
+            ],
+            "likeCount": 5,
+            "location": "Raum A",
+            "date": "2026-10-27",
+            "start": "16:28",
+            "end": "18:28",
+            "duration": 120
         }
     ],
     "topics": [
@@ -589,26 +565,6 @@
                 "user 6",
                 "user 11",
                 "user 16"
-            ],
-            "likeCount": 4
-        },
-        {
-            "name": "Digital Literacy",
-            "desc": "Making technology more accessible, understandable, and useful for everyday participants.",
-            "contributers": [
-                "O. Brown",
-                "H. Ali",
-                "M. Walsh"
-            ],
-            "languages": [
-                "German",
-                "Spanish"
-            ],
-            "likers": [
-                "user 1",
-                "user 9",
-                "user 14",
-                "user 18"
             ],
             "likeCount": 4
         },
@@ -1005,6 +961,14 @@
             "facilities": [
                 "Comfortable Seating"
             ]
+        },
+        {
+            "name": "Raum A",
+            "desc": "Kleiner Seminarraum",
+            "facilities": [
+                "10 Stühle"
+            ],
+            "capacity": 10
         }
     ]
 }

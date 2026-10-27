@@ -31,7 +31,7 @@ class ConniHandler(SimpleHTTPRequestHandler):
 
     def do_POST(self):
         request_path = urlparse(self.path).path
-        if request_path not in ("/api/like", "/api/topics"):
+        if request_path not in ("/api/like", "/api/topics", "/api/locations"):
             self.send_json(404, {"error": "Not found"})
             return
 
@@ -48,6 +48,9 @@ class ConniHandler(SimpleHTTPRequestHandler):
 
             if request_path == "/api/topics":
                 self.create_topic(request)
+                return
+            if request_path == "/api/locations":
+                self.create_location(request)
                 return
 
             item_type = request.get("itemType")
@@ -139,7 +142,8 @@ class ConniHandler(SimpleHTTPRequestHandler):
             self.send_json(500, {"error": "Could not save program.json"})
 
     def do_PUT(self):
-        if urlparse(self.path).path != "/api/items":
+        request_path = urlparse(self.path).path
+        if request_path not in ("/api/items", "/api/locations"):
             self.send_json(404, {"error": "Not found"})
             return
 
@@ -152,6 +156,10 @@ class ConniHandler(SimpleHTTPRequestHandler):
             request = json.loads(self.rfile.read(request_size))
             if not isinstance(request, dict):
                 self.send_json(400, {"error": "Invalid request body"})
+                return
+
+            if request_path == "/api/locations":
+                self.update_location(request)
                 return
 
             source_type = request.get("itemType")
@@ -300,6 +308,110 @@ class ConniHandler(SimpleHTTPRequestHandler):
         topics.append(topic)
         self.write_data(data)
         self.send_json(201, {"topic": topic})
+
+    def create_location(self, request):
+        name = request.get("name")
+        description = request.get("description")
+        capacity = request.get("capacity")
+        facilities = request.get("facilities")
+
+        if not isinstance(name, str) or not name.strip() or len(name.strip()) > 160:
+            self.send_json(400, {"error": "A location name of 1 to 160 characters is required"})
+            return
+        if not isinstance(description, str) or not description.strip() or len(description.strip()) > 4000:
+            self.send_json(400, {"error": "A description of 1 to 4000 characters is required"})
+            return
+        if not self.valid_string_list(facilities, max_items=40, max_length=120):
+            self.send_json(400, {"error": "Invalid facilities list"})
+            return
+        if not self.valid_location_capacity(capacity):
+            self.send_json(400, {"error": "Capacity must be a positive whole number"})
+            return
+
+        data = json.loads(DATA_FILE.read_text(encoding="utf-8"))
+        locations = data.setdefault("locations", [])
+        normalized_name = name.strip().casefold()
+        if any(location.get("name", "").strip().casefold() == normalized_name for location in locations):
+            self.send_json(409, {"error": "A location with that name already exists"})
+            return
+
+        location = {
+            "name": name.strip(),
+            "desc": description.strip(),
+            "facilities": self.clean_string_list(facilities),
+        }
+        if capacity is not None:
+            location["capacity"] = capacity
+
+        locations.append(location)
+        self.write_data(data)
+        self.send_json(201, {"location": location})
+
+    def update_location(self, request):
+        item_name = request.get("itemName")
+        name = request.get("name")
+        description = request.get("description")
+        capacity = request.get("capacity")
+        facilities = request.get("facilities")
+
+        if not isinstance(item_name, str) or not item_name.strip():
+            self.send_json(400, {"error": "Invalid location name"})
+            return
+        if not isinstance(name, str) or not name.strip() or len(name.strip()) > 160:
+            self.send_json(400, {"error": "A location name of 1 to 160 characters is required"})
+            return
+        if not isinstance(description, str) or not description.strip() or len(description.strip()) > 4000:
+            self.send_json(400, {"error": "A description of 1 to 4000 characters is required"})
+            return
+        if not self.valid_string_list(facilities, max_items=40, max_length=120):
+            self.send_json(400, {"error": "Invalid facilities list"})
+            return
+        if not self.valid_location_capacity(capacity):
+            self.send_json(400, {"error": "Capacity must be a positive whole number"})
+            return
+
+        data = json.loads(DATA_FILE.read_text(encoding="utf-8"))
+        locations = data.get("locations", [])
+        location_index = next(
+            (index for index, location in enumerate(locations) if location.get("name") == item_name),
+            None,
+        )
+        if location_index is None:
+            self.send_json(404, {"error": "Location not found"})
+            return
+
+        normalized_name = name.strip().casefold()
+        if any(
+            index != location_index and location.get("name", "").strip().casefold() == normalized_name
+            for index, location in enumerate(locations)
+        ):
+            self.send_json(409, {"error": "A location with that name already exists"})
+            return
+
+        previous_name = locations[location_index].get("name", "")
+        updated_location = dict(locations[location_index])
+        updated_location.update({
+            "name": name.strip(),
+            "desc": description.strip(),
+            "facilities": self.clean_string_list(facilities),
+        })
+        if capacity is None:
+            updated_location.pop("capacity", None)
+        else:
+            updated_location["capacity"] = capacity
+
+        locations[location_index] = updated_location
+        if previous_name != updated_location["name"]:
+            for program_item in data.get("program", []):
+                if program_item.get("location") == previous_name:
+                    program_item["location"] = updated_location["name"]
+
+        self.write_data(data)
+        self.send_json(200, {"location": updated_location, "previousName": previous_name})
+
+    @staticmethod
+    def valid_location_capacity(capacity):
+        return capacity is None or (type(capacity) is int and 1 <= capacity <= 100000)
 
     @staticmethod
     def valid_string_list(values, max_items, max_length):

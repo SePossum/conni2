@@ -660,6 +660,31 @@
 
       <section id="locations-section" class="section">
         <h2 data-i18n="locations">Locations</h2>
+        <details class="topic-create">
+          <summary data-i18n="createLocation">Create a location</summary>
+          <form id="create-location-form">
+            <div class="topic-create-fields">
+              <div class="topic-create-field">
+                <label for="new-location-name" data-i18n="name">Name</label>
+                <input id="new-location-name" name="name" type="text" maxlength="160" required />
+              </div>
+              <div class="topic-create-field">
+                <label for="new-location-capacity" data-i18n="capacity">Capacity:</label>
+                <input id="new-location-capacity" name="capacity" type="number" min="1" max="100000" step="1" />
+              </div>
+              <div class="topic-create-field topic-create-description">
+                <label for="new-location-description" data-i18n="topicDescription">Description:</label>
+                <textarea id="new-location-description" name="description" rows="3" maxlength="4000" required></textarea>
+              </div>
+              <div class="topic-create-field topic-create-description">
+                <label for="new-location-facilities" data-i18n="facilities">Facilities:</label>
+                <input id="new-location-facilities" name="facilities" type="text" />
+              </div>
+            </div>
+            <button type="submit" data-i18n="addLocation">Add location</button>
+          </form>
+        </details>
+        <p id="location-create-status" class="topic-create-status" role="status" aria-live="polite"></p>
         <div id="locations-cards" class="cards">
           <div class="loading" data-i18n="loadingLocations">Loading locations...</div>
         </div>
@@ -841,19 +866,36 @@
 
       const topicFormTranslations = {
         en: { topicDescription: 'Description:', createTopic: 'Create a topic', addTopic: 'Add topic', topicSaved: 'Topic created.', topicCreateError: 'Could not create the topic.', deleteItem: 'Delete', deleteConfirm: 'Delete "{name}" permanently?', itemDeleted: 'Item deleted.', deleteFailed: 'Could not delete the item.', editItem: 'Edit', saveItem: 'Save changes', itemSaved: 'Changes saved.', itemSaveFailed: 'Could not save changes.', moveToProgram: 'Schedule in program', location: 'Location', startTime: 'Start time', endTime: 'End time' },
-        de: { topicDescription: 'Beschreibung:', createTopic: 'Thema erstellen', addTopic: 'Thema hinzufügen', topicSaved: 'Thema erstellt.', topicCreateError: 'Thema konnte nicht erstellt werden.', deleteItem: 'Löschen', deleteConfirm: '„{name}“ dauerhaft löschen?', itemDeleted: 'Eintrag gelöscht.', deleteFailed: 'Eintrag konnte nicht gelöscht werden.' },
-        fr: { topicDescription: 'Description :', createTopic: 'Créer un thème', addTopic: 'Ajouter le thème', topicSaved: 'Thème créé.', topicCreateError: 'Impossible de créer le thème.', deleteItem: 'Supprimer', deleteConfirm: 'Supprimer définitivement « {name} » ?', itemDeleted: 'Élément supprimé.', deleteFailed: 'Impossible de supprimer cet élément.' },
-        es: { topicDescription: 'Descripción:', createTopic: 'Crear un tema', addTopic: 'Añadir tema', topicSaved: 'Tema creado.', topicCreateError: 'No se pudo crear el tema.', deleteItem: 'Eliminar', deleteConfirm: '¿Eliminar «{name}» permanentemente?', itemDeleted: 'Elemento eliminado.', deleteFailed: 'No se pudo eliminar el elemento.' },
-        it: { topicDescription: 'Descrizione:', createTopic: 'Crea un tema', addTopic: 'Aggiungi tema', topicSaved: 'Tema creato.', topicCreateError: 'Impossibile creare il tema.', deleteItem: 'Elimina', deleteConfirm: 'Eliminare definitivamente «{name}»?', itemDeleted: 'Elemento eliminato.', deleteFailed: 'Impossibile eliminare l’elemento.' },
-        sq: { topicDescription: 'Përshkrimi:', createTopic: 'Krijo temë', addTopic: 'Shto temën', topicSaved: 'Tema u krijua.', topicCreateError: 'Tema nuk mund të krijohej.', deleteItem: 'Fshi', deleteConfirm: 'Ta fshij përgjithmonë “{name}”?', itemDeleted: 'Elementi u fshi.', deleteFailed: 'Elementi nuk mund të fshihej.' },
-        nds: { topicDescription: 'Beschrieven:', createTopic: 'Thema opstellen', addTopic: 'Thema tofögen', topicSaved: 'Thema is opstellt.', topicCreateError: 'Thema kunn nich opstellt warrn.', deleteItem: 'Wegdoon', deleteConfirm: '„{name}“ för immer wegdoon?', itemDeleted: 'Indrag is wegdaan.', deleteFailed: 'Indrag kunn nich wegdaan warrn.' },
-        fy: { topicDescription: 'Beskriuwing:', createTopic: 'Tema oanmeitsje', addTopic: 'Tema tafoegje', topicSaved: 'Tema oanmakke.', topicCreateError: 'De tema koe net oanmakke wurde.', deleteItem: 'Fuortsmite', deleteConfirm: '“{name}” permanint fuortsmite?', itemDeleted: 'Item fuorthelle.', deleteFailed: 'It item koe net fuorthelle wurde.' },
-        bar: { topicDescription: 'Beschreibung:', createTopic: 'Thema erstoin', addTopic: 'Thema dazua doa', topicSaved: 'Thema is erstoid.', topicCreateError: 'Des Thema hod ned erstoid wean kenna.', deleteItem: 'Löschen', deleteConfirm: '„{name}“ endgültig löschen?', itemDeleted: 'Eintrag is glöscht.', deleteFailed: 'Eintrag hod ned glöscht wern kenna.' },
-        frk: { topicDescription: 'Beschreibung:', createTopic: 'Thema erstella', addTopic: 'Thema dazua doa', topicSaved: 'Thema is erstellt.', topicCreateError: 'Thema kon ned erstellt wern.', deleteItem: 'Löschen', deleteConfirm: '„{name}“ endgültig löschen?', itemDeleted: 'Eintrag is gelöscht.', deleteFailed: 'Eintrag kon ned gelöscht wern.' },
-        hes: { topicDescription: 'Beschreibung:', createTopic: 'Thema erstelle', addTopic: 'Thema dazu', topicSaved: 'Thema is erstellt.', topicCreateError: 'Thema kon net erstellt wern.', deleteItem: 'Löschen', deleteConfirm: '„{name}“ endgültig lösche?', itemDeleted: 'Eintrag is gelöscht.', deleteFailed: 'Eintrag kon net gelöscht wern.' },
-        ksh: { topicDescription: 'Beschrievung:', createTopic: 'En Thema aanlääje', addTopic: 'Thema dobei donn', topicSaved: 'Thema es aanjelääsch.', topicCreateError: 'Dat Thema kunnt nit aanjelääsch wäde.', deleteItem: 'Weg damit', deleteConfirm: '„{name}“ för immer fottschmieße?', itemDeleted: 'Dä Entraach es fott.', deleteFailed: 'Dä Entraach kunnt nit fottjemaht wäde.' },
-        ar: { topicDescription: 'الوصف:', createTopic: 'إنشاء موضوع', addTopic: 'إضافة موضوع', topicSaved: 'تم إنشاء الموضوع.', topicCreateError: 'تعذر إنشاء الموضوع.', deleteItem: 'حذف', deleteConfirm: 'هل تريد حذف «{name}» نهائيًا؟', itemDeleted: 'تم حذف العنصر.', deleteFailed: 'تعذر حذف العنصر.' },
-        he: { topicDescription: 'תיאור:', createTopic: 'יצירת נושא', addTopic: 'הוספת נושא', topicSaved: 'הנושא נוצר.', topicCreateError: 'לא ניתן ליצור את הנושא.', deleteItem: 'מחיקה', deleteConfirm: 'למחוק את „{name}” לצמיתות?', itemDeleted: 'הפריט נמחק.', deleteFailed: 'לא ניתן למחוק את הפריט.' }
+        de: { topicDescription: 'Beschreibung:', createTopic: 'Thema erstellen', addTopic: 'Thema hinzufügen', topicSaved: 'Thema erstellt.', topicCreateError: 'Thema konnte nicht erstellt werden.', deleteItem: 'Löschen', editItem: 'Bearbeiten', deleteConfirm: '„{name}“ dauerhaft löschen?', itemDeleted: 'Eintrag gelöscht.', deleteFailed: 'Eintrag konnte nicht gelöscht werden.' },
+        fr: { topicDescription: 'Description :', createTopic: 'Créer un thème', addTopic: 'Ajouter le thème', topicSaved: 'Thème créé.', topicCreateError: 'Impossible de créer le thème.', deleteItem: 'Supprimer', editItem: 'Modifier', deleteConfirm: 'Supprimer définitivement « {name} » ?', itemDeleted: 'Élément supprimé.', deleteFailed: 'Impossible de supprimer cet élément.' },
+        es: { topicDescription: 'Descripción:', createTopic: 'Crear un tema', addTopic: 'Añadir tema', topicSaved: 'Tema creado.', topicCreateError: 'No se pudo crear el tema.', deleteItem: 'Eliminar', editItem: 'Editar', deleteConfirm: '¿Eliminar «{name}» permanentemente?', itemDeleted: 'Elemento eliminado.', deleteFailed: 'No se pudo eliminar el elemento.' },
+        it: { topicDescription: 'Descrizione:', createTopic: 'Crea un tema', addTopic: 'Aggiungi tema', topicSaved: 'Tema creato.', topicCreateError: 'Impossibile creare il tema.', deleteItem: 'Elimina', editItem: 'Modifica', deleteConfirm: 'Eliminare definitivamente «{name}»?', itemDeleted: 'Elemento eliminato.', deleteFailed: 'Impossibile eliminare l’elemento.' },
+        sq: { topicDescription: 'Përshkrimi:', createTopic: 'Krijo temë', addTopic: 'Shto temën', topicSaved: 'Tema u krijua.', topicCreateError: 'Tema nuk mund të krijohej.', deleteItem: 'Fshi', editItem: 'Redakto', deleteConfirm: 'Ta fshij përgjithmonë “{name}”?', itemDeleted: 'Elementi u fshi.', deleteFailed: 'Elementi nuk mund të fshihej.' },
+        nds: { topicDescription: 'Beschrieven:', createTopic: 'Thema opstellen', addTopic: 'Thema tofögen', topicSaved: 'Thema is opstellt.', topicCreateError: 'Thema kunn nich opstellt warrn.', deleteItem: 'Wegdoon', editItem: 'Ännern', deleteConfirm: '„{name}“ för immer wegdoon?', itemDeleted: 'Indrag is wegdaan.', deleteFailed: 'Indrag kunn nich wegdaan warrn.' },
+        fy: { topicDescription: 'Beskriuwing:', createTopic: 'Tema oanmeitsje', addTopic: 'Tema tafoegje', topicSaved: 'Tema oanmakke.', topicCreateError: 'De tema koe net oanmakke wurde.', deleteItem: 'Fuortsmite', editItem: 'Bewurkje', deleteConfirm: '“{name}” permanint fuortsmite?', itemDeleted: 'Item fuorthelle.', deleteFailed: 'It item koe net fuorthelle wurde.' },
+        bar: { topicDescription: 'Beschreibung:', createTopic: 'Thema erstoin', addTopic: 'Thema dazua doa', topicSaved: 'Thema is erstoid.', topicCreateError: 'Des Thema hod ned erstoid wean kenna.', deleteItem: 'Löschen', editItem: 'Bearbeiten', deleteConfirm: '„{name}“ endgültig löschen?', itemDeleted: 'Eintrag is glöscht.', deleteFailed: 'Eintrag hod ned glöscht wern kenna.' },
+        frk: { topicDescription: 'Beschreibung:', createTopic: 'Thema erstella', addTopic: 'Thema dazua doa', topicSaved: 'Thema is erstellt.', topicCreateError: 'Thema kon ned erstellt wern.', deleteItem: 'Löschen', editItem: 'Bearbeite', deleteConfirm: '„{name}“ endgültig löschen?', itemDeleted: 'Eintrag is gelöscht.', deleteFailed: 'Eintrag kon ned gelöscht wern.' },
+        hes: { topicDescription: 'Beschreibung:', createTopic: 'Thema erstelle', addTopic: 'Thema dazu', topicSaved: 'Thema is erstellt.', topicCreateError: 'Thema kon net erstellt wern.', deleteItem: 'Löschen', editItem: 'Bearbeite', deleteConfirm: '„{name}“ endgültig lösche?', itemDeleted: 'Eintrag is gelöscht.', deleteFailed: 'Eintrag kon net gelöscht wern.' },
+        ksh: { topicDescription: 'Beschrievung:', createTopic: 'En Thema aanlääje', addTopic: 'Thema dobei donn', topicSaved: 'Thema es aanjelääsch.', topicCreateError: 'Dat Thema kunnt nit aanjelääsch wäde.', deleteItem: 'Weg damit', editItem: 'Ändere', deleteConfirm: '„{name}“ för immer fottschmieße?', itemDeleted: 'Dä Entraach es fott.', deleteFailed: 'Dä Entraach kunnt nit fottjemaht wäde.' },
+        ar: { topicDescription: 'الوصف:', createTopic: 'إنشاء موضوع', addTopic: 'إضافة موضوع', topicSaved: 'تم إنشاء الموضوع.', topicCreateError: 'تعذر إنشاء الموضوع.', deleteItem: 'حذف', editItem: 'تعديل', deleteConfirm: 'هل تريد حذف «{name}» نهائيًا؟', itemDeleted: 'تم حذف العنصر.', deleteFailed: 'تعذر حذف العنصر.' },
+        he: { topicDescription: 'תיאור:', createTopic: 'יצירת נושא', addTopic: 'הוספת נושא', topicSaved: 'הנושא נוצר.', topicCreateError: 'לא ניתן ליצור את הנושא.', deleteItem: 'מחיקה', editItem: 'עריכה', deleteConfirm: 'למחוק את „{name}” לצמיתות?', itemDeleted: 'הפריט נמחק.', deleteFailed: 'לא ניתן למחוק את הפריט.' }
+      };
+
+      const locationFormTranslations = {
+        en: { createLocation: 'Create a location', addLocation: 'Add location', saveLocation: 'Save location', locationSaved: 'Location saved.', locationSaveFailed: 'Could not save the location.' },
+        de: { createLocation: 'Ort erstellen', addLocation: 'Ort hinzufügen', saveLocation: 'Ort speichern', locationSaved: 'Ort gespeichert.', locationSaveFailed: 'Ort konnte nicht gespeichert werden.' },
+        fr: { createLocation: 'Créer un lieu', addLocation: 'Ajouter le lieu', saveLocation: 'Enregistrer le lieu', locationSaved: 'Lieu enregistré.', locationSaveFailed: 'Impossible d’enregistrer le lieu.' },
+        es: { createLocation: 'Crear una ubicación', addLocation: 'Añadir ubicación', saveLocation: 'Guardar ubicación', locationSaved: 'Ubicación guardada.', locationSaveFailed: 'No se pudo guardar la ubicación.' },
+        it: { createLocation: 'Crea un luogo', addLocation: 'Aggiungi luogo', saveLocation: 'Salva luogo', locationSaved: 'Luogo salvato.', locationSaveFailed: 'Impossibile salvare il luogo.' },
+        sq: { createLocation: 'Krijo vendndodhje', addLocation: 'Shto vendndodhjen', saveLocation: 'Ruaj vendndodhjen', locationSaved: 'Vendndodhja u ruajt.', locationSaveFailed: 'Vendndodhja nuk mund të ruhej.' },
+        nds: { createLocation: 'Steed opstellen', addLocation: 'Steed tofögen', saveLocation: 'Steed spiekern', locationSaved: 'Steed is spiekert.', locationSaveFailed: 'Steed kunn nich spiekert warrn.' },
+        fy: { createLocation: 'Lokaasje oanmeitsje', addLocation: 'Lokaasje tafoegje', saveLocation: 'Lokaasje bewarje', locationSaved: 'Lokaasje bewarre.', locationSaveFailed: 'De lokaasje koe net bewarre wurde.' },
+        bar: { createLocation: 'Ort erstellen', addLocation: 'Ort hinzufügen', saveLocation: 'Ort speichern', locationSaved: 'Ort gespeichert.', locationSaveFailed: 'Ort konnte ned gspeichert wern.' },
+        frk: { createLocation: 'Ort erstella', addLocation: 'Ort dazua doa', saveLocation: 'Ort speichere', locationSaved: 'Ort is gespeichert.', locationSaveFailed: 'Ort kon ned gespeichert wern.' },
+        hes: { createLocation: 'Ort erstelle', addLocation: 'Ort dazu', saveLocation: 'Ort speichere', locationSaved: 'Ort is gespeichert.', locationSaveFailed: 'Ort kon net gespeichert wern.' },
+        ksh: { createLocation: 'En Platz aanlääje', addLocation: 'Platz dobei donn', saveLocation: 'Platz aanlääje', locationSaved: 'Dä Platz es jeseschert.', locationSaveFailed: 'Dä Platz kunnt nit jeseschert wäde.' },
+        ar: { createLocation: 'إنشاء موقع', addLocation: 'إضافة موقع', saveLocation: 'حفظ الموقع', locationSaved: 'تم حفظ الموقع.', locationSaveFailed: 'تعذر حفظ الموقع.' },
+        he: { createLocation: 'יצירת מיקום', addLocation: 'הוספת מיקום', saveLocation: 'שמירת מיקום', locationSaved: 'המיקום נשמר.', locationSaveFailed: 'לא ניתן לשמור את המיקום.' }
       };
 
       let currentPageLanguage = 'en';
@@ -863,7 +905,8 @@
       function translate(key, values = {}) {
         const pageText = (pageTranslations[currentPageLanguage] || pageTranslations.en)[key];
         const topicText = topicFormTranslations[currentPageLanguage]?.[key] || topicFormTranslations.en[key];
-        let text = pageText || topicText || pageTranslations.en[key] || key;
+        const locationText = locationFormTranslations[currentPageLanguage]?.[key] || locationFormTranslations.en[key];
+        let text = pageText || topicText || locationText || pageTranslations.en[key] || key;
         Object.entries(values).forEach(([name, value]) => {
           text = text.replaceAll(`{${name}}`, value);
         });
@@ -1631,59 +1674,159 @@
         });
       }
 
+      function renderLocationEditor(location) {
+        return `
+          <details class="item-editor">
+            <summary>${translate('editItem')}</summary>
+            <form class="item-editor-form location-editor-form" data-location-name="${escapeAttributeValue(location.name)}">
+              <div class="item-editor-fields">
+                <div class="item-editor-field">
+                  <label>${translate('name')}</label>
+                  <input name="name" type="text" maxlength="160" value="${escapeAttributeValue(location.name)}" required />
+                </div>
+                <div class="item-editor-field">
+                  <label>${translate('capacity')}</label>
+                  <input name="capacity" type="number" min="1" max="100000" step="1" value="${location.capacity ?? ''}" />
+                </div>
+                <div class="item-editor-field item-editor-description">
+                  <label>${translate('topicDescription')}</label>
+                  <textarea name="description" rows="3" maxlength="4000" required>${escapeAttributeValue(location.desc || '')}</textarea>
+                </div>
+                <div class="item-editor-field item-editor-description">
+                  <label>${translate('facilities')}</label>
+                  <input name="facilities" type="text" value="${escapeAttributeValue((location.facilities || []).join(', '))}" />
+                </div>
+              </div>
+              <button class="save-item" type="submit">${translate('saveLocation')}</button>
+              <p class="item-editor-status" role="status" aria-live="polite"></p>
+            </form>
+          </details>
+        `;
+      }
+
+      async function saveLocation(form) {
+        const formData = new FormData(form);
+        const status = form.querySelector('.item-editor-status');
+        const saveButton = form.querySelector('.save-item');
+        const splitValues = value => value.split(',').map(part => part.trim()).filter(Boolean);
+        saveButton.disabled = true;
+        status.textContent = '';
+
+        try {
+          const response = await fetch('/api/locations', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              itemName: form.dataset.locationName,
+              name: formData.get('name'),
+              description: formData.get('description'),
+              capacity: formData.get('capacity') ? Number(formData.get('capacity')) : null,
+              facilities: splitValues(formData.get('facilities'))
+            })
+          });
+          const result = await response.json();
+          if (!response.ok) throw new Error(result.error || translate('locationSaveFailed'));
+
+          window.allLocations = (window.allLocations || []).map(location =>
+            location.name === result.previousName ? result.location : location
+          );
+          window.allProgramItems = (window.allProgramItems || []).map(item =>
+            item.location === result.previousName
+              ? { ...item, location: result.location.name }
+              : item
+          );
+          renderCurrentViews();
+          renderLocations(window.allLocations);
+          document.getElementById('user-name-status').textContent = translate('locationSaved');
+        } catch (error) {
+          status.textContent = error.message || translate('locationSaveFailed');
+        } finally {
+          if (saveButton.isConnected) saveButton.disabled = false;
+        }
+      }
+
+      function initializeLocationCreation() {
+        const form = document.getElementById('create-location-form');
+        const submitButton = form.querySelector('button[type="submit"]');
+        const status = document.getElementById('location-create-status');
+
+        form.addEventListener('submit', async event => {
+          event.preventDefault();
+          submitButton.disabled = true;
+          status.textContent = '';
+          const formData = new FormData(form);
+          const splitValues = value => value.split(',').map(part => part.trim()).filter(Boolean);
+
+          try {
+            const response = await fetch('/api/locations', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                name: formData.get('name'),
+                description: formData.get('description'),
+                capacity: formData.get('capacity') ? Number(formData.get('capacity')) : null,
+                facilities: splitValues(formData.get('facilities'))
+              })
+            });
+            const result = await response.json();
+            if (!response.ok) throw new Error(result.error || translate('locationSaveFailed'));
+
+            window.allLocations.push(result.location);
+            renderLocations(window.allLocations);
+            form.reset();
+            status.textContent = translate('locationSaved');
+            form.closest('details').open = false;
+          } catch (error) {
+            status.textContent = error.message || translate('locationSaveFailed');
+          } finally {
+            submitButton.disabled = false;
+          }
+        });
+      }
+
+      function attachLocationEditorHandlers(root) {
+        root.querySelectorAll('.location-editor-form').forEach(form => {
+          form.addEventListener('submit', event => {
+            event.preventDefault();
+            saveLocation(form);
+          });
+        });
+      }
+
       function renderLocations(items) {
         const root = document.getElementById('locations-cards');
+        const programItems = window.allProgramItems || [];
+        root.innerHTML = items.map(location => {
+          const matchingItems = programItems.filter(programItem => programItem.location === location.name);
+          const programNames = matchingItems.length
+            ? matchingItems.map(programItem => `
+                <li>
+                  <a href="#" class="program-item-link" data-program-item="${escapeAttributeValue(programItem.name)}">${escapeAttributeValue(programItem.name)}</a><br>
+                  ${escapeAttributeValue(programItem.date || '')} • ${escapeAttributeValue(programItem.start || '')} - ${escapeAttributeValue(programItem.end || '')}
+                </li>
+              `).join('')
+            : `<li>${translate('noProgramItems')}</li>`;
 
-        fetch('program.json')
-          .then(response => response.json())
-          .then(data => {
-            const programItems = data.program || [];
-            root.innerHTML = items.map(location => {
-              const matchingItems = programItems.filter(programItem => programItem.location === location.name);
-              const programNames = matchingItems.length
-                ? matchingItems.map(programItem => `
-                    <li>
-                      <a href="#" class="program-item-link" data-program-item="${programItem.name}">${programItem.name}</a><br>
-                      ${programItem.date} • ${programItem.start} - ${programItem.end}
-                    </li>
-                  `).join('')
-                : `<li>${translate('noProgramItems')}</li>`;
+          return `
+            <article id="location-${escapeAttributeValue(location.name)}" class="card">
+              <span class="badge">${translate('locationBadge')}</span>
+              <h3>${escapeAttributeValue(location.name)}</h3>
+              <p>${escapeAttributeValue(location.desc || '')}</p>
+              ${location.capacity != null ? `<p><strong>${translate('capacity')}</strong> ${location.capacity}</p>` : ''}
+              ${(location.facilities || []).length ? `
+                <p><strong>${translate('facilities')}</strong></p>
+                <div class="meta">
+                  ${location.facilities.map(facility => `<span class="chip">${escapeAttributeValue(facility)}</span>`).join('')}
+                </div>
+              ` : ''}
+              ${renderLocationEditor(location)}
+              <p><strong>${translate('programItems')}</strong></p>
+              <ul>${programNames}</ul>
+            </article>
+          `;
+        }).join('');
 
-              return `
-                <article id="location-${location.name}" class="card">
-                  <span class="badge">${translate('locationBadge')}</span>
-                  <h3>${location.name}</h3>
-                  <p>${location.desc}</p>
-                  ${location.capacity != null ? `<p><strong>${translate('capacity')}</strong> ${location.capacity}</p>` : ''}
-                  ${(location.facilities || []).length ? `
-                    <p><strong>${translate('facilities')}</strong></p>
-                    <div class="meta">
-                      ${location.facilities.map(facility => `<span class="chip">${facility}</span>`).join('')}
-                    </div>
-                  ` : ''}
-                  <p><strong>${translate('programItems')}</strong></p>
-                  <ul>${programNames}</ul>
-                </article>
-              `;
-            }).join('');
-          })
-          .catch(() => {
-            root.innerHTML = items.map(location => `
-              <article id="location-${location.name}" class="card">
-                <span class="badge">${translate('locationBadge')}</span>
-                <h3>${location.name}</h3>
-                <p>${location.desc}</p>
-                ${location.capacity != null ? `<p><strong>${translate('capacity')}</strong> ${location.capacity}</p>` : ''}
-                ${(location.facilities || []).length ? `
-                  <p><strong>${translate('facilities')}</strong></p>
-                  <div class="meta">
-                    ${location.facilities.map(facility => `<span class="chip">${facility}</span>`).join('')}
-                  </div>
-                ` : ''}
-              </article>
-            `).join('');
-          });
-
+        attachLocationEditorHandlers(root);
         root.onclick = event => {
           const link = event.target.closest('[data-program-item]');
           if (!link) return;
@@ -1743,6 +1886,7 @@
       initializePageLanguage();
       initializeUserName();
       initializeTopicCreation();
+      initializeLocationCreation();
       loadData();
     </script>
   </body>
