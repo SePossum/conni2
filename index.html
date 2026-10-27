@@ -137,6 +137,10 @@
         gap: 10px;
       }
 
+      #program-detail-filter-group[hidden] {
+        display: none;
+      }
+
       .filter-bar label {
         font-weight: 700;
         white-space: nowrap;
@@ -571,17 +575,17 @@
             <input id="program-search-filter" type="search" placeholder="Name, description, contributor" data-i18n-placeholder="searchPlaceholder" />
           </div>
           <div class="filter-group">
-            <label for="program-detail-filter" data-i18n="details">Details:</label>
-            <select id="program-detail-filter">
-              <option value="full" data-i18n="full" selected>Full</option>
-              <option value="compact" data-i18n="compact">Compact</option>
-            </select>
-          </div>
-          <div class="filter-group">
             <label for="program-view-filter" data-i18n="view">View:</label>
             <select id="program-view-filter">
               <option value="list" data-i18n="list" selected>List</option>
               <option value="calendar" data-i18n="calendar">Calendar</option>
+            </select>
+          </div>
+          <div id="program-detail-filter-group" class="filter-group">
+            <label for="program-detail-filter" data-i18n="details">Details:</label>
+            <select id="program-detail-filter">
+              <option value="full" data-i18n="full" selected>Full</option>
+              <option value="compact" data-i18n="compact">Compact</option>
             </select>
           </div>
         </div>
@@ -1576,6 +1580,7 @@
       function renderProgram(items, selectedLanguage = 'all', detailMode = 'full', searchText = '', likedBy = 'all') {
         const root = document.getElementById('program-cards');
         const viewMode = document.getElementById('program-view-filter').value;
+        document.getElementById('program-detail-filter-group').hidden = viewMode === 'calendar';
         const filteredItems = (selectedLanguage === 'all'
           ? items
           : items.filter(item => (item.languages || []).includes(selectedLanguage)))
