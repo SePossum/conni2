@@ -8,6 +8,7 @@
                 "name 2",
                 "name 3"
             ],
+            "location": "Main Hall",
             "date": "8.8.2026",
             "start": "9:00",
             "end": "10:30",
@@ -21,10 +22,41 @@
                 "name 2",
                 "name 3"
             ],
+            "location": "Workshop Room A",
             "date": "9.8.2026",
             "start": "10:30",
             "end": "11:30",
             "duration": 60
+        }
+    ],
+    "topics": [
+        {
+            "name": "Topic 1",
+            "desc": "Description of topic 1",
+            "contributers": [
+                "name 1",
+                "name 2",
+                "name 3"
+            ]
+        },
+        {
+            "name": "Topic 2",
+            "desc": "Description of topic 2",
+            "contributers": [
+                "name 1",
+                "name 2",
+                "name 3"
+            ]
+        }
+    ],
+    "locations": [
+        {
+            "name": "Main Hall",
+            "desc": "Description of the main hall"
+        },
+        {
+            "name": "Workshop Room A",
+            "desc": "Description of workshop room A"
         }
     ]
 }
