@@ -1020,6 +1020,21 @@
                 "user 11"
             ],
             "likeCount": 3
+        },
+        {
+            "name": "Topic 3",
+            "desc": "new topic",
+            "contributers": [
+                "B. Mattern",
+                "D. Bendler"
+            ],
+            "languages": [
+                "Deutsch"
+            ],
+            "likers": [
+                "B. Mattern"
+            ],
+            "likeCount": 1
         }
     ],
     "locations": [

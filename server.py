@@ -29,7 +29,8 @@ class ConniHandler(SimpleHTTPRequestHandler):
         self.wfile.write(body)
 
     def do_POST(self):
-        if urlparse(self.path).path != "/api/like":
+        request_path = urlparse(self.path).path
+        if request_path not in ("/api/like", "/api/topics"):
             self.send_json(404, {"error": "Not found"})
             return
 
@@ -40,6 +41,14 @@ class ConniHandler(SimpleHTTPRequestHandler):
                 return
 
             request = json.loads(self.rfile.read(request_size))
+            if not isinstance(request, dict):
+                self.send_json(400, {"error": "Invalid request body"})
+                return
+
+            if request_path == "/api/topics":
+                self.create_topic(request)
+                return
+
             item_type = request.get("itemType")
             item_name = request.get("itemName")
             user_name = request.get("userName")
@@ -84,6 +93,64 @@ class ConniHandler(SimpleHTTPRequestHandler):
             self.send_json(400, {"error": "Invalid JSON request"})
         except OSError:
             self.send_json(500, {"error": "Could not save program.json"})
+
+    def create_topic(self, request):
+        name = request.get("name")
+        description = request.get("description")
+        contributors = request.get("contributors", [])
+        languages = request.get("languages", [])
+
+        if not isinstance(name, str) or not name.strip() or len(name.strip()) > 160:
+            self.send_json(400, {"error": "A topic name of 1 to 160 characters is required"})
+            return
+        if not isinstance(description, str) or not description.strip() or len(description.strip()) > 4000:
+            self.send_json(400, {"error": "A description of 1 to 4000 characters is required"})
+            return
+        if not self.valid_string_list(contributors, max_items=30, max_length=120):
+            self.send_json(400, {"error": "Invalid contributor list"})
+            return
+        if not self.valid_string_list(languages, max_items=20, max_length=80):
+            self.send_json(400, {"error": "Invalid language list"})
+            return
+
+        normalized_name = name.strip().casefold()
+        data = json.loads(DATA_FILE.read_text(encoding="utf-8"))
+        topics = data.setdefault("topics", [])
+        if any(topic.get("name", "").strip().casefold() == normalized_name for topic in topics):
+            self.send_json(409, {"error": "A topic with that name already exists"})
+            return
+
+        topic = {
+            "name": name.strip(),
+            "desc": description.strip(),
+            "contributers": self.clean_string_list(contributors),
+            "languages": self.clean_string_list(languages),
+            "likers": [],
+            "likeCount": 0,
+        }
+        topics.append(topic)
+        self.write_data(data)
+        self.send_json(201, {"topic": topic})
+
+    @staticmethod
+    def valid_string_list(values, max_items, max_length):
+        return (
+            isinstance(values, list)
+            and len(values) <= max_items
+            and all(isinstance(value, str) and len(value.strip()) <= max_length for value in values)
+        )
+
+    @staticmethod
+    def clean_string_list(values):
+        cleaned = []
+        seen = set()
+        for value in values:
+            item = value.strip()
+            key = item.casefold()
+            if item and key not in seen:
+                cleaned.append(item)
+                seen.add(key)
+        return cleaned
 
     @staticmethod
     def write_data(data):
