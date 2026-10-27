@@ -2,7 +2,10 @@ import argparse
 import json
 import os
 import tempfile
+import threading
 from datetime import datetime
+from functools import wraps
+from concurrent.futures import ThreadPoolExecutor
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import urlparse
@@ -11,6 +14,47 @@ from urllib.parse import urlparse
 ROOT = Path(__file__).resolve().parent
 DATA_FILE = ROOT / "program.json"
 MAX_REQUEST_SIZE = 16_384
+MAX_REQUEST_WORKERS = 64
+MAX_QUEUED_REQUESTS = 256
+DATA_LOCK = threading.RLock()
+
+
+def serialize_data_mutation(handler_method):
+    @wraps(handler_method)
+    def wrapped(self, *args, **kwargs):
+        with DATA_LOCK:
+            return handler_method(self, *args, **kwargs)
+
+    return wrapped
+
+
+class ConniHTTPServer(ThreadingHTTPServer):
+    """Serve requests with bounded workers and pending-request capacity."""
+
+    request_queue_size = MAX_QUEUED_REQUESTS
+    daemon_threads = True
+
+    def __init__(self, server_address, request_handler):
+        self.request_executor = ThreadPoolExecutor(max_workers=MAX_REQUEST_WORKERS)
+        self.request_slots = threading.BoundedSemaphore(MAX_REQUEST_WORKERS + MAX_QUEUED_REQUESTS)
+        super().__init__(server_address, request_handler)
+
+    def process_request(self, request, client_address):
+        if not self.request_slots.acquire(blocking=False):
+            self.shutdown_request(request)
+            return
+
+        try:
+            future = self.request_executor.submit(self.process_request_thread, request, client_address)
+        except RuntimeError:
+            self.request_slots.release()
+            self.shutdown_request(request)
+        else:
+            future.add_done_callback(lambda completed_request: self.request_slots.release())
+
+    def server_close(self):
+        super().server_close()
+        self.request_executor.shutdown(wait=True)
 
 
 class ConniHandler(SimpleHTTPRequestHandler):
@@ -29,6 +73,7 @@ class ConniHandler(SimpleHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(body)
 
+    @serialize_data_mutation
     def do_POST(self):
         """Handle like updates and topic or location creation requests."""
         request_path = urlparse(self.path).path
@@ -99,6 +144,7 @@ class ConniHandler(SimpleHTTPRequestHandler):
         except OSError:
             self.send_json(500, {"error": "Could not save program.json"})
 
+    @serialize_data_mutation
     def do_DELETE(self):
         if urlparse(self.path).path != "/api/items":
             self.send_json(404, {"error": "Not found"})
@@ -142,6 +188,7 @@ class ConniHandler(SimpleHTTPRequestHandler):
         except OSError:
             self.send_json(500, {"error": "Could not save program.json"})
 
+    @serialize_data_mutation
     def do_PUT(self):
         """Update a program item, topic, or location from a JSON body."""
         request_path = urlparse(self.path).path
@@ -467,7 +514,7 @@ def main():
     parser.add_argument("--port", type=int, default=8000)
     args = parser.parse_args()
 
-    server = ThreadingHTTPServer((args.host, args.port), ConniHandler)
+    server = ConniHTTPServer((args.host, args.port), ConniHandler)
     print(f"Serving SemWo at http://{args.host}:{args.port}/")
     server.serve_forever()
 

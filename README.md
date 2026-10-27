@@ -26,6 +26,12 @@ python3 server.py --host 0.0.0.0 --port 8080
 
 Stop the server with `Ctrl+C`.
 
+## Multi-user use
+
+For a small event with roughly 250 users, run one server process on a machine reachable by the attendees. To accept connections from the local network, start it with `--host 0.0.0.0` and share the machine's network address, for example `http://192.168.1.20:8000/`.
+
+The server runs up to 64 request workers and admits up to 256 additional queued requests. Data-changing requests are serialized so simultaneous likes, edits, and creates cannot overwrite one another in `program.json`. This lightweight JSON-backed setup assumes one server process and a trusted network; it has no user authentication and should not be exposed directly to the public internet. For multiple server instances or sustained high write volume, use a transactional database and an authenticated production web server.
+
 ## Features
 
 - Browse the program in list or calendar view; filter by language, likes, contributions, or search terms.
