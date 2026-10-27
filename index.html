@@ -127,13 +127,15 @@
         font-weight: 700;
       }
 
-      .filter-bar select {
+      .filter-bar select,
+      .filter-bar input {
         border: 1px solid var(--border);
         border-radius: 8px;
         padding: 8px 12px;
         background: white;
         color: var(--text);
         min-width: 150px;
+        font: inherit;
       }
 
       .sort-bar {
@@ -223,6 +225,8 @@
           <select id="program-language-filter">
             <option value="all">All</option>
           </select>
+          <label for="program-search-filter">Search:</label>
+          <input id="program-search-filter" type="search" placeholder="Name, description, contributor" />
           <label for="program-detail-filter">Details:</label>
           <select id="program-detail-filter">
             <option value="full">Full</option>
@@ -241,6 +245,8 @@
           <select id="topics-language-filter">
             <option value="all">All</option>
           </select>
+          <label for="topics-search-filter">Search:</label>
+          <input id="topics-search-filter" type="search" placeholder="Name, description, contributor" />
           <label for="topics-detail-filter">Details:</label>
           <select id="topics-detail-filter">
             <option value="full">Full</option>
@@ -302,8 +308,10 @@
         });
 
         const programSelect = document.getElementById('program-language-filter');
+        const programSearch = document.getElementById('program-search-filter');
         const programDetailFilter = document.getElementById('program-detail-filter');
         const topicSelect = document.getElementById('topics-language-filter');
+        const topicsSearch = document.getElementById('topics-search-filter');
         const topicsDetailFilter = document.getElementById('topics-detail-filter');
         const topicsTypeFilter = document.getElementById('topics-type-filter');
         const topicsSortSelect = document.getElementById('topics-sort-select');
@@ -316,12 +324,25 @@
         programSelect.innerHTML = options;
         topicSelect.innerHTML = options;
 
-        programSelect.onchange = () => renderProgram(programItems, programSelect.value, programDetailFilter.value);
-        programDetailFilter.onchange = () => renderProgram(programItems, programSelect.value, programDetailFilter.value);
-        topicSelect.onchange = () => renderTopics(topicItems, topicSelect.value, topicsSortSelect.value, topicsTypeFilter.value === 'topics-only', topicsDetailFilter.value);
-        topicsDetailFilter.onchange = () => renderTopics(topicItems, topicSelect.value, topicsSortSelect.value, topicsTypeFilter.value === 'topics-only', topicsDetailFilter.value);
-        topicsTypeFilter.onchange = () => renderTopics(topicItems, topicSelect.value, topicsSortSelect.value, topicsTypeFilter.value === 'topics-only', topicsDetailFilter.value);
-        topicsSortSelect.onchange = () => renderTopics(topicItems, topicSelect.value, topicsSortSelect.value, topicsTypeFilter.value === 'topics-only', topicsDetailFilter.value);
+        programSelect.onchange = () => renderProgram(programItems, programSelect.value, programDetailFilter.value, programSearch.value);
+        programSearch.oninput = () => renderProgram(programItems, programSelect.value, programDetailFilter.value, programSearch.value);
+        programDetailFilter.onchange = () => renderProgram(programItems, programSelect.value, programDetailFilter.value, programSearch.value);
+        topicSelect.onchange = () => renderTopics(topicItems, topicSelect.value, topicsSortSelect.value, topicsTypeFilter.value === 'topics-only', topicsDetailFilter.value, topicsSearch.value);
+        topicsSearch.oninput = () => renderTopics(topicItems, topicSelect.value, topicsSortSelect.value, topicsTypeFilter.value === 'topics-only', topicsDetailFilter.value, topicsSearch.value);
+        topicsDetailFilter.onchange = () => renderTopics(topicItems, topicSelect.value, topicsSortSelect.value, topicsTypeFilter.value === 'topics-only', topicsDetailFilter.value, topicsSearch.value);
+        topicsTypeFilter.onchange = () => renderTopics(topicItems, topicSelect.value, topicsSortSelect.value, topicsTypeFilter.value === 'topics-only', topicsDetailFilter.value, topicsSearch.value);
+        topicsSortSelect.onchange = () => renderTopics(topicItems, topicSelect.value, topicsSortSelect.value, topicsTypeFilter.value === 'topics-only', topicsDetailFilter.value, topicsSearch.value);
+      }
+
+      function matchesSearch(item, query) {
+        const normalizedQuery = query.trim().toLocaleLowerCase();
+        if (!normalizedQuery) return true;
+
+        const searchableText = [item.name, item.desc, ...(item.contributers || [])]
+          .filter(Boolean)
+          .join(' ')
+          .toLocaleLowerCase();
+        return searchableText.includes(normalizedQuery);
       }
 
       function getSortDateTimeValue(item) {
@@ -331,11 +352,12 @@
         return `${normalizedDate}T${time}:00`;
       }
 
-      function renderProgram(items, selectedLanguage = 'all', detailMode = 'full') {
+      function renderProgram(items, selectedLanguage = 'all', detailMode = 'full', searchText = '') {
         const root = document.getElementById('program-cards');
         const filteredItems = (selectedLanguage === 'all'
           ? items
           : items.filter(item => (item.languages || []).includes(selectedLanguage)))
+          .filter(item => matchesSearch(item, searchText))
           .slice()
           .sort((a, b) => new Date(getSortDateTimeValue(a)) - new Date(getSortDateTimeValue(b)));
 
@@ -361,7 +383,7 @@
                 <p class="likes" title="Liked by: ${(item.likers || []).join(', ')}">♥ ${item.likeCount || 0} likes</p>
               </article>
             `).join('')
-          : '<p class="loading">No program items match this language.</p>';
+          : '<p class="loading">No program items match these filters.</p>';
 
         document.querySelectorAll('[data-location]').forEach(link => {
           link.addEventListener('click', (event) => {
@@ -372,16 +394,18 @@
         });
       }
 
-      function renderTopics(items, selectedLanguage = 'all', sortMode = 'date', showOnlyTopics = false, detailMode = 'full') {
+      function renderTopics(items, selectedLanguage = 'all', sortMode = 'date', showOnlyTopics = false, detailMode = 'full', searchText = '') {
         const root = document.getElementById('topics-cards');
         const topicItems = (selectedLanguage === 'all'
           ? items
           : items.filter(item => (item.languages || []).includes(selectedLanguage)))
+          .filter(item => matchesSearch(item, searchText))
           .slice();
 
         const programItems = (selectedLanguage === 'all'
           ? window.allProgramItems || []
           : (window.allProgramItems || []).filter(item => (item.languages || []).includes(selectedLanguage)))
+          .filter(item => matchesSearch(item, searchText))
           .slice();
 
         const mergedItems = showOnlyTopics ? topicItems : [...programItems, ...topicItems];
@@ -431,7 +455,7 @@
                 </article>
               `;
             }).join('')
-          : '<p class="loading">No program items or topics match this language.</p>';
+          : '<p class="loading">No program items or topics match these filters.</p>';
 
         document.querySelectorAll('[data-location]').forEach(link => {
           link.addEventListener('click', (event) => {
@@ -507,8 +531,10 @@
 
       function openProgramItem(programName) {
         const programLanguageFilter = document.getElementById('program-language-filter');
+        const programSearch = document.getElementById('program-search-filter');
         programLanguageFilter.value = 'all';
-        renderProgram(window.allProgramItems || [], 'all', document.getElementById('program-detail-filter').value);
+        programSearch.value = '';
+        renderProgram(window.allProgramItems || [], 'all', document.getElementById('program-detail-filter').value, '');
 
         document.querySelectorAll('.tab').forEach(tab => tab.classList.toggle('active', tab.dataset.tab === 'program'));
         document.querySelectorAll('.section').forEach(section => {
