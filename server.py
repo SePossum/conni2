@@ -30,6 +30,7 @@ class ConniHandler(SimpleHTTPRequestHandler):
         self.wfile.write(body)
 
     def do_POST(self):
+        """Handle like updates and topic or location creation requests."""
         request_path = urlparse(self.path).path
         if request_path not in ("/api/like", "/api/topics", "/api/locations"):
             self.send_json(404, {"error": "Not found"})
@@ -142,6 +143,7 @@ class ConniHandler(SimpleHTTPRequestHandler):
             self.send_json(500, {"error": "Could not save program.json"})
 
     def do_PUT(self):
+        """Update a program item, topic, or location from a JSON body."""
         request_path = urlparse(self.path).path
         if request_path not in ("/api/items", "/api/locations"):
             self.send_json(404, {"error": "Not found"})
@@ -310,6 +312,7 @@ class ConniHandler(SimpleHTTPRequestHandler):
         self.send_json(201, {"topic": topic})
 
     def create_location(self, request):
+        """Validate and append a location with optional capacity and facilities."""
         name = request.get("name")
         description = request.get("description")
         capacity = request.get("capacity")
@@ -348,6 +351,7 @@ class ConniHandler(SimpleHTTPRequestHandler):
         self.send_json(201, {"location": location})
 
     def update_location(self, request):
+        """Update a location and keep program references in sync after a rename."""
         item_name = request.get("itemName")
         name = request.get("name")
         description = request.get("description")
@@ -411,6 +415,7 @@ class ConniHandler(SimpleHTTPRequestHandler):
 
     @staticmethod
     def valid_location_capacity(capacity):
+        """Allow an omitted capacity or a positive integer no greater than 100,000."""
         return capacity is None or (type(capacity) is int and 1 <= capacity <= 100000)
 
     @staticmethod
