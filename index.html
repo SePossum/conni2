@@ -618,9 +618,7 @@
 
       let currentPageLanguage = 'en';
       const userNameStorageKey = 'conni2-user-name';
-      const userLikesStorageKey = 'conni2-user-likes';
       let currentUserName = '';
-      let currentUserLikes = { program: {}, topics: {} };
 
       function translate(key, values = {}) {
         let text = (pageTranslations[currentPageLanguage] || pageTranslations.en)[key] || pageTranslations.en[key] || key;
@@ -704,30 +702,6 @@
         return currentUserName.trim().toLocaleLowerCase();
       }
 
-      function loadCurrentUserLikes() {
-        try {
-          const allLikes = JSON.parse(localStorage.getItem(userLikesStorageKey) || '{}');
-          const savedLikes = allLikes[currentUserKey()] || {};
-          currentUserLikes = {
-            program: savedLikes.program || {},
-            topics: savedLikes.topics || {}
-          };
-        } catch {
-          currentUserLikes = { program: {}, topics: {} };
-        }
-      }
-
-      function saveCurrentUserLikes() {
-        try {
-          const allLikes = JSON.parse(localStorage.getItem(userLikesStorageKey) || '{}');
-          allLikes[currentUserKey()] = currentUserLikes;
-          localStorage.setItem(userLikesStorageKey, JSON.stringify(allLikes));
-          return true;
-        } catch {
-          return false;
-        }
-      }
-
       function renderCurrentViews() {
         if (!window.allProgramItems) return;
 
@@ -751,21 +725,10 @@
 
       function getItemLikeState(item, itemType) {
         const nameKey = currentUserKey();
-        const baseLikers = item.likers || [];
-        const baseLiked = !!nameKey && baseLikers.some(liker => liker.toLocaleLowerCase() === nameKey);
-        const overrides = currentUserLikes[itemType] || {};
-        const hasOverride = !!nameKey && Object.prototype.hasOwnProperty.call(overrides, item.name);
-        const liked = hasOverride ? overrides[item.name] : baseLiked;
-        const likers = hasOverride
-          ? baseLikers.filter(liker => liker.toLocaleLowerCase() !== nameKey)
-          : [...baseLikers];
-
-        if (liked && currentUserName && !likers.some(liker => liker.toLocaleLowerCase() === nameKey)) {
-          likers.push(currentUserName);
-        }
-
-        const likeCount = Math.max(0, (Number(item.likeCount) || 0) + Number(liked && !baseLiked) - Number(!liked && baseLiked));
-        return { liked, likeCount, likers };
+        const likers = item.likers || [];
+        const likeCount = Number(item.likeCount);
+        const liked = !!nameKey && likers.some(liker => liker.toLocaleLowerCase() === nameKey);
+        return { liked, likeCount: Number.isFinite(likeCount) ? likeCount : likers.length, likers };
       }
 
       function renderLikeControl(item, itemType) {
@@ -792,30 +755,43 @@
         `;
       }
 
-      function toggleItemLike(itemType, itemName) {
+      async function toggleItemLike(itemType, itemName) {
         if (!currentUserName) return;
         const items = itemType === 'program' ? window.allProgramItems || [] : window.allTopics || [];
         const item = items.find(candidate => candidate.name === itemName);
         if (!item) return;
 
-        const wasOverridden = Object.prototype.hasOwnProperty.call(currentUserLikes[itemType], item.name);
-        const previousValue = currentUserLikes[itemType][item.name];
-        currentUserLikes[itemType][item.name] = !getItemLikeState(item, itemType).liked;
+        try {
+          const response = await fetch('/api/like', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              itemType,
+              itemName,
+              userName: currentUserName,
+              liked: !getItemLikeState(item, itemType).liked
+            })
+          });
+          if (!response.ok) throw new Error('Could not save like');
 
-        if (!saveCurrentUserLikes()) {
-          if (wasOverridden) currentUserLikes[itemType][item.name] = previousValue;
-          else delete currentUserLikes[itemType][item.name];
+          const result = await response.json();
+          const updatedItems = result.itemType === 'program' ? window.allProgramItems : window.allTopics;
+          const updatedItem = updatedItems.find(candidate => candidate.name === result.item.name);
+          if (updatedItem) Object.assign(updatedItem, result.item);
+
+          document.getElementById('user-name-status').textContent = translate('saved');
+          renderCurrentViews();
+        } catch {
           document.getElementById('user-name-status').textContent = translate('likesSaveFailed');
-          return;
         }
-
-        renderCurrentViews();
       }
 
       function attachLikeHandlers(root) {
         root.querySelectorAll('.like-toggle').forEach(button => {
-          button.addEventListener('click', () => {
-            toggleItemLike(button.dataset.likeType, button.dataset.likeName);
+          button.addEventListener('click', async () => {
+            button.disabled = true;
+            await toggleItemLike(button.dataset.likeType, button.dataset.likeName);
+            if (button.isConnected) button.disabled = !currentUserName;
           });
         });
       }
@@ -830,7 +806,6 @@
           status.textContent = translate('nameStorageUnavailable');
         }
         nameInput.value = currentUserName;
-        loadCurrentUserLikes();
 
         nameInput.addEventListener('input', () => {
           currentUserName = nameInput.value.trim();
@@ -848,7 +823,6 @@
 
           if (!window.allProgramItems) return;
 
-          loadCurrentUserLikes();
           populateLikerFilters();
           renderCurrentViews();
         });
