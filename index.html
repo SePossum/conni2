@@ -223,6 +223,11 @@
           <select id="program-language-filter">
             <option value="all">All</option>
           </select>
+          <label for="program-detail-filter">Details:</label>
+          <select id="program-detail-filter">
+            <option value="full">Full</option>
+            <option value="compact">Compact</option>
+          </select>
         </div>
         <div id="program-cards" class="cards">
           <div class="loading">Loading program...</div>
@@ -235,6 +240,11 @@
           <label for="topics-language-filter">Language:</label>
           <select id="topics-language-filter">
             <option value="all">All</option>
+          </select>
+          <label for="topics-detail-filter">Details:</label>
+          <select id="topics-detail-filter">
+            <option value="full">Full</option>
+            <option value="compact">Compact</option>
           </select>
           <label for="topics-type-filter">Show:</label>
           <select id="topics-type-filter">
@@ -292,7 +302,9 @@
         });
 
         const programSelect = document.getElementById('program-language-filter');
+        const programDetailFilter = document.getElementById('program-detail-filter');
         const topicSelect = document.getElementById('topics-language-filter');
+        const topicsDetailFilter = document.getElementById('topics-detail-filter');
         const topicsTypeFilter = document.getElementById('topics-type-filter');
         const topicsSortSelect = document.getElementById('topics-sort-select');
 
@@ -304,10 +316,12 @@
         programSelect.innerHTML = options;
         topicSelect.innerHTML = options;
 
-        programSelect.onchange = () => renderProgram(programItems, programSelect.value);
-        topicSelect.onchange = () => renderTopics(topicItems, topicSelect.value, topicsSortSelect.value, topicsTypeFilter.value === 'topics-only');
-        topicsTypeFilter.onchange = () => renderTopics(topicItems, topicSelect.value, topicsSortSelect.value, topicsTypeFilter.value === 'topics-only');
-        topicsSortSelect.onchange = () => renderTopics(topicItems, topicSelect.value, topicsSortSelect.value, topicsTypeFilter.value === 'topics-only');
+        programSelect.onchange = () => renderProgram(programItems, programSelect.value, programDetailFilter.value);
+        programDetailFilter.onchange = () => renderProgram(programItems, programSelect.value, programDetailFilter.value);
+        topicSelect.onchange = () => renderTopics(topicItems, topicSelect.value, topicsSortSelect.value, topicsTypeFilter.value === 'topics-only', topicsDetailFilter.value);
+        topicsDetailFilter.onchange = () => renderTopics(topicItems, topicSelect.value, topicsSortSelect.value, topicsTypeFilter.value === 'topics-only', topicsDetailFilter.value);
+        topicsTypeFilter.onchange = () => renderTopics(topicItems, topicSelect.value, topicsSortSelect.value, topicsTypeFilter.value === 'topics-only', topicsDetailFilter.value);
+        topicsSortSelect.onchange = () => renderTopics(topicItems, topicSelect.value, topicsSortSelect.value, topicsTypeFilter.value === 'topics-only', topicsDetailFilter.value);
       }
 
       function getSortDateTimeValue(item) {
@@ -317,7 +331,7 @@
         return `${normalizedDate}T${time}:00`;
       }
 
-      function renderProgram(items, selectedLanguage = 'all') {
+      function renderProgram(items, selectedLanguage = 'all', detailMode = 'full') {
         const root = document.getElementById('program-cards');
         const filteredItems = (selectedLanguage === 'all'
           ? items
@@ -330,19 +344,21 @@
               <article class="card" data-program-name="${item.name}">
                 <span class="badge">Program</span>
                 <h3>${item.name}</h3>
-                <p>${item.desc}</p>
+                ${detailMode === 'full' ? `<p>${item.desc}</p>` : ''}
                 <div class="meta">
                   <a href="#" class="chip chip-link" data-location="${item.location}">${item.location}</a>
                   <span class="chip">${item.date}</span>
                   <span class="chip">${item.start} - ${item.end}</span>
                   <span class="chip">${item.duration} min</span>
                 </div>
-                <div class="meta">
-                  ${(item.languages || []).map(lang => `<span class="chip">${lang}</span>`).join('')}
-                </div>
-                <p><strong>Contributors:</strong></p>
-                <ul>${(item.contributers || []).map(name => `<li>${name}</li>`).join('')}</ul>
-                <p class="likes">♥ ${item.likeCount || 0} likes</p>
+                ${detailMode === 'full' ? `
+                  <div class="meta">
+                    ${(item.languages || []).map(lang => `<span class="chip">${lang}</span>`).join('')}
+                  </div>
+                  <p><strong>Contributors:</strong></p>
+                  <ul>${(item.contributers || []).map(name => `<li>${name}</li>`).join('')}</ul>
+                ` : ''}
+                <p class="likes" title="Liked by: ${(item.likers || []).join(', ')}">♥ ${item.likeCount || 0} likes</p>
               </article>
             `).join('')
           : '<p class="loading">No program items match this language.</p>';
@@ -356,7 +372,7 @@
         });
       }
 
-      function renderTopics(items, selectedLanguage = 'all', sortMode = 'date', showOnlyTopics = false) {
+      function renderTopics(items, selectedLanguage = 'all', sortMode = 'date', showOnlyTopics = false, detailMode = 'full') {
         const root = document.getElementById('topics-cards');
         const topicItems = (selectedLanguage === 'all'
           ? items
@@ -395,7 +411,7 @@
                 <article class="card">
                   <span class="badge">${isProgram ? 'Program' : 'Topic'}</span>
                   <h3>${item.name}</h3>
-                  <p>${item.desc}</p>
+                  ${detailMode === 'full' ? `<p>${item.desc}</p>` : ''}
                   ${isProgram ? `
                     <div class="meta">
                       <a href="#" class="chip chip-link" data-location="${item.location}">${item.location}</a>
@@ -404,12 +420,14 @@
                       <span class="chip">${item.duration} min</span>
                     </div>
                   ` : ''}
-                  <div class="meta">
-                    ${(item.languages || []).map(lang => `<span class="chip">${lang}</span>`).join('')}
-                  </div>
-                  <p><strong>Contributors:</strong></p>
-                  <ul>${(item.contributers || []).map(name => `<li>${name}</li>`).join('')}</ul>
-                  <p class="likes">♥ ${item.likeCount || 0} likes</p>
+                  ${detailMode === 'full' ? `
+                    <div class="meta">
+                      ${(item.languages || []).map(lang => `<span class="chip">${lang}</span>`).join('')}
+                    </div>
+                    <p><strong>Contributors:</strong></p>
+                    <ul>${(item.contributers || []).map(name => `<li>${name}</li>`).join('')}</ul>
+                  ` : ''}
+                  <p class="likes" title="Liked by: ${(item.likers || []).join(', ')}">♥ ${item.likeCount || 0} likes</p>
                 </article>
               `;
             }).join('')
@@ -490,7 +508,7 @@
       function openProgramItem(programName) {
         const programLanguageFilter = document.getElementById('program-language-filter');
         programLanguageFilter.value = 'all';
-        renderProgram(window.allProgramItems || [], 'all');
+        renderProgram(window.allProgramItems || [], 'all', document.getElementById('program-detail-filter').value);
 
         document.querySelectorAll('.tab').forEach(tab => tab.classList.toggle('active', tab.dataset.tab === 'program'));
         document.querySelectorAll('.section').forEach(section => {
