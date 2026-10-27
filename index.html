@@ -123,8 +123,17 @@
         flex-wrap: wrap;
       }
 
+      .filter-group {
+        display: flex;
+        align-items: center;
+        flex-wrap: nowrap;
+        flex: 0 0 auto;
+        gap: 10px;
+      }
+
       .filter-bar label {
         font-weight: 700;
+        white-space: nowrap;
       }
 
       .filter-bar select,
@@ -153,6 +162,7 @@
 
       .sort-bar label {
         font-weight: 700;
+        white-space: nowrap;
       }
 
       .sort-bar select {
@@ -162,6 +172,20 @@
         background: white;
         color: var(--text);
         min-width: 180px;
+      }
+
+      @media (max-width: 480px) {
+        .container {
+          padding-right: 12px;
+          padding-left: 12px;
+        }
+
+        .filter-bar select,
+        .filter-bar input,
+        .sort-bar select {
+          width: min(145px, 40vw);
+          min-width: 0;
+        }
       }
 
       .meta {
@@ -289,21 +313,25 @@
       <h1>SemWo 2027</h1>
       <p class="subtitle" data-i18n="welcome">Welcome to the seminar weekend!</p>
       <div class="filter-bar">
-        <label for="page-language-filter" data-i18n="pageLanguage">Page language:</label>
-        <select id="page-language-filter">
-          <option value="en">English</option>
-          <option value="de">Deutsch</option>
-          <option value="fr">Français</option>
-          <option value="es">Español</option>
-          <option value="it">Italiano</option>
-          <option value="sq">Shqip</option>
-          <option value="bar">Boarisch</option>
-          <option value="ar">العربية</option>
-        </select>
+        <div class="filter-group">
+          <label for="page-language-filter" data-i18n="pageLanguage">Page language:</label>
+          <select id="page-language-filter">
+            <option value="en">English</option>
+            <option value="de">Deutsch</option>
+            <option value="fr">Français</option>
+            <option value="es">Español</option>
+            <option value="it">Italiano</option>
+            <option value="sq">Shqip</option>
+            <option value="bar">Boarisch</option>
+            <option value="ar">العربية</option>
+          </select>
+        </div>
       </div>
       <div class="filter-bar">
-        <label for="current-user-name" data-i18n="yourName">Your name:</label>
-        <input id="current-user-name" type="text" autocomplete="name" placeholder="Enter your name" data-i18n-placeholder="enterName" />
+        <div class="filter-group">
+          <label for="current-user-name" data-i18n="yourName">Your name:</label>
+          <input id="current-user-name" type="text" autocomplete="name" placeholder="Enter your name" data-i18n-placeholder="enterName" />
+        </div>
         <span id="user-name-status" class="save-status" role="status" aria-live="polite"></span>
       </div>
 
@@ -316,26 +344,36 @@
       <section id="program-section" class="section active">
         <h2 data-i18n="program">Program</h2>
         <div class="filter-bar">
-          <label for="program-language-filter" data-i18n="language">Language:</label>
-          <select id="program-language-filter">
-            <option value="all" data-i18n="all">All</option>
-          </select>
-          <label for="program-liked-filter" data-i18n="likedBy">Liked by:</label>
-          <select id="program-liked-filter">
-            <option value="all" data-i18n="allUsers">All users</option>
-          </select>
-          <label for="program-search-filter" data-i18n="search">Search:</label>
-          <input id="program-search-filter" type="search" placeholder="Name, description, contributor" data-i18n-placeholder="searchPlaceholder" />
-          <label for="program-detail-filter" data-i18n="details">Details:</label>
-          <select id="program-detail-filter">
-            <option value="full" data-i18n="full">Full</option>
-            <option value="compact" data-i18n="compact">Compact</option>
-          </select>
-          <label for="program-view-filter" data-i18n="view">View:</label>
-          <select id="program-view-filter">
-            <option value="list" data-i18n="list">List</option>
-            <option value="calendar" data-i18n="calendar">Calendar</option>
-          </select>
+          <div class="filter-group">
+            <label for="program-language-filter" data-i18n="language">Language:</label>
+            <select id="program-language-filter">
+              <option value="all" data-i18n="all">All</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label for="program-liked-filter" data-i18n="likedBy">Liked by:</label>
+            <select id="program-liked-filter">
+              <option value="all" data-i18n="allUsers">All users</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label for="program-search-filter" data-i18n="search">Search:</label>
+            <input id="program-search-filter" type="search" placeholder="Name, description, contributor" data-i18n-placeholder="searchPlaceholder" />
+          </div>
+          <div class="filter-group">
+            <label for="program-detail-filter" data-i18n="details">Details:</label>
+            <select id="program-detail-filter">
+              <option value="full" data-i18n="full">Full</option>
+              <option value="compact" data-i18n="compact">Compact</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label for="program-view-filter" data-i18n="view">View:</label>
+            <select id="program-view-filter">
+              <option value="list" data-i18n="list">List</option>
+              <option value="calendar" data-i18n="calendar">Calendar</option>
+            </select>
+          </div>
         </div>
         <div id="program-cards" class="cards">
           <div class="loading" data-i18n="loadingProgram">Loading program...</div>
@@ -345,34 +383,46 @@
       <section id="topics-section" class="section">
         <h2 data-i18n="topics">Topics</h2>
         <div class="filter-bar">
-          <label for="topics-language-filter" data-i18n="language">Language:</label>
-          <select id="topics-language-filter">
-            <option value="all" data-i18n="all">All</option>
-          </select>
-          <label for="topics-liked-filter" data-i18n="likedBy">Liked by:</label>
-          <select id="topics-liked-filter">
-            <option value="all" data-i18n="allUsers">All users</option>
-          </select>
-          <label for="topics-search-filter" data-i18n="search">Search:</label>
-          <input id="topics-search-filter" type="search" placeholder="Name, description, contributor" data-i18n-placeholder="searchPlaceholder" />
-          <label for="topics-detail-filter" data-i18n="details">Details:</label>
-          <select id="topics-detail-filter">
-            <option value="full" data-i18n="full">Full</option>
-            <option value="compact" data-i18n="compact">Compact</option>
-          </select>
-          <label for="topics-type-filter" data-i18n="show">Show:</label>
-          <select id="topics-type-filter">
-            <option value="all" data-i18n="allItems">All items</option>
-            <option value="topics-only" data-i18n="topicsOnly">Topics only</option>
-          </select>
+          <div class="filter-group">
+            <label for="topics-language-filter" data-i18n="language">Language:</label>
+            <select id="topics-language-filter">
+              <option value="all" data-i18n="all">All</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label for="topics-liked-filter" data-i18n="likedBy">Liked by:</label>
+            <select id="topics-liked-filter">
+              <option value="all" data-i18n="allUsers">All users</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label for="topics-search-filter" data-i18n="search">Search:</label>
+            <input id="topics-search-filter" type="search" placeholder="Name, description, contributor" data-i18n-placeholder="searchPlaceholder" />
+          </div>
+          <div class="filter-group">
+            <label for="topics-detail-filter" data-i18n="details">Details:</label>
+            <select id="topics-detail-filter">
+              <option value="full" data-i18n="full">Full</option>
+              <option value="compact" data-i18n="compact">Compact</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label for="topics-type-filter" data-i18n="show">Show:</label>
+            <select id="topics-type-filter">
+              <option value="all" data-i18n="allItems">All items</option>
+              <option value="topics-only" data-i18n="topicsOnly">Topics only</option>
+            </select>
+          </div>
         </div>
         <div class="sort-bar">
-          <label for="topics-sort-select" data-i18n="sortBy">Sort by:</label>
-          <select id="topics-sort-select">
-            <option value="date" data-i18n="date">Date</option>
-            <option value="likes" data-i18n="likes">Likes</option>
-            <option value="name" data-i18n="name">Name</option>
-          </select>
+          <div class="filter-group">
+            <label for="topics-sort-select" data-i18n="sortBy">Sort by:</label>
+            <select id="topics-sort-select">
+              <option value="date" data-i18n="date">Date</option>
+              <option value="likes" data-i18n="likes">Likes</option>
+              <option value="name" data-i18n="name">Name</option>
+            </select>
+          </div>
         </div>
         <div id="topics-cards" class="cards">
           <div class="loading" data-i18n="loadingTopics">Loading topics...</div>
